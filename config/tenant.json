@@ -1,6 +1,6 @@
 {
-  "title": "SilverCore",
-  "name": "SilverCore",
+  "title": "Silvercore",
+  "name": "Silvercore",
   "brand": "Fiserv",
   "brandLogoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Fiserv_Logo.jpg",
   "solution": ["merchants"],
@@ -33,10 +33,10 @@
     "longDescription":"To onboard properly into the Developer Studi as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
     "apiSpecification": "/v1/apis/SilverCore",
     "layout": "/v1/layouts/SilverCore",
-    "documentation": "/v1/docs/SilverCore",
-    "documenttree": "/v1/docs/SilverCore",
-    "documenttreeV2": "/v2/docs/SilverCore",
-    "sandbox": "/v1/sandboxrun/SilverCore",
+    "documentation": "/v1/docs/Silvercore",
+    "documenttree": "/v1/docs/Silvercore",
+    "documenttreeV2": "/v2/docs/Silvercore",
+    "sandbox": "/v1/sandboxrun/Silvercore",
     "feature":[
       {
         "name": "sandBox",
