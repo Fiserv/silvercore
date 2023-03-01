@@ -6,24 +6,24 @@ March 03 2022
 
 ## What's New
 
-- Something new that was added or introduced like a documents or a services.  [Possible link to the doc](?path=/docs/getting-started.md)
+- Create developer portal for SilverCore.  [Possible link to the doc](?path=/docs/getting-started.md)
 
 ## Enhancements
 
-- Description of an improvement or a change
+- Add all documentation for start a new integration with developers
 
 ## Fixed
 
-- github issue that was fixed. [Possible github issue link ](https://github.com/Fiserv/Support/issues)
+- N/A
 
 ## Known Issues
 
-- persistent issue that's not fixed.
+- N/A
 
 ## Deprecated
 
-- regarded as obsolete and best avoided
+- N/A
 
 
-March 17 2022
+March 03 2023
 

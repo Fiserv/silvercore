@@ -29,8 +29,23 @@
 ################################################################################
 
 - sections:
+  - title: Introduction
+    link: docs/1-introduction.md
   - title: Getting Started
     link: docs/getting-started.md
+    sections:
+    - title: API Reference
+      sections:
+        - title: Account
+          link: docs/api-reference/1-account.md
+        - title: Cards
+          link: docs/api-reference/2-cards.md
+    - title: Main Cases
+      sections:
+        - title: Audit and Monitoring
+          link: docs/main-cases/15-audit.md
+        - title: HMAC Signature
+          link: docs/main-cases/16-hmac.md  
 - sections:
   - title: Release notes
     sections:
