@@ -28,43 +28,70 @@
 # the delivery of this work
 ################################################################################
 header:
-  productName: REPLACEME
-  productionDescription: REPLACEME
-  whoIsItFor: REPLACEME
+  productName: SilverCore - LATAM
+  productionDescription: Expand your business’ reach by taking the acceptance process to a different level.
+  whoIsItFor: LATAM
   image: 
     link: "/assets/images/Fiserv_Logo.jpg"
-    altText: REPLACEME™
+    altText: SilverCore - LATAM™
+steps:  
+  learnSteps:
+    - title: Learn
+      description: >
+        Follow our documentation and easy to use examples to build your own mobile or web integrated online applications. 
+      link:
+  buildSteps:
+    - title: Build
+      description: >
+        Get your application up and running with our proprietary integration tools and developer keys. 
+      link:
+  validateSteps:
+    - title: API Explorer
+      description: >
+        Interact with our live api interface for real time responses to the developed application. 
+      link:
+  deploySteps:
+    - title: Deploy
+      description: >
+        Deploy your applications in our testing environment for quality assurance testing.  Once ready promote your application to our production environment. 
+      link:
 featuredFeatures:
-  - title: REPLACE ME
-    description:  REPLACE ME
-    tags: ["REPLACEME", "REPLACEME", "REPLACEME"]
-    bullets: ["REPLACEME", "REPLACEME" ]  
+  - title: Credit Issuance
+    description:  SilverCore solution allows financial Institution to issue and manage the Credit Card products to their end customers. 
+    tags: ["LATAM", "SilverCore", "Credit"]
+    bullets: ["Activate Card", "Block Card", "Lost Stolen Card Transfer", "CVV2" ]  
     relatedDocs:
       - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME1.md
+        title: Account Management
+        description: Allows management of an accounts that holds financial information of Credit available/used.
+        link: ./docs/api-reference/1-account.md
       - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME2.md
-      - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME3.md
-    relatedAPIs:
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "patch"        
-        path: "/v1/REPLACEME1"
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "post"        
-        path: "/v1/REPLACEME2"
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "get"        
-        path: "/v1/REPLACEME3"
+        title: Cards Management
+        description: Allows management of payment instrument that is used to perform financial transaction such as physical Card. 
+        link: ./docs/api-reference/2-cards.md     
+    # relatedAPIs:
+    #   - relatedAPI: 
+    #     title: Cash-in & Cash-out Request
+    #     description: Credits (cash in) or Debits (cash out) transactions from available funds or credit open to buy in an Account
+    #     type: "put"
+    #     path: "/account/balance"
+    #   - relatedAPI:
+    #     title: Card Activation
+    #     description: Activate Card.
+    #     type: "put"
+    #     path: "/cards/activation"
+    #   - relatedAPI: 
+    #     title: Customer Update
+    #     description: Customer Update
+    #     type: "put"
+    #     path: "/customer/"
+    #   - relatedAPI: 
+    #     title: Exchange Rate Update
+    #     description: Inquire or Update Exchange Rate
+    #     type: "put"
+    #     path: "/transactions/exchange-rate"
+    #   - relatedAPI: 
+    #     title: Points Account Add
+    #     description: Adds an LMS Points Account Record.
+    #     type: "post"
+    #     path: "/loyalty/pointsAccount"
