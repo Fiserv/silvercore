@@ -30,6 +30,6 @@ Our Monitoring helps operations teams increase API availability for application 
 - [Pan Token](?path=docs/main-cases/12-pan-token.md)
 - [Pin Change](?path=docs/main-cases/13-pin-change.md)
 - [Dynamic CVV2](?path=docs/main-cases/14-dynamic.md) -->
-- [HMAC Signature](?path=docs/documentation/16-hmac.md)
+- [HMAC Signature](?path=docs/main-cases/16-hmac.md)
 
 ---
