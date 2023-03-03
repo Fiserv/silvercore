@@ -24,17 +24,19 @@ This section deals with how to access the request execution page in an HTTP clie
 
 ### 1. Select the API group that you want explore
 
-<!-- ![Getting started 1!](/assets/images/getting-started/getting-started-1.jpg "Getting started 1") -->
+![Getting started 1!](/assets/images/getting-started/getting-started-1.jpg "Getting started 1")
 
 ### 2. This button will redirect you to the API docs
 
 You can see the different APIs available for the corresponding group, on the right side you can explore the model detailed definition.
 
-<!-- ![Getting started 2!](/assets/images/getting-started/getting-started-2.jpg "Getting started 2") -->
+![Getting started 2!](/assets/images/getting-started/getting-started-2.jpg "Getting started 2")
 
 ### 3. API Structure - On the page of any API resource, there is a division into segments, namely
 
-- API description<!-- - Download API specification- Download Postman collection -->
+- API description
+- Download API specification
+- Download Postman collection
 - Request parameters
 - Request body
 - Response body
