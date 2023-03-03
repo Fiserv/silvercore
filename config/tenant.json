@@ -63,17 +63,17 @@
     "bug": {
       "label": "bug,SilverCore",
       "template": "bug.md",
-      "assignees": "francisco.campos@fiserv.com"
+      "assignees": "FranciscoCampos09"
     },  
     "feedback": {
       "label": "feedback,SilverCore",
       "template": "feedback.md",
-      "assignees": "francisco.campos@fiserv.com"
+      "assignees": "FranciscoCampos09"
     },
     "enhancement": {
       "label": "enhancement,SilverCore",
       "template": "feature.md",
-      "assignees": "francisco.campos@fiserv.com"
+      "assignees": "FranciscoCampos09"
     }
   }]
 }
