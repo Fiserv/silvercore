@@ -31,8 +31,14 @@
 - sections:
   - title: Introduction
     link: docs/1-introduction.md
+    access: public
+    groups: []
+    open: true
   - title: Getting Started
     link: docs/getting-started.md
+    access: public
+    groups: []
+    open: true
     sections:
     - title: API Reference
       sections:
@@ -48,6 +54,9 @@
           link: docs/main-cases/16-hmac.md  
 - sections:
   - title: Release notes
+    access: public
+    groups: []
+    open: true
     sections:
     - title: March 2022
       link: docs/release-notes/2022/march.md
