@@ -28,70 +28,45 @@
 # the delivery of this work
 ################################################################################
 header:
-  productName: SilverCore
-  productionDescription: Expand your business’ reach by taking the acceptance process to a different level.
-  whoIsItFor: LATAM
-  image: 
-    link: "/assets/images/Fiserv_Logo.jpg"
-    altText: SilverCore™
-steps:  
-  learnSteps:
-    - title: Learn
-      description: >
-        Follow our documentation and easy to use examples to build your own mobile or web integrated online applications. 
-      link:
-  buildSteps:
-    - title: Build
-      description: >
-        Get your application up and running with our proprietary integration tools and developer keys. 
-      link:
-  validateSteps:
-    - title: API Explorer
-      description: >
-        Interact with our live api interface for real time responses to the developed application. 
-      link:
-  deploySteps:
-    - title: Deploy
-      description: >
-        Deploy your applications in our testing environment for quality assurance testing.  Once ready promote your application to our production environment. 
-      link:
+#  productName: FirstVision - LATAM
+#  whoIsItFor: LATAM
+#  image: 
+#    link: "/assets/images/Fiserv_Logo.jpg"
+#    altText: FirstVision - LATAM™
+  productionDescription: Expand your business’ reach by taking the acceptance process to a different level. SILVERCORE is our outsourced processing solution that meets your challenges head-on and transforms your technology capability. Built on core SILVERCORE® software, SILVERCORE™ provides an end-to-end solution. SILVERCORE™ Restful APIs enable you to achieve platform modernization and competitive edge delivering the following benefits to your business.
+getStarted: docs/getting-started.md
+guides:
+  - title: Introduction
+    description: Introduction for Silvercore APIS.
+    link: docs/1-introduction.md
+benefits:
+  - title: Time to Market
+    description: Service-based architecture with API enabled and a fully integrated suite of solutions ensures quicker application development and integration.
+    icon: assets/images/time.jpg
+  - title: Transform Business
+    description: Platform architecture built around technology simplification and leveraging open APIs, reducing the cost of change and meeting the innovation.
+    icon: assets/images/transform1.png
+  - title: Speed to Market
+    description: SILVERCORE™ oriented architecture with open APIs enables service consumption rather than change management.
+    icon: assets/images/transform.png
 featuredFeatures:
-  - title: Credit Issuance
-    description:  SilverCore solution allows financial Institution to issue and manage the Credit Card products to their end customers. 
-    tags: ["LATAM", "SilverCore", "Credit"]
-    bullets: ["Activate Card", "Block Card", "Lost Stolen Card Transfer", "CVV2" ]  
+  - title: Accounts
+    description: Account basic functions such as add, inquiry and edit account. Also includes account level processing options for a card account.
+    featured: true
     relatedDocs:
-      - relatedDoc: 
-        title: Account Management
-        description: Allows management of an accounts that holds financial information of Credit available/used.
-        link: ./docs/api-reference/1-account.md
-      - relatedDoc: 
-        title: Cards Management
-        description: Allows management of payment instrument that is used to perform financial transaction such as physical Card. 
-        link: ./docs/api-reference/2-cards.md     
-    # relatedAPIs:
-    #   - relatedAPI: 
-    #     title: Cash-in & Cash-out Request
-    #     description: Credits (cash in) or Debits (cash out) transactions from available funds or credit open to buy in an Account
-    #     type: "put"
-    #     path: "/account/balance"
-    #   - relatedAPI:
-    #     title: Card Activation
-    #     description: Activate Card.
-    #     type: "put"
-    #     path: "/cards/activation"
-    #   - relatedAPI: 
-    #     title: Customer Update
-    #     description: Customer Update
-    #     type: "put"
-    #     path: "/customer/"
-    #   - relatedAPI: 
-    #     title: Exchange Rate Update
-    #     description: Inquire or Update Exchange Rate
-    #     type: "put"
-    #     path: "/transactions/exchange-rate"
-    #   - relatedAPI: 
-    #     title: Points Account Add
-    #     description: Adds an LMS Points Account Record.
-    #     type: "post"
-    #     path: "/loyalty/pointsAccount"
+    - link: docs/api-reference/1-account.md
+      title: Accounts
+    relatedAPIs:
+    - title: Accound availability
+      type: "post"
+      path: "/accounts/availability"
+  - title: Cards
+    description: Cards functions to add, inquiry and edit card records. A card record contains information about the card (or “plastic”) that is issued to the cardholder. Also includes cross reference between customer, account and card.
+    featured: true
+    relatedDocs:
+    - link: docs/api-reference/2-cards.md 
+      title: Cards
+    relatedAPIs:
+    - title: Instant Issuance
+      type: "put"
+      path: "/cards/instantIssuance"
