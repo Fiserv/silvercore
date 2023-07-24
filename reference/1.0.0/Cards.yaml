@@ -216,7 +216,7 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: On Off
       x-group-name: Card
-      x-child-product-name: On Off
+      x-child-product-name: Cards
   /cards/instantIssuance:
     post:
       tags:
@@ -574,7 +574,7 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: On Off Status
       x-group-name: Card
-      x-child-product-name: On Off Status
+      x-child-product-name: Cards
   /cards/cvv:
     get:
       tags:
