@@ -34,7 +34,7 @@ header:
 #    link: "/assets/images/Fiserv_Logo.jpg"
 #    altText: FirstVision - LATAM™
   productionDescription: Expand your business’ reach by taking the acceptance process to a different level. SILVERCORE ™ is our processing solution that meets your challenges head-on and transforms your technology capability. We provide an end-to-end solution. SILVERCORE™ Restful APIs enable you to achieve platform modernization and competitive edge delivering the following benefits to your business. Banking Issuers, Financial Institutions can rely on Fiserv for innovative solutions and services that offer a wide range of functionalities, such as account and card processing, tokenization validations, digital wallets;  also payment services, risk and fraud management, data analysis, cardholder call center and other needs for the payments business.
-getStarted: docs/getting-started.md
+  getStarted: /docs/getting-started.md
 guides:
   - title: Introduction
     description: Introduction for Silvercore APIS.
