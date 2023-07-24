@@ -31,7 +31,7 @@
 openapi: 3.0.1
 info:
   title: Silvercore™ Cards Service - API Documentation
-  description: This documentation describes the REST APIs provided by the SilverCore™
+  description: This documentation describes the REST APIs provided by the Silvercore™
   version: "1.0"
 servers:
   - url: https://int.api.firstdata.com/latam-gfs-apis/
@@ -487,7 +487,7 @@ paths:
   /cards/onOff/status:
     get:
       tags:
-        - On Off
+        - On Off Status
       summary: La presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitira habilitar al cliente para la acción a tomar (ON / OFF).
       operationId: getCardStatus
       parameters:
@@ -572,9 +572,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: On Off
+      x-proxy-name: On Off Status
       x-group-name: Card
-      x-child-product-name: On Off
+      x-child-product-name: On Off Status
   /cards/cvv:
     get:
       tags:
