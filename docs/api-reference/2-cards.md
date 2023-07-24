@@ -4,28 +4,28 @@ tags: [Getting Started, API Reference, Cards]
 
 # Cards
 
-Cards functions to add, inquiry and edit card records. A card record contains information about the card (or “plastic”) that is issued to the cardholder. Also includes cross reference between customer, account and card. 
 
-Card level features such as card activation, issue, reissue, lost and stolen, replacement, limit management, Secured PIN management, card details, block code application and authorizations. 
+Applications that allow consumers and businesses to take actions on credit and prepaid card management; supporting account/card sign-up,  lifecycle and other additional processing actions. Includes card level features such as card activation, issue, reissue, lost and stolen, replacement, Secured PIN management, card details, etc.
+Recommended for Digital First Programs
 
 <!--
 type: tab
 titles: Who is it for, How is it used, Potential uses
 -->
 
-Any developer creating or integrating apps that need to interact with transaction data maintained on Fiserv core account processing platforms
+Any bank, issuer or developer creating or integrating applications that need to create cards, manage their life cycle, or interact with other data management or queries maintained on Fiserv's core account/cards processing platforms.
 
 <!--
 type: tab
 -->
 
-Employ these APIs to develop apps that offer unique experiences or novel channels through which users can view and manage transactions on those accounts
+Employ these APIs to develop apps that offer unique experiences or novel channels through which users can ask for products, services and manage transactions on those cards or accounts.
 
 <!--
 type: tab
 -->
 
-Apps that enable consumers and businesses to monitor and manage their financial transactions and balances through channels they access in everyday life
+Applications that allow consumers and businesses to get and manage their cards, take action on credit and prepaid card management; supporting account/card sign-up,  lifecycle and other additional processing actions. Includes card level features such as card activation, issue, reissue, lost and stolen, replacement, Secured PIN management, card details, etc. Recommended for Digital First Programs
 
 <!-- type: tab-end -->
 

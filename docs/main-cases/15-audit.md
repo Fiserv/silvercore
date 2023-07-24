@@ -4,7 +4,7 @@ tags: [Main Cases, Audit and Monitoring]
 
 # Audit and Monitoring
 
-After you implement SilverCore APIs our operations team is responsible for ensuring that the APIs are available and performing as expected to maintain a seamless experience for your consumers.
+After you implement Silvercore APIs our operations team is responsible for ensuring that the APIs are available and performing as expected to maintain a seamless experience for your consumers.
 
 Proactive detection of API traffic and performance issues is a key component to the team's success. As API traffic increases, without access to in-depth data analysis and contextual alerting, the ability to meet customer service-level agreements (SLAs) may be put at risk.
 

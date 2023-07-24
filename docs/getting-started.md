@@ -10,9 +10,9 @@ After these steps, you're ready to start test the Payments API.
 
 ## Step 1: Get your API Key
 
-1. Provide the bank’s or financial institution’s name, user/users full name and e-mail address and submit to latamSilvercoreAPIs@fiserv.com and your assigned Account Manager or Commercial representative
+1. Provide the bank’s or financial institution’s name, user/users full name and e-mail address and submit to your assigned Account Manager or Commercial representative
 
-2. Expect a confirmation e-mail from Fiserv’s assigned Account Manager or Client Partner with the assigned credentials.
+2. Expect a confirmation e-mail from Fiserv’s assigned Account Manager or Client Partner to start the integration project.
 
 ### How to get an API Credential
 

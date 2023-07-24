@@ -30,15 +30,12 @@
 
 openapi: 3.0.1
 info:
-  title: SilverCore™ Account Service - API Documentation
-  description: This documentation describes the REST APIs provided by the SilverCore™
+  title: Silvercore™ Account Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
   version: "1.0"
 servers:
-  - url: https://int.api.firstdata.com/latam-gfs-apis/portal
-tags:
-  - name: Availability
-  - name: TripLog
-  - name: Cards
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
 paths:
   /accounts/tripLog:
     get:
@@ -48,158 +45,19 @@ paths:
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
-            type: integer
-            format: int32
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
-        - name: security-contex
-          in: header
-          required: false
-          schema:
-            type: string
-        - name: requestId
-          in: header
-          required: false
-          schema:
-            type: string
-        - name: request
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/GetTripLogRequest'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TripLogResponse'
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDetailsResponse'
-      x-proxy-name: 'Trip Log '
-      x-group-name: Account
-      x-child-product-name: Accounts
-    put:
-      tags:
-        - TripLog
-      operationId: putTripLog
-      parameters:
-        - name: X-ClientID
-          in: header
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: username
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: security-contex
-          in: header
-          required: false
-          schema:
-            type: string
-        - name: requestId
-          in: header
-          required: false
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PutTripLogResponse'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TripLogResponse'
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDetailsResponse'
-      x-proxy-name: 'Trip Log '
-      x-group-name: Account
-      x-child-product-name: Accounts
-    post:
-      tags:
-        - TripLog
-      operationId: postTripLog
-      parameters:
-        - name: X-ClientID
-          in: header
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: username
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: security-contex
-          in: header
-          required: false
-          schema:
-            type: string
-        - name: requestId
-          in: header
-          required: false
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PutTripLogResponse'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TripLogResponse'
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDetailsResponse'
-      x-proxy-name: 'Trip Log '
-      x-group-name: Account
-      x-child-product-name: Accounts
-  /accounts/limitIncrease:
-    get:
-      tags:
-        - limit-increase-controller
-      operationId: setIncrementoLimiteTransitorio
-      parameters:
-        - name: username
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: X-ClientID
-          in: header
-          required: true
-          schema:
-            type: string
+            description: Identificador que representa al usuario.
         - name: security-context
           in: header
           required: false
@@ -214,18 +72,374 @@ paths:
           in: query
           required: true
           schema:
-            $ref: '#/components/schemas/IncrementoLimiteTransitorioRequest'
+            $ref: '#/components/schemas/TripLogRequest'
       responses:
         '200':
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/IncrementoLimiteTransitorioResponse'
-        '404':
-          description: Not Found
+                $ref: '#/components/schemas/TripLogResponse'
+        '400':
+          description: Bad Request
           content:
-            '*/*':
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: 'Trip Log '
+      x-group-name: Account
+      x-child-product-name: Accounts
+    put:
+      tags:
+        - TripLog
+      operationId: putTripLog
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTripLogResponse'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripLogResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: 'Trip Log '
+      x-group-name: Account
+      x-child-product-name: Accounts
+    post:
+      tags:
+        - TripLog
+      operationId: postTripLog
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTripLogResponse'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripLogResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: 'Trip Log '
+      x-group-name: Account
+      x-child-product-name: Accounts
+    delete:
+      tags:
+        - tripLog
+      operationId: deleteTripLog
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripLogRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripLogResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: 'Trip Log '
+      x-group-name: Account
+      x-child-product-name: Accounts
+  /accounts/limitIncrease:
+    post:
+      tags:
+        - limitIncrease
+      operationId: setIncrementoLimiteTransitorio
+      parameters:
+        - name: X-ClientID
+          in: header
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+        - name: username
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncrementoLimiteTransitorioRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LimitIncreaseResponse'
+        '404':
+          description: ''
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
       x-proxy-name: Limit Increase
@@ -249,7 +463,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: security-contex
+        - name: security-context
           in: header
           required: false
           schema:
@@ -271,19 +485,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CardsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
         '404':
           description: ''
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Cards Account
       x-group-name: Account
       x-child-product-name: Accounts
   /accounts/cardholders:
     get:
       tags:
-        - card-holders-controller
+        - Card Holders
+      summary: La consulta permite listar todas las tarjetas en condiciones de ser activadas de todos  los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cual de ellos se solicitará la acción de DENUNCIAR / BLOQUEAR / NO REIMPRIMIR
       operationId: getConsultaMiembros
       parameters:
         - name: username
@@ -295,7 +548,8 @@ paths:
           in: header
           required: true
           schema:
-            type: string
+            type: integer
+            format: int32
         - name: security-context
           in: header
           required: false
@@ -310,20 +564,58 @@ paths:
           in: query
           required: true
           schema:
-            $ref: '#/components/schemas/ConsultarMiembrosCuentaRequest'
+            $ref: '#/components/schemas/CardHoldersRequest'
       responses:
         '200':
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/ConsultarMiembrosCuentaResponse'
-        '404':
-          description: Not Found
+                $ref: '#/components/schemas/CardHoldersResponse'
+        '400':
+          description: Bad Request
           content:
-            '*/*':
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Card Holders
       x-group-name: Account
       x-child-product-name: Accounts
@@ -345,7 +637,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: security-contex
+        - name: security-context
           in: header
           required: false
           schema:
@@ -362,12 +654,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AvailabilityResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      - code: 0
+                        description: string
         '404':
           description: ''
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Availability Account
       x-group-name: Account
       x-child-product-name: Accounts
@@ -383,6 +713,57 @@ components:
           type: string
         detail:
           type: string
+    Country:
+      type: object
+      properties:
+        dateFrom:
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
+        dateTo:
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
+        countryCode:
+          type: string
+          description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
+      description: Este campo de salida, proporciona los datos de los registros de viajes
+    PostTripLogResponse:
+      required:
+        - countriesList
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        countriesList:
+          maxItems: 5
+          minItems: 5
+          type: array
+          description: Este campo de entrada proporciona los datos de los registros de viajes
+          items:
+            $ref: '#/components/schemas/Country'
+      description: Estructura de campos que responde a la API TripLog
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     Account:
       type: object
       properties:
@@ -390,135 +771,64 @@ components:
           type: string
           description: Este campo de salida, proporciona la información del Apellido y Nombre del solicitante
         additional:
-          type: integer
+          type: string
           description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          format: int32
         countriesList:
           type: array
           description: Este campo de salida, proporciona los datos de los registros de viajes
           items:
             $ref: '#/components/schemas/Country'
       description: Este campo de salida, proporciona los datos del tarjetahabiente o los tarjetahabientes.
-    Country:
-      type: object
-      properties:
-        dateFrom:
-          maxLength: 10
-          minLength: 10
-          type: string
-          description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
-        dateTo:
-          maxLength: 10
-          minLength: 10
-          type: string
-          description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
-        countryCode:
-          maxLength: 3
-          minLength: 3
-          type: string
-          description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
-      description: Este campo de salida, proporciona los datos de los registros de viajes
-    PutTripLogResponse:
-      required:
-        - acction
-      type: object
-      properties:
-        accountNumber:
-          type: integer
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
-          format: int64
-        additional:
-          type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          format: int64
-        cardNumber:
-          maxLength: 64
-          minLength: 0
-          type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
-        acction:
-          maxLength: 1
-          minLength: 1
-          type: string
-          description: Este campo de entrada permite la acción a realizar
-        accountList:
-          maxItems: 10
-          minItems: 1
-          type: array
-          description: Este campo de entrada, proporciona los datos del tarjetahabiente o los tarjetahabientes.
-          items:
-            $ref: '#/components/schemas/Account'
-      description: Estructura de campos que responde a la API TripLog
     TripLogResponse:
       type: object
       properties:
-        accountNumber:
-          type: integer
-          description: Este campo de salida, proporciona el número de cuenta del tarjetahabiente.
-          format: int32
         accountList:
           type: array
           description: Este campo de salida, proporciona los datos del tarjetahabiente o los tarjetahabientes.
           items:
             $ref: '#/components/schemas/Account'
       description: Estructura de campos que responde a la API TripLog
-    GetTripLogRequest:
+    IncrementoLimiteTransitorioRequest:
       required:
-        - acction
+        - bankBranch
+        - checkDigit
+        - deadline
+        - newLimit
+        - requestNumber
       type: object
       properties:
         accountNumber:
-          type: integer
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
-          format: int64
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
         additional:
-          type: integer
+          pattern: '[0-9]'
+          type: string
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          format: int64
         cardNumber:
-          maxLength: 64
-          minLength: 0
+          pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
-        acction:
-          maxLength: 1
-          minLength: 1
-          type: string
-          description: Este campo de entrada permite la acción a realizar
-      description: Estructura de campos para la solicitud de la API TripLog
-    IncrementoLimiteTransitorioRequest:
-      type: object
-      properties:
-        operationDate:
-          type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
         requestNumber:
+          pattern: ^[0-9]{1,6}
           type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
-        bankNumber:
-          type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
+          description: Número de solicitud
         bankBranch:
+          pattern: '[0-9]{3}'
           type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
-        accountNumber:
-          pattern: ^[0-9]{7,9}
-          type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
-        additional:
-          pattern: ^[0-9]{1,3}
-          type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
+          description: Identificador de Sucursal
         checkDigit:
+          pattern: '[0-9]'
           type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
+          description: Dígito Verificador
         newLimit:
+          pattern: '[0-9]{1,15}'
           type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
+          description: Nuevo Límite
         deadline:
           type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
-    IncrementoLimiteTransitorioResponse:
+          description: Fecha de finalización
+    LimitIncreaseResponse:
       type: object
       properties:
         returnCode:
@@ -527,6 +837,22 @@ components:
         returnCodeDescription:
           type: string
           description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
+    TripLogRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+      description: Estructura de campos para la solicitud de la API TripLog
     CardsRequest:
       required:
         - accountNumber
@@ -534,13 +860,14 @@ components:
       type: object
       properties:
         accountNumber:
-          type: integer
+          pattern: ^[0-9A-F]{32}
+          type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
-          format: int32
         additional:
           type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
           format: int32
+      description: Estructura de campos para la solicitud de la API Reissue Card
     Card:
       type: object
       properties:
@@ -549,6 +876,7 @@ components:
           minLength: 16
           type: string
           description: Este campo de salida, proporciona la información del número de tarjeta (PAN) enmascarado
+          example: '1234000000001234'
       description: Corresponde a un listado Tarjetas. Cada elemento es un elemento tarjeta
     CardsResponse:
       required:
@@ -562,11 +890,16 @@ components:
           description: Corresponde a un listado Tarjetas. Cada elemento es un elemento tarjeta
           items:
             $ref: '#/components/schemas/Card'
-    ConsultarMiembrosCuentaRequest:
+      description: Estructura de campos que responde la API Cards
+    CardHoldersRequest:
+      required:
+        - accountNumber
+        - additional
+        - blockActivateCode
       type: object
       properties:
         accountNumber:
-          pattern: ^[0-9]{5,9}
+          pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
         blockActivateCode:
@@ -577,49 +910,34 @@ components:
           pattern: ^[0-9]{1}
           type: string
           description: Esta campo de entrada, permite ingresar el número de Autorizado. 0 - tarejtas de la cuenta, [1-9] - tarjetas del autorizado.
-    ConsultarMiembrosCuentaResponse:
+      description: Estructura de campos para la solicitud de la API Card Holders
+    CardAccount:
       type: object
       properties:
-        cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/cuentaResponse'
-        returnCode:
-          type: string
-        returnCodeDescription:
-          type: string
-        cuentas:
-          type: array
-          writeOnly: true
-          items:
-            $ref: '#/components/schemas/cuentaResponse'
-    cuentaResponse:
-      type: object
-      properties:
-        accountNumber:
-          type: string
-          description: Este campo de salida proporciona el número de cuenta del tarjetahabiente.
         additional:
           type: string
           description: Este campo de salida complementa al dato cuenta para identificar unívocamente titulares y adicionales de la misma. Conocido también como Autorizado.
+          example: '0'
         fullName:
           type: string
           description: Este campo de salida proporciona la información del apellido y nombre del solicitante de la tarjeta de crédito.
+          example: BERTAZZINI,JORGE
         cardNumber:
           type: string
           description: Este campo de salida proporciona el número de tarjeta enmascarado (1234000000001234).
-        expirationDate:
-          type: string
-          description: Este campo de salida proporciona la fecha de vencimiento (MMYYYY).
+          example: '5505000000007223'
         isRenewal:
           type: string
           description: Este campo de salida proporciona el información si el tarjetahabiente tiene la marca de renovación de tarjeta.
+          example: S
         desist:
           type: string
           description: Este campo de salida se relaciona con la renovación de la tarjeta y conlleva un SI/NO.
+          example: 'N'
         addressStreetNumber:
           type: string
           description: Este campo de salida proporciona el domicilio del tarjetahabiente detallando el nombre y número de la calle.
+          example: SIN DOMICILIO
         addressFloor:
           type: string
           description: Este campo de salida proporciona el número de piso relacionado al domicilio
@@ -632,12 +950,28 @@ components:
         addressprovinceCode:
           type: string
           description: Este campo de salida proporciona el código de la provincia.
+          example: '0'
         addressZipCode:
           type: string
           description: Este campo de salida proporciona el código postal.
+          example: '0'
         city:
           type: string
           description: Este campo de salida proporciona la ciudad relacionada con el domicilio.
+      description: Corresponde a un listado. Cada elemento es un elemento tarjeta-cuenta
+    CardHoldersResponse:
+      type: object
+      properties:
+        cards:
+          type: array
+          description: Corresponde a un listado. Cada elemento es un elemento tarjeta-cuenta
+          items:
+            $ref: '#/components/schemas/CardAccount'
+        returnCode:
+          type: string
+        returnCodeDescription:
+          type: string
+      description: Estructura de campos que responde la API Card Holders
     AvailabilityResponse:
       type: object
       properties:
@@ -645,7 +979,9 @@ components:
           type: integer
           description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema - Ver listado de códigos + descripciones  para la API correspondiente
           format: int32
+          example: 1
         returnCodeDescription:
           type: string
           description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema - Ver listado de códigos + descripciones  para la API correspondiente
+          example: SISTEMA DISPONIBLE
       description: Estructura de campos que responde la API Availability

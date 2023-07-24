@@ -4,26 +4,27 @@ tags: [Getting Started, API Reference, Accounts]
 
 # Account
 
-Account basic functions such as add, inquiry and edit account.  Also includes account level processing options for a card account such as instant card and other account management functions, establish cardholder relationships in CMS, assign Account Base Segment records to a Relationship record. The Relationship record contains information that applies, and controls all linked accounts in the relationship. 
+We offer different inquiries via Restful that allows to show account information such as components (main account + additionals), financial status and online transactional activity. 
+It also offer other satellite actions such as limit management, travel notification, card turn off, among others.
 
 <!--
 type: tab
 titles: Who is it for, How is it used, Potential uses
 -->
 
-Any developer creating or integrating apps that need to interact with transaction data maintained on Fiserv core account processing platforms
+Any bank, issuer or developer creating or integrating applications that need to interact with transaction data management or queries maintained on Fiserv's core account processing platforms.
 
 <!--
 type: tab
 -->
 
-Employ these APIs to develop apps that offer unique experiences or novel channels through which users can view and manage transactions on those accounts
+Employ these APIs to develop apps that offer unique experiences or novel channels through which users can view and manage transactions on those accounts.
 
 <!--
 type: tab
 -->
 
-Apps that enable consumers and businesses to monitor and manage their financial transactions and balances through channels they access in everyday life
+Applications that allow consumers and businesses to monitor and manage their financial transactions and balances through channels that they access on a daily basis. Most commonly used to display account information such as components (main+additionals), financial status and online transaction activity. They also offer other satellite actions such as limit management, travel alerts, card on/off (temporary), etc.
 
 <!-- type: tab-end -->
 
