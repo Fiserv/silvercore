@@ -2,11 +2,8 @@
 
 # Introduction
 
-**Fiserv** provides a single, consolidated processing platform for all your payment cards and commercial card products. We are focused on the technology of the future, but also solutions that drive consumer value today, across the customer lifecycle.
-
-**SilvercorAPIS** is our outsourced processing solution that meets your challenges head-on and transforms your technology capability. Built on core Silvercore® software, **SilvercorAPIS** provides an end-to-end solution that delivers global processing economies of scale plus fully integrated adjacent services that span the issuing lifecycle. An integrated suite of payment and servicing solution that drives your platform modernization and competitive edge.
-
-**SilvercorAPIS Restful APIs** enable you to achieve platform modernization and competitive edge delivering the following **benefits to your business.**
+**Fiserv**  is focused on the technology of the future, offering solutions that drive consumer value today, across the customer lifecycle.
+**SilvercoreAPIS Restful APIs** enable you to achieve platform modernization, digital solutions and competitive edge delivering the following benefits to your business.
 
 ---
 
