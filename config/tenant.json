@@ -25,7 +25,9 @@
         "releaseNotesPath": "docs/release-notes/2022/march.md",
         "apiSpecFileNames": [
           "Accounts",
-          "Cards"
+          "Cards",
+          "Finantial",
+          "Installment"
         ]
       }
   ],
