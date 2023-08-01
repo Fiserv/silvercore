@@ -1119,11 +1119,11 @@ components:
           type: string
           description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda local a cuotificar
         amountUSD:
-          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$?
+          
           type: string
           description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar
         totalAmount:
-          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$?
+          
           type: string
           description: Este campo de entrada permite ingresar el monto total a cuotificar expresado en pesos
         cardLast4:
