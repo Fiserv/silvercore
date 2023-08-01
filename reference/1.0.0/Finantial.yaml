@@ -52,6 +52,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+      x-proxy-name: financialInformation
+      x-group-name: financialInformation
+      x-child-product-name: financialInformationTransactions
   /financialInformation/pendingTransactions:
     get:
       tags:
