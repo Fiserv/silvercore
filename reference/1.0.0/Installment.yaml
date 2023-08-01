@@ -238,6 +238,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+      x-proxy-name: balanceInstallmentConversion
+      x-group-name: balanceInstallmentConversion
+      x-child-product-name: balanceInstallmentConversion
   /purchaseInstallmentConversion/transactions:
     get:
       tags:
@@ -830,6 +833,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+      x-proxy-name: balanceInstallmentConversionPlans
+      x-group-name: balanceInstallmentConversionPlans
+      x-child-product-name: balanceInstallmentConversionPlans
   /balanceInstallmentConversion/balance:
     get:
       tags:
@@ -876,6 +882,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+      x-proxy-name: balanceInstallmentConversionBalance
+      x-group-name: balanceInstallmentConversionBalance
+      x-child-product-name: balanceInstallmentConversionBalance
 components:
   schemas:
     ErrorDetailsResponse:
