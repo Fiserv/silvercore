@@ -96,9 +96,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: purchaseInstallmentConversion
-      x-group-name: purchaseInstallmentConversion
-      x-child-product-name: purchaseInstallmentConversion
+      x-proxy-name: Installment Conversion
+      x-group-name: Add Selected Transactions
+      x-child-product-name: Installment Conversion
   /purchaseInstallmentConversion/installmentConversion:
     post:
       tags:
@@ -188,27 +188,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: purchaseInstallmentConversion
-      x-group-name: purchaseInstallmentConversion
-      x-child-product-name: purchaseInstallmentConversion
+      x-proxy-name: Installment Conversion
+      x-group-name: Add Installment Conversion Consumes
+      x-child-product-name: Installment Conversion
   /balanceInstallmentConversion/installmentConversion:
     post:
       tags:
-        - installmentConversion
+        - Installment Conversion
       summary: La consulta permite dar de alta una cuotificación de saldos.
       operationId: getAlta
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             pattern: '[0-9]{1,3}'
             type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-contex
           in: header
           required: false
@@ -232,15 +236,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AltaCuotificacionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
         '404':
           description: ''
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
-      x-proxy-name: balanceInstallmentConversion
-      x-group-name: balanceInstallmentConversion
-      x-child-product-name: balanceInstallmentConversion
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Installment Conversion
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Installment Conversion
   /purchaseInstallmentConversion/transactions:
     get:
       tags:
@@ -329,9 +371,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: purchaseInstallmentConversion
-      x-group-name: purchaseInstallmentConversion
-      x-child-product-name: purchaseInstallmentConversion
+      x-proxy-name: Installment Conversion
+      x-group-name: Get Transactions
+      x-child-product-name: Installment Conversion
   /purchaseInstallmentConversion/plans:
     get:
       tags:
@@ -420,9 +462,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: purchaseInstallmentConversion
-      x-group-name: purchaseInstallmentConversion
-      x-child-product-name: purchaseInstallmentConversion
+      x-proxy-name: Installment Conversion
+      x-group-name: Get Plans
+      x-child-product-name: Installment Conversion
   /installmentConversionHistory/notCurrentTransactionConversion:
     get:
       tags:
@@ -511,9 +553,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: installmentConversionHistory
-      x-group-name: installmentConversionHistory
-      x-child-product-name: installmentConversionHistory
+      x-proxy-name: Consumes
+      x-group-name: Get Not Current Transaction Conversion History Consumption
+      x-child-product-name: Installment Conversion
   /installmentConversionHistory/notCurrentBalanceConversion:
     get:
       tags:
@@ -602,9 +644,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: installmentConversionHistory
-      x-group-name: installmentConversionHistory
-      x-child-product-name: installmentConversionHistory
+      x-proxy-name: Installment Conversion
+      x-group-name: Get installment Conversion History Not Current Balance
+      x-child-product-name: Installment Conversion
   /installmentConversionHistory/currentTransactionConversion:
     get:
       tags:
@@ -693,9 +735,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: installmentConversionHistory
-      x-group-name: installmentConversionHistory
-      x-child-product-name: installmentConversionHistory
+      x-proxy-name: Installment Conversion
+      x-group-name: Get Current Transaction Conversion History Consumption
+      x-child-product-name: Installment Conversion
   /installmentConversionHistory/currentBalanceConversion:
     get:
       tags:
@@ -784,27 +826,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: installmentConversionHistory
-      x-group-name: installmentConversionHistory
-      x-child-product-name: installmentConversionHistory
+      x-proxy-name: Installment Conversion
+      x-group-name: Get Current Balance Conversion History
+      x-child-product-name: Installment Conversion
   /balanceInstallmentConversion/plans:
     get:
       tags:
-        - plans
+        - Plans
       summary: La consulta permite el listado de planes habilitados para cuotificación de saldos.
       operationId: getPlans_1
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             pattern: '[0-9]{1,3}'
             type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-contex
           in: header
           required: false
@@ -827,33 +873,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BalanceInstallmentPlansResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
         '404':
           description: ''
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
-      x-proxy-name: balanceInstallmentConversionPlans
-      x-group-name: balanceInstallmentConversionPlans
-      x-child-product-name: balanceInstallmentConversionPlans
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Plans
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Installment Conversion
   /balanceInstallmentConversion/balance:
     get:
       tags:
-        - balance
+        - Balance
       summary: La consulta permite obtener los datos iniciales para cuotificación de saldos.
       operationId: getBalance
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             pattern: '[0-9]{1,3}'
             type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-contex
           in: header
           required: false
@@ -876,15 +964,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BalanceInstallmentConversionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
         '404':
           description: ''
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
-      x-proxy-name: balanceInstallmentConversionBalance
-      x-group-name: balanceInstallmentConversionBalance
-      x-child-product-name: balanceInstallmentConversionBalance
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Balance
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Installment Conversion
 components:
   schemas:
     ErrorDetailsResponse:
@@ -923,6 +1049,18 @@ components:
             type: integer
             description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
             format: int32
+    SelectedTransactionsResponse:
+      type: object
+      properties:
+        returnCode:
+          type: integer
+          description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema
+          format: int32
+        returnCodeDescription:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -936,18 +1074,6 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
-    SelectedTransactionsResponse:
-      type: object
-      properties:
-        returnCode:
-          type: integer
-          description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema
-          format: int32
-        returnCodeDescription:
-          maxLength: 50
-          minLength: 1
-          type: string
-          description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema
     InstallmentConversionRequest:
       required:
         - cvv
@@ -1128,11 +1254,11 @@ components:
           type: string
           description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda local a cuotificar
         amountUSD:
-          
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar
         totalAmount:
-          
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: Este campo de entrada permite ingresar el monto total a cuotificar expresado en pesos
         cardLast4:
