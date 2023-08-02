@@ -11,19 +11,27 @@ paths:
     get:
       tags:
         - Transactions
+      summary: |-
+        Devuelve el listado de todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso 
+        Permite obtener los movimientos de la cuenta/tarjeta durante el periodo pagos, Compras, Devoluciones, Ajustes (por ejemplo de campañas / descuentos) 
+        Para esa consulta se administrarán, fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta.
       operationId: transactions
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             pattern: '[0-9]{1,3}'
             type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-context
           in: header
           required: false
@@ -43,23 +51,63 @@ paths:
         '200':
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/TransactionsResponse'
-        '404':
-          description: Not Found
+        '400':
+          description: Bad Request
           content:
-            '*/*':
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
-      x-proxy-name: financialInformation
-      x-group-name: financialInformation
-      x-child-product-name: financialInformationTransactions
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Transactions
+      x-group-name: Finantial Info
+      x-child-product-name: Financial Info
   /financialInformation/pendingTransactions:
     get:
       tags:
         - Pending Transactions
-      summary: Esta API migra la tecnología actual XML y genera la API para las operaciones pendientes. Permite obtener los movimientos de la cuenta/tarjeta aun no presentados, en esta API se muestran consumos a nivel autorización
+      summary: |-
+        Informa un listado detallado con todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso que aún no han sido presentadas por el comercio
+        Para esa consulta se administrarán, fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta.
       operationId: getPendingTransactions
       parameters:
         - name: X-ClientID
@@ -145,12 +193,16 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Pending Transactions
       x-group-name: Finantial Info
-      x-child-product-name: Pending Transaction
+      x-child-product-name: Financial Info
   /financialInformation/lastStatementTransactions:
     get:
       tags:
         - Last Statements Transactions
-      summary: 'Esta API migra la tecnología actual XML y genera la API para Datos de ultimo resumen. Permite devolverle el último resumen impreso al socio. '
+      summary: |-
+        Proporciona datos resumidos acerca del estado de cuenta del mes en curso.
+        Permite obtener información consolidada de pagos (ARS/USD), totales y mínimos; cierres actuales, anteriores y futuros. 
+        Además posibilita generar el talón de pago con código de barras para la presentación en entes recaudadores.
+        En combinación con datos de lastStatementData permite construir de cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación.
       operationId: getLastStatementTransactions
       parameters:
         - name: X-ClientID
@@ -236,14 +288,15 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Last Statement Transactions
       x-group-name: Finantial Info
-      x-child-product-name: Last Statement Transaction
+      x-child-product-name: Financial Info
   /financialInformation/lastStatementData:
     get:
       tags:
         - Last Statement Data
       summary: |-
-        Permite obtener información consolidada de Pagos (ARS/USD) Totales y minimos / cierres actuales anteriores y futuros. Además posibilita generar el talón de pago con Código de barras para la presentación en entes recaudadores.
-        En combinación con Datos último Resumen permite construir el ultimo resumen de cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación.
+        Permite obtener los movimientos liquidados en el último cierre de cuenta y que se ingresan en el resumen, es decir con esta consulta el emisor podrá construir el ultimo resumen de cuenta generado para la tarjeta/cuenta que se consulta.
+        Comprende las operaciones, pagos, ajustes, promociones y cualquier operación que se impacta en el último resumen de cuenta del socio.
+        En combinación con lastStatementTransactions, el banco puede construir el soporte mensual como imagen de resumen.
       operationId: getBalances
       parameters:
         - name: X-ClientID
@@ -323,14 +376,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Account Balances
-      x-group-name: Account
-      x-child-product-name: Accounts
+      x-proxy-name: Last Statement Data
+      x-group-name: Financial Info
+      x-child-product-name: Financial Info
   /financialInformation/accountFinancialData:
     get:
       tags:
         - Account Financial Data
-      summary: Permite obtener el resumen de la información financiera de la tarjeta / cuenta-autorizado por la que se consulta, consolida Limites y Saldos, Disponibles, Información de la Cuenta Corriente / Cierres y Vencimientos, asi como tasas.
+      summary: Permite obtener el resumen de la información financiera de la tarjeta/cuenta-autorizado por la que se consulta, consolida Limites y Saldos, Disponibles, Información de la Cuenta Corriente / Cierres y Vencimientos, así como tasas.
       operationId: getBalances_1
       parameters:
         - name: X-ClientID
@@ -410,9 +463,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Account Balances
-      x-group-name: Account
-      x-child-product-name: Accounts
+      x-proxy-name: Account Financial Data
+      x-group-name: Finantial Info
+      x-child-product-name: Financial Info
 components:
   schemas:
     ErrorDetailsResponse:
@@ -447,56 +500,84 @@ components:
           pattern: '[0-9]{1,9}'
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
-        reqCodeI:
-          type: string
-        releaseTime:
-          type: string
         reqNumberI:
           type: string
         dateI:
           type: string
+        releaseTime:
+          type: string
+        reqCodeI:
+          type: string
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     Transaction:
       type: object
       properties:
         operDate:
           type: integer
           format: int32
+          example: 20220515
         postingDate:
           type: integer
           format: int32
+          example: 20220517
         merchantName:
           type: string
+          example: ARREDO
         merchantID:
           type: integer
           format: int32
+          example: 24049130
         operType:
           type: string
+          example: DEBITO
         operCurrency:
           type: string
+          example: PESO ARGENTINO
         operAmountSign:
           type: string
+          example: +
         operAmount:
           type: number
           format: float
+          example: 1251.11
         totalInstallments:
           type: integer
           format: int32
+          example: 12
         currentInstallment:
           type: integer
           format: int32
+          example: 11
         totalInstallmentAmountSign:
           type: string
+          example: +
         totalInstallmentAmount:
           type: number
           format: float
+          example: 15013.34
         remainingInstallments:
           type: integer
           format: int32
+          example: 1
         remainingInstallmentsAmountSign:
           type: string
+          example: +
         remainingInstallmentsAmount:
           type: number
           format: float
+          example: 1251.11
     TransactionsResponse:
       type: object
       properties:
@@ -505,9 +586,11 @@ components:
         fragmentMark:
           type: integer
           format: int32
+          example: 0
         orderO:
           type: integer
           format: int32
+          example: 0
         vectorOperacionesMes:
           type: array
           items:
@@ -613,19 +696,6 @@ components:
           items:
             $ref: '#/components/schemas/PendingTransaction'
       description: Estructura de campos que responde a la API PendingTransactions
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     LastStatementTransactionsRequest:
       type: object
       properties:
@@ -647,13 +717,13 @@ components:
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
         orderI:
           type: string
-        reqCodeI:
-          type: string
-        releaseTime:
-          type: string
         reqNumberI:
           type: string
         dateI:
+          type: string
+        releaseTime:
+          type: string
+        reqCodeI:
           type: string
       description: Estructura de campos para la solicitud de la API LastStatementTransactions
     LastStatementTransaction:
