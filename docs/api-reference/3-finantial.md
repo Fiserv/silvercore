@@ -2,7 +2,7 @@
 tags: [Getting Started, API Reference, Finantial]
 ---
 
-# Finantial
+# Financial
 
 
 Applications that allow consumers and businesses to take actions 
