@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Silvercore™ Finantial Information Service - API Documentation
+  title: Silvercore™ Financial Information Service - API Documentation
   description: This documentation describes the REST APIs provided by the Silvercore™
   version: "1.0"
 servers:
@@ -99,7 +99,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Transactions
-      x-group-name: Finantial Info
+      x-group-name: Financial Info
       x-child-product-name: Financial Info
   /financialInformation/pendingTransactions:
     get:
@@ -192,7 +192,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Pending Transactions
-      x-group-name: Finantial Info
+      x-group-name: Financial Info
       x-child-product-name: Financial Info
   /financialInformation/lastStatementTransactions:
     get:
@@ -287,7 +287,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Last Statement Transactions
-      x-group-name: Finantial Info
+      x-group-name: Financial Info
       x-child-product-name: Financial Info
   /financialInformation/lastStatementData:
     get:
@@ -377,7 +377,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Last Statement Data
-      x-group-name: Finantial Info
+      x-group-name: Financial Info
       x-child-product-name: Financial Info
   /financialInformation/accountFinancialData:
     get:
@@ -464,7 +464,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Account Financial Data
-      x-group-name: Finantial Info
+      x-group-name: Financial Info
       x-child-product-name: Financial Info
 components:
   schemas:
