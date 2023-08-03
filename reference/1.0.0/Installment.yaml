@@ -10,8 +10,8 @@ paths:
   /purchaseInstallmentConversion/selectedTransactions:
     post:
       tags:
-        - Selected Transactions
-      summary: La API permite guardar las compras/transacciones seleccionadas para el proceso de cuotificación de consumos
+        - Purchases Selection
+      summary: Genera la lista de consumos seleccionados por el cliente para ser cuotificados, con esta información, el sistema totaliza, calcula y  devuelve las simulaciones de los posibles planes.
       operationId: saveSelectedTransactions
       parameters:
         - name: X-ClientID
@@ -61,12 +61,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -96,14 +96,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Installment Conversion
-      x-group-name: Add Selected Transactions
-      x-child-product-name: Installment Conversion
+      x-proxy-name: Purchases Selection
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
   /purchaseInstallmentConversion/installmentConversion:
     post:
       tags:
         - Installment Conversion
-      summary: La API permite realizar el alta del proceso de cuotificación de consumos
+      summary: |-
+        Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos.
+        Nota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación.
       operationId: installmentConversion
       parameters:
         - name: X-ClientID
@@ -153,12 +155,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -189,8 +191,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Installment Conversion
-      x-group-name: Add Installment Conversion Consumes
-      x-child-product-name: Installment Conversion
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
   /balanceInstallmentConversion/installmentConversion:
     post:
       tags:
@@ -282,12 +284,12 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Installment Conversion
       x-group-name: Balance Installment Conversion
-      x-child-product-name: Installment Conversion
+      x-child-product-name: Balance Installment Conversion
   /purchaseInstallmentConversion/transactions:
     get:
       tags:
-        - Transactions
-      summary: La API devuelve un listado de compras/transacciones disponibles para el proceso de cuotificación de consumos
+        - Purchases
+      summary: La consulta proporciona el listado de hasta 100 consumos en condiciones de ser cuotificados, de acuerdo a la configuración de la línea de préstamo generada por el emisor.
       operationId: getTransactions
       parameters:
         - name: X-ClientID
@@ -336,12 +338,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -371,14 +373,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Installment Conversion
-      x-group-name: Get Transactions
-      x-child-product-name: Installment Conversion
+      x-proxy-name: Purchases
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
   /purchaseInstallmentConversion/plans:
     get:
       tags:
         - Plans
-      summary: La API devuelve un listado de planes de pago disponibles para el proceso de cuotificación de consumos
+      summary: Retorna la simulación de planes de acuerdo a la configuración, esta consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o Conversion Contado a Cuotas.
       operationId: getPlans
       parameters:
         - name: X-ClientID
@@ -427,12 +429,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -462,14 +464,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Installment Conversion
-      x-group-name: Get Plans
-      x-child-product-name: Installment Conversion
+      x-proxy-name: Plans
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
   /installmentConversionHistory/notCurrentTransactionConversion:
     get:
       tags:
-        - Not Current Transaction Conversion History
-      summary: La API devuelve un listado de planes de pago de cuotificación de consumos no vigentes
+        - Not Current Transaction Conversion
+      summary: La consulta permite listar todos los planes de Cuotificación de consumos ya finalizados en liquidaciones previas.
       operationId: getNotCurrentTransactionConversions
       parameters:
         - name: X-ClientID
@@ -518,12 +520,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -553,14 +555,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Consumes
-      x-group-name: Get Not Current Transaction Conversion History Consumption
-      x-child-product-name: Installment Conversion
+      x-proxy-name: Not Current Transaction Conversion
+      x-group-name: Installment Conversion History
+      x-child-product-name: Installment Conversion History
   /installmentConversionHistory/notCurrentBalanceConversion:
     get:
       tags:
-        - Not Current Balance Conversion History
-      summary: La API devuelve un listado de planes de pago de cuotificación de saldos no vigentes
+        - Not Current Balance Conversion
+      summary: La consulta permite listar todos los planes de refinanciación de saldos ya finalizados en liquidaciones anteriores al cierre actual.
       operationId: getNotCurrentBalanceConversions
       parameters:
         - name: X-ClientID
@@ -609,12 +611,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -644,14 +646,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Installment Conversion
-      x-group-name: Get installment Conversion History Not Current Balance
-      x-child-product-name: Installment Conversion
+      x-proxy-name: Not Current Balance Conversion
+      x-group-name: Installment Conversion History
+      x-child-product-name: Installment Conversion History
   /installmentConversionHistory/currentTransactionConversion:
     get:
       tags:
-        - Current Transaction Conversion History
-      summary: La API devuelve un listado de planes de pago de cuotificación de consumos vigentes
+        - Current Transaction Conversion
+      summary: La consulta permite listar todos los planes de Cuotificación de consumos que aun tienen cuotas vigentes en las liquidaciones del cliente.
       operationId: getCurrentTransactionConversions
       parameters:
         - name: X-ClientID
@@ -700,12 +702,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -735,14 +737,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Installment Conversion
-      x-group-name: Get Current Transaction Conversion History Consumption
-      x-child-product-name: Installment Conversion
+      x-proxy-name: Current Transaction Conversion
+      x-group-name: Installment Conversion History
+      x-child-product-name: Installment Conversion History
   /installmentConversionHistory/currentBalanceConversion:
     get:
       tags:
-        - Current Balance Conversion History
-      summary: La API devuelve un listado de planes de pago de cuotificación de saldos vigentes
+        - Current Balance Conversion
+      summary: La consulta permite listar todos los planes de refinanciación de saldos que aun cuentan con  cuotas vigentes en las liquidaciones del cliente.
       operationId: getCurrentBalanceConversions
       parameters:
         - name: X-ClientID
@@ -791,12 +793,12 @@ paths:
                 items:
                   type: string
               examples:
-                Reponse 1:
+                Response 1:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 2:
+                Response 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -826,9 +828,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Installment Conversion
-      x-group-name: Get Current Balance Conversion History
-      x-child-product-name: Installment Conversion
+      x-proxy-name: Current Balance Conversion
+      x-group-name: Installment Conversion History
+      x-child-product-name: Installment Conversion History
   /balanceInstallmentConversion/plans:
     get:
       tags:
@@ -919,7 +921,7 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Plans
       x-group-name: Balance Installment Conversion
-      x-child-product-name: Installment Conversion
+      x-child-product-name: Balance Installment Conversion
   /balanceInstallmentConversion/balance:
     get:
       tags:
@@ -1010,7 +1012,7 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Balance
       x-group-name: Balance Installment Conversion
-      x-child-product-name: Installment Conversion
+      x-child-product-name: Balance Installment Conversion
 components:
   schemas:
     ErrorDetailsResponse:
@@ -1049,18 +1051,6 @@ components:
             type: integer
             description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
             format: int32
-    SelectedTransactionsResponse:
-      type: object
-      properties:
-        returnCode:
-          type: integer
-          description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema
-          format: int32
-        returnCodeDescription:
-          maxLength: 50
-          minLength: 1
-          type: string
-          description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -1074,6 +1064,18 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    SelectedTransactionsResponse:
+      type: object
+      properties:
+        returnCode:
+          type: integer
+          description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema
+          format: int32
+        returnCodeDescription:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema
     InstallmentConversionRequest:
       required:
         - cvv
