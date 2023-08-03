@@ -377,7 +377,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Last Statement Data
-      x-group-name: Financial Info
+      x-group-name: Finantial Info
       x-child-product-name: Financial Info
   /financialInformation/accountFinancialData:
     get:
