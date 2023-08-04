@@ -70,18 +70,18 @@ featuredFeatures:
     - title: Instant Issuance
       type: "put"
       path: "/cards/instantIssuance"
-  - title: Finantial
+  - title: Financial
     description: We provide APIs designed for credit and prepaid card management to support account/card sign-up,  lifecycle and other additional processing actions. Includes card level features such as card activation, issue, reissue, lost and stolen, replacement, Secured PIN management, card details, etc.
     featured: true
     relatedDocs:
     - link: docs/api-reference/3-finantial.md 
-      title: Finantial
+      title: Financial
     relatedAPIs:
     - title: Selected Transactions
       type: "get"
       path: "/financialInformation/pendingTransactions"
   - title: Installment
-    description: We provide APIs designed for credit and prepaid card management to support account/card/finantial info/ sign-up,  lifecycle and other additional processing actions. Includes card level features such as card activation, issue, reissue, lost and stolen, replacement, Secured PIN management, card details, etc.
+    description: We provide APIs designed for credit and prepaid card management to support account/card/financial info/ sign-up,  lifecycle and other additional processing actions. Includes card level features such as card activation, issue, reissue, lost and stolen, replacement, Secured PIN management, card details, etc.
     featured: true
     relatedDocs:
     - link: docs/api-reference/4-installment.md 

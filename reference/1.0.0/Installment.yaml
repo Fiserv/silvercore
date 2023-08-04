@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Silvercore™ Finantial Installment Service - API Documentation
+  title: Silvercore™ Financial Installment Service - API Documentation
   description: This documentation describes the REST APIs provided by the Silvercore™
   version: "1.0"
 servers:
