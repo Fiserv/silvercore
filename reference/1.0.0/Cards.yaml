@@ -607,7 +607,7 @@ paths:
         - name: request
           in: query
           required: true
-          description: Estructura de campos para la solicitud de la API CVV
+          description: 'Estructura de campos para la solicitud de la API CVV.<br>{<br> "accountNumber": "9A21CA199726F942F2535D7E32CA1CB6",<br> "additional": 0,<br> "cardNumber": "112233",<br> "cardNumberM": "445566" <br>}'
           schema:
             $ref: '#/components/schemas/CvvRequest'
       responses:
