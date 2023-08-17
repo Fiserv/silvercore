@@ -606,6 +606,7 @@ paths:
         - name: request
           in: query
           required: true
+          description: Estructura de campos para la solicitud de la API CVV
           schema:
             $ref: '#/components/schemas/CvvRequest'
       responses:
@@ -1469,22 +1470,26 @@ components:
         accountNumber:
           pattern: ^[0-9A-F]{32}
           type: string
+          example: 9A21CA199726F942F2535D7E32CA1CB6
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
         additional:
           type: integer
+          example: 0
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
           format: int64
         cardNumber:
           maxLength: 64
           minLength: 0
           type: string
+          example: 0123456789
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
         cardNumberM:
           maxLength: 16
           minLength: 0
           type: string
+          example: 1234567
           description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado
-      description: Estructura de campos para la solicitud de la API CVV
+      example: Estructura de campos para la solicitud de la API CVV
     CvvResponse:
       type: object
       properties:
