@@ -518,6 +518,7 @@ paths:
             type: string
         - name: request
           in: query
+          description: Estructura de campos para la solicitud de la API On Off
           required: true
           schema:
             $ref: '#/components/schemas/OnOffStatusRequest'
@@ -1463,7 +1464,7 @@ components:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
-      description: Estructura de campos para la solicitud de la API On Off
+      example: '{ "accountNumber": "123456", "additional": "9", "cardNumber": "ABC123" }'
     CvvRequest:
       type: object
       properties:
