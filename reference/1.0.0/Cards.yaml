@@ -1489,7 +1489,7 @@ components:
           type: string
           example: 1234567
           description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado
-      example: Estructura de campos para la solicitud de la API CVV
+      example: '{ "accountNumber": "9A21CA199726F942F2535D7E32CA1CB6", "additional": 0, "cardNumber": "112233", "cardNumberM": "445566" }'
     CvvResponse:
       type: object
       properties:
