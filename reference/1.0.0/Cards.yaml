@@ -518,7 +518,7 @@ paths:
             type: string
         - name: request
           in: query
-          description: Estructura de campos para la solicitud de la API On Off
+          description: 'Estructura de campos para la solicitud de la API On Off <br>{<br> "accountNumber": "123456", "additional": "9", "cardNumber": "ABC123" <br>}<br>'
           required: true
           schema:
             $ref: '#/components/schemas/OnOffStatusRequest'
@@ -695,6 +695,7 @@ paths:
         - name: request
           in: query
           required: true
+          description: 'Estructura de campos que solicita CardNumber <br>{<br> "accountNumber": "123456", "additional": "6", "cardNumber": "ABC123", "cardNumberM": "8352000000003658" <br>}<br>'
           schema:
             $ref: '#/components/schemas/CardNumberRequest'
       responses:
@@ -782,6 +783,7 @@ paths:
         - name: request
           in: query
           required: true
+          description: 'Estructura de campos para la solicitud de la API Block Fees Card <br>BlockRequestFeesRequest:<br>     type: object<br>      properties:<br>        accountNumber:<br>          pattern: ^[0-9A-F]{32}<br>          type: string<br>          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.<br>        additional:<br>          pattern: ^[0-9]{1}<br>          type: string<br>          description: Esta campo de entrada, permite ingresar el número de Autorizado.<br>        cardNumber:<br>          pattern: ^[0-9A-F]{64}<br>          type: string<br>          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.<br>      '
           schema:
             $ref: '#/components/schemas/BlockRequestFeesRequest'
       responses:
