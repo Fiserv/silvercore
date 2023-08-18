@@ -783,7 +783,7 @@ paths:
         - name: request
           in: query
           required: true
-          description: 'Estructura de campos para la solicitud de la API Block Fees Card <br>BlockRequestFeesRequest:<br>     type: object<br>      properties:<br>        accountNumber:<br>          pattern: ^[0-9A-F]{32}<br>          type: string<br>          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.<br>        additional:<br>          pattern: ^[0-9]{1}<br>          type: string<br>          description: Esta campo de entrada, permite ingresar el número de Autorizado.<br>        cardNumber:<br>          pattern: ^[0-9A-F]{64}<br>          type: string<br>          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.<br>      '
+          
           schema:
             $ref: '#/components/schemas/BlockRequestFeesRequest'
       responses:
