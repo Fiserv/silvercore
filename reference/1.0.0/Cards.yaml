@@ -518,7 +518,7 @@ paths:
             type: string
         - name: request
           in: query
-          description: 'Estructura de campos para la solicitud de la API On Off <br>{<br> "accountNumber": "123456", "additional": "9", "cardNumber": "ABC123" <br>}<br>'
+          description: 'Estructura de campos para la solicitud de la API On Off <br><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado</td></tr></tbody></table><br>'
           required: true
           schema:
             $ref: '#/components/schemas/OnOffStatusRequest'
@@ -607,7 +607,7 @@ paths:
         - name: request
           in: query
           required: true
-          description: 'Estructura de campos para la solicitud de la API CVV.<br>{<br> "accountNumber": "9A21CA199726F942F2535D7E32CA1CB6",<br> "additional": 0,<br> "cardNumber": "112233",<br> "cardNumberM": "445566" <br>}'
+          description: 'Estructura de campos para la solicitud de la API CVV.<br><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">integer</span><br>Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado</td></tr><tr><td>cardNumberM</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado</td></tr></tbody></table><br>{<br> "accountNumber": "9A21CA199726F942F2535D7E32CA1CB6",<br> "additional": 0,<br> "cardNumber": "112233",<br> "cardNumberM": "445566" <br>}'
           schema:
             $ref: '#/components/schemas/CvvRequest'
       responses:
@@ -695,7 +695,7 @@ paths:
         - name: request
           in: query
           required: true
-          description: 'Estructura de campos que solicita CardNumber <br>{<br> "accountNumber": "123456", "additional": "6", "cardNumber": "ABC123", "cardNumberM": "8352000000003658" <br>}<br>'
+          description: 'Estructura de campos que solicita CardNumber <br> <table><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado</td></tr><tr><td>cardNumberM</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..</td></tr></tbody></table> <br>{<br> "accountNumber": "123456", "additional": "6", "cardNumber": "ABC123", "cardNumberM": "8352000000003658" <br>}<br>'
           schema:
             $ref: '#/components/schemas/CardNumberRequest'
       responses:
