@@ -26,8 +26,7 @@
         "apiSpecFileNames": [
           "Accounts",
           "Cards",
-          "Finantial",
-          "Installment"
+          "Transactions"
         ]
       }
   ],

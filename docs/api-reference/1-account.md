@@ -4,8 +4,7 @@ tags: [Getting Started, API Reference, Accounts]
 
 # Account
 
-We offer different inquiries via Restful that allows to show account information such as components (main account + additionals), financial status and online transactional activity. 
-It also offer other satellite actions such as limit management, travel notification, card turn off, among others.
+We offer different inquiries via Restful that allows to show account information and it´s components (main account + additionals). It also provides other satellite actions such as limit management, travel notification, card turn off, among others.
 
 <!--
 type: tab

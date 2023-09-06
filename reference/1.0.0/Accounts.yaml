@@ -41,6 +41,7 @@ paths:
     get:
       tags:
         - TripLog
+      summary: Permite listar los viajes previamente cargados, históricos, vigentes y futuros.
       operationId: getTripLog
       parameters:
         - name: X-ClientID
@@ -124,12 +125,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: 'Trip Log '
+      x-proxy-name: 'Trip Log GET'
       x-group-name: Account
       x-child-product-name: Accounts
     put:
       tags:
         - TripLog
+      summary: Ejecuta Bajas o Modificaciones de uno o varios avisos de viaje previamente cargado. El emisor armara el PUT con los datos que obtiene originalmente del GET (Viajes cargados) ofreciendo al cliente la modificación/baja de alguno de ellos.
       operationId: putTripLog
       parameters:
         - name: X-ClientID
@@ -214,12 +216,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: 'Trip Log '
+      x-proxy-name: 'Trip Log PUT'
       x-group-name: Account
       x-child-product-name: Accounts
     post:
       tags:
         - TripLog
+      summary: Posibilita generar la carga de un nuevo viaje para uno o varios integrantes de la cuenta. (Una o varias tarjetas)
       operationId: postTripLog
       parameters:
         - name: X-ClientID
@@ -304,12 +307,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: 'Trip Log '
+      x-proxy-name: 'Trip Log POST'
       x-group-name: Account
       x-child-product-name: Accounts
     delete:
       tags:
         - tripLog
+      summary: Permite la Baja o Borrado de todos los viajes previamente cargados. El emisor armara el DEL  ofreciendo al cliente la eliminación del histórico de  viajes previamente cargados.
       operationId: deleteTripLog
       parameters:
         - name: X-ClientID
@@ -393,7 +397,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: 'Trip Log '
+      x-proxy-name: 'Trip Log DELETE'
       x-group-name: Account
       x-child-product-name: Accounts
   /accounts/limitIncrease:
@@ -454,15 +458,19 @@ paths:
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             type: integer
             format: int32
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-context
           in: header
           required: false
@@ -529,7 +537,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Cards Account
+      x-proxy-name: Cards
       x-group-name: Account
       x-child-product-name: Accounts
   /accounts/cardholders:
@@ -628,15 +636,19 @@ paths:
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             type: integer
             format: int32
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-context
           in: header
           required: false
@@ -698,7 +710,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Availability Account
+      x-proxy-name: Availability
       x-group-name: Account
       x-child-product-name: Accounts
 components:

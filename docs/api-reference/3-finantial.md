@@ -2,10 +2,11 @@
 tags: [Getting Started, API Reference, Financial]
 ---
 
-# Financial
+# Transactions
 
 
-Applications that allow consumers and businesses to take actions 
+Provides account and card transactional details. Statements Financial status and online transactional activity. 
+Also offer different options for installment conversion for purchases or statement, and information for previous inquiries.
 
 <!--
 type: tab

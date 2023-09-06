@@ -41,20 +41,24 @@ paths:
     post:
       tags:
         - Reissue Card
-      summary: La API envía la orden de ejecución de BLOQUEO según el código seleccionado para la tarjeta que se identifica en el mensaje (la populación del dato puede obtenerse con las consultas previas o bien con información que inserte la entidad desde consultas in house). Completando la acción con la REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema.
+      summary: Ejecuta el pedido de REIMPRESION/REEMPLAZO con BLOQUEO; inhabilitando la tarjeta original que genera el movimiento y completando la acción con la REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual /unitario de la nueva credencial.*Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
       operationId: setReimpresion
       parameters:
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             type: integer
             format: int32
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: security-context
           in: header
           required: false
@@ -122,7 +126,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Reissue Card
+      x-proxy-name: Reissue
       x-group-name: Card
       x-child-product-name: Cards
   /cards/onOff:
@@ -317,15 +321,19 @@ paths:
       parameters:
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             type: integer
             format: int32
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: security-context
           in: header
           required: false
@@ -393,7 +401,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Block Card
+      x-proxy-name: Block
       x-group-name: Card
       x-child-product-name: Cards
   /cards/activation:
@@ -405,15 +413,19 @@ paths:
       parameters:
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             type: integer
             format: int32
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: security-context
           in: header
           required: false
@@ -481,7 +493,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Activation Card
+      x-proxy-name: Activation
       x-group-name: Card
       x-child-product-name: Cards
   /cards/onOff/status:
@@ -585,15 +597,19 @@ paths:
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             type: integer
             format: int32
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-context
           in: header
           required: false
@@ -673,15 +689,19 @@ paths:
       parameters:
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             pattern: '[0-9]{1,3}'
             type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: security-context
           in: header
           required: false
@@ -761,15 +781,19 @@ paths:
       parameters:
         - name: username
           in: header
+          description: Identificador que representa al usuario.
           required: true
           schema:
             type: string
+            description: Identificador que representa al usuario.
         - name: X-ClientID
           in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
           required: true
           schema:
             type: integer
             format: int32
+            description: Número que representa la entidad cliente del servicio en Fiserv.
         - name: security-context
           in: header
           required: false
@@ -837,7 +861,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Block Fees Card
+      x-proxy-name: Block Fees
       x-group-name: Card
       x-child-product-name: Cards
 components:

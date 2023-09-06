@@ -99,8 +99,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Transactions
-      x-group-name: Financial Info
-      x-child-product-name: Financial Info
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
   /financialInformation/pendingTransactions:
     get:
       tags:
@@ -192,8 +192,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Pending Transactions
-      x-group-name: Financial Info
-      x-child-product-name: Financial Info
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
   /financialInformation/lastStatementTransactions:
     get:
       tags:
@@ -287,8 +287,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Last Statement Transactions
-      x-group-name: Financial Info
-      x-child-product-name: Financial Info
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
   /financialInformation/lastStatementData:
     get:
       tags:
@@ -377,8 +377,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Last Statement Data
-      x-group-name: Financial Info
-      x-child-product-name: Financial Info
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
   /financialInformation/accountFinancialData:
     get:
       tags:
@@ -464,8 +464,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Account Financial Data
-      x-group-name: Financial Info
-      x-child-product-name: Financial Info
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
 components:
   schemas:
     ErrorDetailsResponse:
