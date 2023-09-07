@@ -573,6 +573,7 @@ paths:
         - name: request
           in: query
           required: true
+          description: 'Estructura de campos para la solicitud de la API Cards: <br> <table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">int</span><br>Esta campo de entrada, permite ingresar el número de Autorizado.</td></tr><tr><td>blockActivateCode</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el motivo de boletín de bloqueo o activación. 0 - permite listar tarjetas para activar, 7 - permite listar tarjetas para denunciar.<span class="font-size-14 font-italic api-explorer-type">pattern 0|7</span></td></tr></tbody></table>'
           schema:
             $ref: '#/components/schemas/CardHoldersRequest'
       responses:
