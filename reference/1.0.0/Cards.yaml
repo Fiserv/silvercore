@@ -41,7 +41,7 @@ paths:
     post:
       tags:
         - Reissue Card
-      summary: Ejecuta el pedido de REIMPRESION/REEMPLAZO con BLOQUEO; inhabilitando la tarjeta original que genera el movimiento y completando la acción con la REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual /unitario de la nueva credencial.*Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
+      summary: Ejecuta el pedido de REIMPRESION/REEMPLAZO con BLOQUEO; inhabilitando la tarjeta original que genera el movimiento y completando la acción con la REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual /unitario de la nueva credencial. *Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
       operationId: setReimpresion
       parameters:
         - name: username
@@ -133,7 +133,7 @@ paths:
     post:
       tags:
         - On Off
-      summary: La presente API realiza la activación o deshabilitación de la tarjeta.
+      summary: El presente servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar, la presente API ofrece al cliente  tomar acción sobre la tarjeta, activar / pausar  (ON / OFF) 
       operationId: PauseOrActive
       parameters:
         - name: X-ClientID
@@ -225,7 +225,7 @@ paths:
     post:
       tags:
         - Instant Issuance
-      summary: Permite al emisor gestionar el alta de una nueva CUENTA/TARJETA o Adicionales de una CUENTA/Tarjeta existente en forma inmediata, el sistema permite la respuesta de DATOS de la TARJETA (conocido como VOUCHER) o bien la salida de DATOS DE PERSONALIZACION para input a una embozadora certificada Contactless (Embozado a Distancia)
+      summary: Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital. También proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia) *Posee campos referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
       operationId: postInstantIssuanceService
       parameters:
         - name: X-ClientID
@@ -316,7 +316,7 @@ paths:
     post:
       tags:
         - Block Card
-      summary: La API envía la orden de ejecución de DENUNCIA y BLOQUEO según el código seleccionado para la tarjeta que se identifica en el mensaje (la populación del dato puede obtenerse con las consultas previas o bien con información que inserte la entidad desde consultas in house). Completando la acción con la marca necesaria para NO REIMPRESION/REEMPLAZO de la tarjeta.
+      summary: Brinda la posibilidad de aplicar en forma inmediata online la  DENUNCIA y BLOQUEO según el código seleccionado para la tarjeta detallada. Permite además complementar la acción con la solicitud de REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual /unitario de la nueva credencial. *Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
       operationId: setBloqueo
       parameters:
         - name: username
@@ -408,7 +408,7 @@ paths:
     post:
       tags:
         - Activation Card
-      summary: La API envía la orden de ejecución de ACTIVACION para la tarjeta que se identifica en el mensaje (la populación del dato puede obtenerse con las consultas previas o bien con información que popule la entidad desde consultas in house.
+      summary: Brinda la posibilidad de solicitar en forma online la ACTIVACION para la tarjeta seleccionada. El emisor puede instrumentar esta API con 1 o N tarjetas y combinar la acción con la previa consulta de las tarjetas que conforman la cuenta (Titular + Adicionales)
       operationId: setActivarTarjeta
       parameters:
         - name: username
@@ -500,7 +500,7 @@ paths:
     get:
       tags:
         - On Off Status
-      summary: La presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitira habilitar al cliente para la acción a tomar (ON / OFF).
+      summary: El presente servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar, la presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitirá habilitar al cliente para la acción a tomar (ON / OFF) 
       operationId: getCardStatus
       parameters:
         - name: X-ClientID
@@ -592,7 +592,7 @@ paths:
     get:
       tags:
         - CVV
-      summary: La API devuelve el CVC2/CVV2 (Encriptado/en calculo o de manera segura) para la tarjeta seleccionada (Pan enmascarado + Cuenta Autorizado) de manera que el emisor pueda conformar los datos de la tarjeta (al dorso) completando la información de la tarjeta.
+      summary: Posibilita la obtención del dato CVC2/CVV2 para la tarjeta seleccionada según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado), de manera que el emisor pueda mostrar los datos de la tarjeta para su utilización en cualquier UX, control u onboarding a diferentes billeteras.
       operationId: getCvv
       parameters:
         - name: X-ClientID
@@ -684,7 +684,7 @@ paths:
     get:
       tags:
         - Card Number
-      summary: La API devuelve datos completos de la tarjeta seleccionada (Pan enmascarado + Cuenta Autorizado) de manera que el emisor pueda conformar los datos del frente de la tarjeta (PAN VTO Datos del cliente)
+      summary: La API informa los datos completos del producto seleccionado según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado);  permitiendo conformar los datos de la tarjeta (PAN VTO Datos del cliente)  para su utilización en cualquier UX, control/actualización de datos u onboarding a diferentes billeteras.
       operationId: getCardNumber
       parameters:
         - name: X-ClientID
@@ -776,7 +776,7 @@ paths:
     get:
       tags:
         - Block Fees Card
-      summary: Permite obtener el costo de Denuncia/Bloqueo para la CUENTA/Autorizado / PAN que el cliente selecciona. El dato se encuentra seteado previamente y puede variar entre productos de un mismo emisor.
+      summary: Permite obtener el costo de Denuncia/Bloqueo para la tarjeta que el cliente selecciona. El dato precio se encuentra seteado previamente por el emisor y puede variar entre productos de la misma institución financiera.
       operationId: getCostoBloqueo
       parameters:
         - name: username

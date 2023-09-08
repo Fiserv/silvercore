@@ -201,10 +201,9 @@ paths:
       tags:
         - Last Statements Transactions
       summary: |-
-        Proporciona datos resumidos acerca del estado de cuenta del mes en curso.
-        Permite obtener información consolidada de pagos (ARS/USD), totales y mínimos; cierres actuales, anteriores y futuros. 
-        Además posibilita generar el talón de pago con código de barras para la presentación en entes recaudadores.
-        En combinación con datos de lastStatementData permite construir de cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación.
+        Permite obtener los movimientos liquidados en el último cierre de cuenta y que se ingresan en el resumen, es decir con esta consulta el emisor podrá construir el ultimo resumen de cuenta generado para la tarjeta/cuenta que se consulta.
+        Comprende las operaciones, pagos, ajustes, promociones y cualquier operación que se impacta en el último resumen de cuenta del socio.
+        En combinación con lastStatementData, el banco puede construir el soporte mensual como imagen de resumen.
       operationId: getLastStatementTransactions
       parameters:
         - name: X-ClientID
@@ -297,9 +296,9 @@ paths:
       tags:
         - Last Statement Data
       summary: |-
-        Permite obtener los movimientos liquidados en el último cierre de cuenta y que se ingresan en el resumen, es decir con esta consulta el emisor podrá construir el ultimo resumen de cuenta generado para la tarjeta/cuenta que se consulta.
-        Comprende las operaciones, pagos, ajustes, promociones y cualquier operación que se impacta en el último resumen de cuenta del socio.
-        En combinación con lastStatementTransactions, el banco puede construir el soporte mensual como imagen de resumen.
+        Proporciona datos resumidos acerca del estado de cuenta del mes en curso. Permite obtener información consolidada de pagos (ARS/USD), totales y mínimos; cierres actuales, anteriores y futuros.
+        Además posibilita generar el talón de pago con código de barras para la presentación en entes recaudadores. 
+        En combinación con datos de lastStatementTransactions  permite construir de cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación."
       operationId: getBalances
       parameters:
         - name: X-ClientID

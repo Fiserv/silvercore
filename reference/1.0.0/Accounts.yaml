@@ -132,7 +132,7 @@ paths:
     put:
       tags:
         - TripLog
-      summary: Ejecuta Bajas o Modificaciones de uno o varios avisos de viaje previamente cargado. El emisor armara el PUT con los datos que obtiene originalmente del GET (Viajes cargados) ofreciendo al cliente la modificación/baja de alguno de ellos.
+      summary: Ejecuta Altas Bajas o Modificaciones de uno o varios avisos de viaje previamente cargado. El emisor armara el PUT con los datos que obtiene originalmente del GET (Viajes cargados) ofreciendo al cliente la modificación/baja de alguno de ellos.
       operationId: putTripLog
       parameters:
         - name: X-ClientID
@@ -405,6 +405,7 @@ paths:
     post:
       tags:
         - limitIncrease
+      summary: Proporciona la gestión al cliente/ tarjetahabiente la posibilidad de solicitar y procesar aumentos de limite transitorios en línea. El limite podría tener un periodo determinado por el emisor donde vencido el plazo volverá a los limites determinados previamente.
       operationId: setIncrementoLimiteTransitorio
       parameters:
         - name: X-ClientID
@@ -454,7 +455,7 @@ paths:
     get:
       tags:
         - Cards
-      summary: La consulta permite listar todas las tarjetas en condiciones de operar para la CUENTA AUTORIZADO de manera de seleccionar sobre cual se le solicitará la información para conformar la imagen de la tarjeta para que el cliente final pueda operar.
+      summary: La consulta lista todas las tarjetas en condiciones de operar, de manera de seleccionar sobre cual  de ellas se  solicitará la información para conformar la imagen de la tarjeta para que el cliente final pueda operar. Esta orientada a prevalidación de tarjeta vigentes ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado.
       operationId: getConsultaTarjetas
       parameters:
         - name: X-ClientID
@@ -545,8 +546,8 @@ paths:
   /accounts/cardholders:
     get:
       tags:
-        - Card Holders
-      summary: La consulta permite listar todas las tarjetas en condiciones de ser activadas de todos  los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cual de ellos se solicitará la acción de DENUNCIAR / BLOQUEAR / NO REIMPRIMIR
+        - CardHolders
+      summary: La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cual de ellos se solicitará la acción de HABILITAR/ACTIVAR. Puede utilizarse como complemento como prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado junto con mas datos de los clientes listados.
       operationId: getConsultaMiembros
       parameters:
         - name: username
@@ -627,14 +628,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Card Holders
+      x-proxy-name: CardHolders
       x-group-name: Account
       x-child-product-name: Accounts
   /accounts/availability:
     get:
       tags:
         - Availability
-      summary: Permite al Emisor consultar la disponibilidad del servicio previo al uso de la API que realizará el input para generación de la nueva CUENTA/Tarjeta.
+      summary: Posibilita consultar la disponibilidad del servicio previo al uso de la API que realizará el input para generación de la nueva Cuenta/Tarjeta.
       operationId: getAvailability
       parameters:
         - name: X-ClientID
