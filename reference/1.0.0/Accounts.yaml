@@ -220,97 +220,6 @@ paths:
       x-proxy-name: 'Trip Log PUT'
       x-group-name: Account
       x-child-product-name: Accounts
-    post:
-      tags:
-        - TripLog
-      summary: Posibilita generar la carga de un nuevo viaje para uno o varios integrantes de la cuenta. (Una o varias tarjetas)
-      operationId: postTripLog
-      parameters:
-        - name: X-ClientID
-          in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
-          required: false
-          schema:
-            type: string
-        - name: requestId
-          in: header
-          required: false
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostTripLogResponse'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TripLogResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              examples:
-                Reponse 1:
-                  description: Validation of required fields
-                  value:
-                    fieldName1: string
-                    fieldName2: string
-                Reponse 2:
-                  description: Mainframe message
-                  value:
-                    errorResponse:
-                      code: 0
-                      description: string
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorFiserVResponse'
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorFiserVResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDetailsResponse'
-        '503':
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: 'Trip Log POST'
-      x-group-name: Account
-      x-child-product-name: Accounts
     delete:
       tags:
         - tripLog
@@ -405,7 +314,7 @@ paths:
     post:
       tags:
         - limitIncrease
-      summary: Proporciona la gestión al cliente/ tarjetahabiente la posibilidad de solicitar y procesar aumentos de limite transitorios en línea. El limite podría tener un periodo determinado por el emisor donde vencido el plazo volverá a los limites determinados previamente.
+      summary: Proporciona al cliente/ tarjetahabiente la posibilidad de solicitar y procesar aumentos de limite transitorios en línea. El limite podría tener un periodo determinado por el emisor donde vencido el plazo volverá a los limites determinados previamente.
       operationId: setIncrementoLimiteTransitorio
       parameters:
         - name: X-ClientID
@@ -547,7 +456,7 @@ paths:
     get:
       tags:
         - CardHolders
-      summary: La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cual de ellos se solicitará la acción de HABILITAR/ACTIVAR. Puede utilizarse como complemento como prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado junto con mas datos de los clientes listados.
+      summary: La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cuál de ellos se solicitará la acción de HABILITAR o ACTIVAR / BLOQUEAR / DENUNCIAR / REIMPRIMIR Puede utilizarse como complemento como prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado junto con mas datos de los clientes listados. 
       operationId: getConsultaMiembros
       parameters:
         - name: username
