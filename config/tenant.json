@@ -5,6 +5,7 @@
   "brandLogoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Fiserv_Logo.jpg",
   "solution": ["financial-institutions"],
   "brandDescription": "Silvercore LAS - Expand your business’  Expand your business’ reach by taking the acceptance process to a different level. SILVERCORE ™ is our processing solution that meets your challenges head-on and transforms your technology capability. We provide an end-to-end solution. SILVERCORE™ Restful APIs enable you to achieve platform modernization and competitive edge delivering the following benefits to your business.",
+  "getStartedFilePath": "/docs/getting-started.md",
   "categories": [
     {
       "name": "businessTypes",
