@@ -1,10 +1,10 @@
 {
-  "title": "REPLACE ME > Developer Studio",
-  "name": "REPLACE ME > DeveloperPortal",
+  "title": "Silvercore - LAS",
+  "name": "SilverCore",
   "brand": "Fiserv",
   "brandLogoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Fiserv_Logo.jpg",
   "solution": ["financial-institutions"],
-  "brandDescription": "REPLACE ME > Fiserv, Inc. is a global provider of payments and financial services technology solutions. The Company provides account processing and digital banking solutions, card issuer processing and network services, payments, e-commerce, merchant acquiring and processing, and the Clover cloud-based point-of-sale solution. The Company operates through three segments: Merchant Acceptance (Acceptance), Financial Technology (Fintech) and Payments and Network (Payments).",
+  "brandDescription": "Silvercore LAS - Expand your business’  Expand your business’ reach by taking the acceptance process to a different level. SILVERCORE ™ is our processing solution that meets your challenges head-on and transforms your technology capability. We provide an end-to-end solution. SILVERCORE™ Restful APIs enable you to achieve platform modernization and competitive edge delivering the following benefits to your business.",
   "getStartedFilePath": "/docs/getting-started.md",
   "categories": [
     {
@@ -23,8 +23,12 @@
       {
         "version": "1.0.0",
         "versionType": "major",
-        "releaseNotesPath": "docs/release-notes/2022/march.md",
-        "apiSpecFileNames": ["openapi"]
+        "releaseNotesPath": "docs/release-notes/2023/september.md",
+        "apiSpecFileNames": [
+          "Accounts",
+          "Cards",
+          "Finantial"
+        ]
       }
   ],
   "product": {
@@ -32,12 +36,12 @@
     "logoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Portal_Logo.png",
     "description": "To onboard properly into the Developer Studio as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
     "longDescription":"To onboard properly into the Developer Studi as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
-    "apiSpecification": "/v1/apis/<name_of_tenant>",
-    "layout": "/v1/layouts/<name_of_tenant>",
-    "documentation": "/v1/docs/<name_of_tenant>",
-    "documenttree": "/v1/docs/<name_of_tenant>",
-    "documenttreeV2": "/v2/docs/<name_of_tenant>",
-    "sandbox": "/v1/sandboxrun/<name_of_tenant>",
+    "apiSpecification": "/v1/apis/SilverCore",
+    "layout": "/v1/layouts/SilverCore",
+    "documentation": "/v1/docs/SilverCore",
+    "documenttree": "/v1/docs/SilverCore",
+    "documenttreeV2": "/v2/docs/SilverCore",
+    "sandbox": "/v1/sandboxrun/SilverCore",
     "feature":[
       {
         "name": "sandBox",
@@ -59,19 +63,19 @@
   },
   "supportConfig": [{ 
     "bug": {
-      "label": "bug,CommerceHub",
+      "label": "bug,SilverCore",
       "template": "bug.md",
-      "assignees": "<github-id>"
+      "assignees": "FranciscoCampos09"
     },  
     "feedback": {
-      "label": "feedback,CommerceHub",
+      "label": "feedback,SilverCore",
       "template": "feedback.md",
-      "assignees": "<github-id>"
+      "assignees": "FranciscoCampos09"
     },
     "enhancement": {
-      "label": "enhancement,CommerceHub",
+      "label": "enhancement,SilverCore",
       "template": "feature.md",
-      "assignees": "<github-id>"
+      "assignees": "FranciscoCampos09"
     }
   }]
 }

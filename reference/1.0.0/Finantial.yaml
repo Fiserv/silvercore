@@ -1,0 +1,1108 @@
+openapi: 3.0.1
+info:
+  title: Silvercore™ Financial Information Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "1.0"
+servers:
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
+paths:
+  /financialInformation/transactions:
+    get:
+      tags:
+        - Transactions
+      summary: |-
+        Devuelve el listado de todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso 
+        Permite obtener los movimientos de la cuenta/tarjeta durante el periodo pagos, Compras, Devoluciones, Ajustes (por ejemplo de campañas / descuentos) 
+        Para esa consulta se administrarán, fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta.
+      operationId: transactions
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: request
+          in: query
+          required: true
+          description: 'Estructura de campos para la solicitud de la API Transactions: <br> <table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Esta campo de entrada, permite ingresar el número de Autorizado.</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.</td></tr><tr><td>sequenceI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. VC(26) Alfanumérico</td></tr><tr><td>orderI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. N(09) Nro. DE ORDEN</td></tr><tr><td>reqNumberI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.<span class="font-size-14 font-italic api-explorer-type">[0-9]{1,9}</span><br></td></tr><tr><td>dateI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr><tr><td>reqCodeI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br><span class="font-size-14 font-italic api-explorer-type">[CEIP]</span><br></td></tr><tr><td>releaseTime</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr></tbody></table>'
+          schema:
+            $ref: '#/components/schemas/TransactionsRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Transactions
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/pendingTransactions:
+    get:
+      tags:
+        - Pending Transactions
+      summary: |-
+        Informa un listado detallado con todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso que aún no han sido presentadas por el comercio
+        Para esa consulta se administrarán, fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta.
+      operationId: getPendingTransactions
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: request
+          in: query
+          required: true
+          description: 'Estructura de campos para la solicitud de la API Pending Transactions: <br> <table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Esta campo de entrada, permite ingresar el número de Autorizado.</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.</td></tr><tr><td>sequenceI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. VC(26) Alfanumérico</td></tr><tr><td>orderI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. N(09) Nro. DE ORDEN</td></tr><tr><td>reqNumberI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.<span class="font-size-14 font-italic api-explorer-type">[0-9]{1,9}</span><br></td></tr><tr><td>dateI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr><tr><td>reqCodeI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br><span class="font-size-14 font-italic api-explorer-type">[CEIP]</span><br></td></tr><tr><td>releaseTime</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr></tbody></table>'
+          schema:
+            $ref: '#/components/schemas/PendingTransactionsRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingTransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Pending Transactions
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/lastStatementTransactions:
+    get:
+      tags:
+        - Last Statements Transactions
+      summary: |-
+        Permite obtener los movimientos liquidados en el último cierre de cuenta y que se ingresan en el resumen, es decir con esta consulta el emisor podrá construir el ultimo resumen de cuenta generado para la tarjeta/cuenta que se consulta.
+        Comprende las operaciones, pagos, ajustes, promociones y cualquier operación que se impacta en el último resumen de cuenta del socio.
+        En combinación con lastStatementData, el banco puede construir el soporte mensual como imagen de resumen.
+      operationId: getLastStatementTransactions
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: request
+          in: query
+          required: true
+          description: 'Estructura de campos para la solicitud de la API Last Statement Transactions: <br> <table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Esta campo de entrada, permite ingresar el número de Autorizado.</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.</td></tr><tr><td>sequenceI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.</td></tr><tr><td>orderI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.</td></tr><tr><td>reqNumberI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br><span class="font-size-14 font-italic api-explorer-type">[0-9]{1,9}</span><br></td></tr><tr><td>dateI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr><tr><td>reqCodeI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br><span class="font-size-14 font-italic api-explorer-type">[CEIP]</span><br></td></tr><tr><td>releaseTime</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr></tbody></table>'
+          schema:
+            $ref: '#/components/schemas/LastStatementTransactionsRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastStatementTransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Last Statement Transactions
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/lastStatementData:
+    get:
+      tags:
+        - Last Statement Data
+      summary: |-
+        Proporciona datos resumidos acerca del estado de cuenta del mes en curso. Permite obtener información consolidada de pagos (ARS/USD), totales y mínimos; cierres actuales, anteriores y futuros.
+        Además posibilita generar el talón de pago con código de barras para la presentación en entes recaudadores. 
+        En combinación con datos de lastStatementTransactions  permite construir de cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación."
+      operationId: getBalances
+      parameters:
+        - name: X-ClientID
+          in: header
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: username
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: request
+          in: query
+          required: true
+          description: 'Estructura de campos para la solicitud de la API Last Statement Data: <br> <table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.</td></tr><tr><td>int</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Esta campo de entrada, permite ingresar el número de Autorizado.</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.</td></tr><tr><td>sequenceI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. VC(26) Alfanumérico</td></tr><tr><td>orderI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. N(09) Nro. DE ORDEN</td></tr><tr><td>fragmentMark</td><td><span class="font-size-14 font-italic api-explorer-type">int</span><br>Indicador numérico para determinar cuando existen mas registros a mostrar - Puede adoptar dos valores 0 - Fin de los datos 1 - Hay más datos<span class="font-size-14 font-italic api-explorer-type">[0-9]{1,9}</span><br></td></tr><tr><td>dateI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr><tr><td>reqCodeI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br><span class="font-size-14 font-italic api-explorer-type">[CEIP]</span><br></td></tr><tr><td>releaseTime</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br></td></tr></tbody></table>'
+          schema:
+            $ref: '#/components/schemas/LastStatementDataRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastStatementDataResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Last Statement Data
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/accountFinancialData:
+    get:
+      tags:
+        - Account Financial Data
+      summary: Permite obtener el resumen de la información financiera de la tarjeta/cuenta-autorizado por la que se consulta, consolida Limites y Saldos, Disponibles, Información de la Cuenta Corriente / Cierres y Vencimientos, así como tasas.
+      operationId: getBalances_1
+      parameters:
+        - name: X-ClientID
+          in: header
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: username
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: request
+          in: query
+          required: true
+          description: 'Estructura de campos para la solicitud de la API Account Financial Data: <br> <table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>accountNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.</td></tr><tr><td>additional</td><td><span class="font-size-14 font-italic api-explorer-type">int</span><br>Esta campo de entrada, permite ingresar el número de Autorizado.</td></tr><tr><td>cardNumber</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.</td></tr><tr><td>sequenceI</td><td><span class="font-size-14 font-italic api-explorer-type">string</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. VC(26) Alfanumérico</td></tr><tr><td>orderI</td><td><span class="font-size-14 font-italic api-explorer-type">int</span><br>Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada - cuando se indica que la respuesta debió fragmentarse. N(09) Nro. DE ORDEN</td></tr><tr><td>fragmentMark</td><td><span class="font-size-14 font-italic api-explorer-type">int</span><br>Indicador numérico para determinar cuando existen mas registros a mostrar - Puede adoptar dos valores 0 - Fin de los datos 1 - Hay más datos<br></td></tr></tbody></table>'
+          schema:
+            $ref: '#/components/schemas/FinancialDataRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialDataResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Account Financial Data
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+components:
+  schemas:
+    ErrorDetailsResponse:
+      type: object
+      properties:
+        dateError:
+          type: string
+          format: date-time
+        message:
+          type: string
+        detail:
+          type: string
+    TransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        sequenceI:
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+        orderI:
+          pattern: '[0-9]{1,9}'
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+        reqNumberI:
+          type: string
+        dateI:
+          type: string
+        reqCodeI:
+          type: string
+        releaseTime:
+          type: string
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    Transaction:
+      type: object
+      properties:
+        operDate:
+          type: integer
+          format: int32
+          example: 20220515
+        postingDate:
+          type: integer
+          format: int32
+          example: 20220517
+        merchantName:
+          type: string
+          example: ARREDO
+        merchantID:
+          type: integer
+          format: int32
+          example: 24049130
+        operType:
+          type: string
+          example: DEBITO
+        operCurrency:
+          type: string
+          example: PESO ARGENTINO
+        operAmountSign:
+          type: string
+          example: +
+        operAmount:
+          type: number
+          format: float
+          example: 1251.11
+        totalInstallments:
+          type: integer
+          format: int32
+          example: 12
+        currentInstallment:
+          type: integer
+          format: int32
+          example: 11
+        totalInstallmentAmountSign:
+          type: string
+          example: +
+        totalInstallmentAmount:
+          type: number
+          format: float
+          example: 15013.34
+        remainingInstallments:
+          type: integer
+          format: int32
+          example: 1
+        remainingInstallmentsAmountSign:
+          type: string
+          example: +
+        remainingInstallmentsAmount:
+          type: number
+          format: float
+          example: 1251.11
+    TransactionsResponse:
+      type: object
+      properties:
+        sequenceO:
+          type: string
+        fragmentMark:
+          type: integer
+          format: int32
+          example: 0
+        orderO:
+          type: integer
+          format: int32
+          example: 0
+        vectorOperacionesMes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    PendingTransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        dateI:
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+        releaseTime:
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+        reqCodeI:
+          pattern: '[CEIP]'
+          type: string
+          description: 'Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse. C=Comercio  E=Entidad I=Miembro ICA P= Pais '
+        reqNumberI:
+          pattern: '[0-9]{1,9}'
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+        sequenceI:
+          type: string
+        orderI:
+          type: string
+      description: Estructura de campos para la solicitud de la API PendingTransactions
+    PendingTransaction:
+      type: object
+      properties:
+        additional:
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+        authDate:
+          type: integer
+          description: Este campo de salida identifica el día en que se realiza la operación / autorización.
+          format: int32
+        authorizationCode:
+          type: string
+          description: Este campo de salida informa el codigo de autorización que brinda el sistema para la transacción realizada y se conforma de 6 digitos numericos.
+        description:
+          type: string
+          description: Nombre del comercio en que realiza la compra o descripcion del movimiento cuando se trata de Campañas de descuentos, Ajustes, y otras acciones.
+        currency:
+          type: string
+          description: Este campo indica la moneda en que se realiza la operación.
+        operAmountSign:
+          type: string
+          description: Identifica el tipo de operación credito o debito según sea el signo.
+        operAmount:
+          type: number
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.
+          format: double
+        totalInstallments:
+          type: integer
+          description: Muestra el plan de cuotas total
+          format: int32
+        merchantID:
+          type: integer
+          description: Numero que identiifca al comercio donde se realiza la operación.
+          format: int32
+      description: Muestra un listado de las transacciones / operaciones pendientes
+    PendingTransactionsResponse:
+      type: object
+      properties:
+        additional:
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+        fragmentMark:
+          type: integer
+          description: 'Indicador numérico para determinar cuando existen más registros a mostrar - Puede adoptar dos valores: 0 = Fin de los datos, 1 = Hay más datos'
+          format: int32
+        dateO:
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+          format: int32
+        releaseTime:
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+        reqCodeO:
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta. C=Comercio  E=Entidad I=Miembro ICA P= Pais
+        reqNumberO:
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+          format: int32
+        pendingTransactions:
+          type: array
+          description: Muestra un listado de las transacciones / operaciones pendientes
+          items:
+            $ref: '#/components/schemas/PendingTransaction'
+      description: Estructura de campos que responde a la API PendingTransactions
+    LastStatementTransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        sequenceI:
+          pattern: '[0-9]{1,4}'
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+        reqNumberI:
+          type: string
+        dateI:
+          type: string
+        reqCodeI:
+          type: string
+        orderI:
+          type: string
+        releaseTime:
+          type: string
+      description: Estructura de campos para la solicitud de la API LastStatementTransactions
+    LastStatementTransaction:
+      type: object
+      properties:
+        additional:
+          type: integer
+          description: 'Este campo de salida, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"  Valores posibles: 1 a 9. En caso de ser socio titular se informará cero'
+          format: int32
+        country:
+          type: string
+          description: Este campo informa el pais donde fue realizada la operación original
+        debitMark:
+          type: string
+          description: Marca que identifica operaciones de Debitos Automaticos, permitiendo la segmentación al mostrar el resumen (Operaciones Contado / Operaciones Cuotas / Operaciones DA)
+        description:
+          type: string
+          description: Nombre del comercio en que realiza la compra o descripcion del movimiento cuando se trata de Campañas de descuentos, Ajustes, y otras acciones.
+        installmentNumber:
+          type: string
+          description: Informa la cuota que se cursa en el resumen, cuota XX de un total del plan de YY cuotas
+        merchantID:
+          type: integer
+          description: Numero que identiifca al comercio donde se realiza la operación.
+          format: int64
+        operAmountSign:
+          type: string
+          description: Identifica el tipo de operación credito o debito según sea el signo.
+        operCurrency:
+          type: string
+          description: Este campo indica la moneda en que se realiza la operación.
+        operationDate:
+          type: integer
+          description: Este campo indica la fecha en que se realiza la operación.
+          format: int64
+        operType:
+          type: string
+          description: Identifica el tipo de operación (Compra / Debito -  Débito Automático - Pago - Reverso Credito ) (Anulacion/Devolución)
+        postingDate:
+          type: integer
+          description: Determina la fecha en que el comercio realiza la presentacion de la transaccion.
+          format: int64
+        operAmount:
+          type: number
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.
+          format: double
+      description: Este campo muestra el listado de operaciones / transacciones incluidas en el último resumen del socio
+    LastStatementTransactionsResponse:
+      type: object
+      properties:
+        cierreCtaCteActual:
+          type: integer
+          description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int64
+        sequenceO:
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+          format: int64
+        transactions:
+          type: array
+          description: Este campo muestra el listado de operaciones / transacciones incluidas en el último resumen del socio
+          items:
+            $ref: '#/components/schemas/LastStatementTransaction'
+      description: Estructura de campos que responde a la API LastStatementTransactions
+    LastStatementDataRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+        additional:
+          type: integer
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int64
+        cardNumber:
+          maxLength: 64
+          minLength: 0
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        fragmentMark:
+          type: integer
+          description: |-
+            Indicador numérico para determinar cuando existen mas registros a mostrar - Puede adoptar dos valores 
+            0 - Fin de los datos
+            1 - Hay más datos
+          format: int32
+        sequenceI:
+          maxLength: 26
+          minLength: 0
+          type: string
+          description: |
+            Campos ECO - Clave para la fragmentación de la consulta.
+            Se ingresan los datos que se obtienen en la primera llamada  -  cuando se indica que la respuesta debió fragmentarse. VC(26) Alfanumérico
+        orderI:
+          type: integer
+          description: |
+            Campos ECO - Clave para la fragmentación de la consulta.
+            Se ingresan los datos que se obtienen en la primera llamada  -  cuando se indica que la respuesta debió fragmentarse. N(09) 
+            Nro. DE ORDEN
+          format: int64
+      description: Estructura de campos para la solicitud de la API LastStatementData
+    LastStatementDataResponse:
+      type: object
+      properties:
+        cierreCtaCteAnterior:
+          type: integer
+          description: Este campo indica la fecha anterior o ultima fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+        previusPaymentDueDate:
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de  Vencimiento de Resumen anterior.
+          format: int32
+        cierreCtaCteActual:
+          type: integer
+          description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+        paymentDueDate:
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de  Vencimiento Actual de Resumen
+          format: int32
+        proximoCierreCtaCte:
+          type: integer
+          description: Este campo proporciona la fecha de proximo cierre de cuenta.
+          format: int32
+        nextPaymentDueDate:
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
+          format: int32
+        cardType:
+          type: string
+          description: Identifica tipo de tarjeta - Para Mastercard se utiliza MC
+        grupoctacte:
+          type: integer
+          description: Este campo de salida, permite ingresar el dato correspondiente al Grupo de cuenta corriente al que pertenecen las cuentas listadas del tarjetahabiente. Valores posibles  11 12 13 14  (que configuran las fechas correspondientes a movimientos y cálculos en  cierres y vencimientos)
+          format: int32
+        currentBalanceSignLOC:
+          type: string
+          description: Este campo identifica el signo corespondiente al saldo actual en moneda local.
+        currentBalanceLOC:
+          type: number
+          description: Este campo detalla el saldo actual en moneda local.
+        currentBalanceSignUSD:
+          type: string
+          description: Este campo identifica el signo corespondiente al saldo actual en moneda extranjera.
+        currentBalanceUSD:
+          type: number
+          description: Este campo detalla el saldo actual en moneda extranjera.
+        minPaySign:
+          type: string
+          description: Este campo informa el signo para el pago minimo.
+        minimumPay:
+          type: number
+          description: Este campo de salida, proporciona la información correspondiente importe de Pago Mínimo.
+        minPayDueDate:
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de vencimiento de Pago Mínimo
+        fullName:
+          type: string
+          description: Este campo de salida, permite el ingreso del Apellido y Nombre de la persona, a la cual se le emitirá la tarjeta de crédito.
+        bankBarCode:
+          type: integer
+          format: int32
+        branchBarCode:
+          type: integer
+          format: int32
+        ProductBarCode:
+          type: integer
+          format: int32
+        DVbankBarCode:
+          type: integer
+          format: int32
+        L137CodProd:
+          type: integer
+          format: int32
+        L137EntUnif:
+          type: integer
+          format: int32
+        L137NroSocio:
+          type: integer
+          format: int32
+        L137TipoMoneda:
+          type: integer
+          format: int32
+        L137SignoPMin:
+          type: integer
+          format: int32
+        L137PagoMin:
+          type: integer
+          format: int32
+        L137SignoSTot:
+          type: integer
+          format: int32
+        L137SaldoTotal:
+          type: integer
+          format: int32
+        L137DigVer:
+          type: integer
+          format: int32
+        L105CodProd:
+          type: integer
+          format: int32
+        L105EntUnif:
+          type: integer
+          format: int32
+        L105NroSocio:
+          type: integer
+          format: int32
+        L105TipoMoneda:
+          type: integer
+          format: int32
+        L105SignoSTot:
+          type: integer
+          format: int32
+        L105SaldoTotal:
+          type: integer
+          format: int32
+        L105DigVer:
+          type: integer
+          format: int32
+        L112Relleno:
+          type: integer
+          format: int32
+        L112TipoMoneda:
+          type: integer
+          format: int32
+        L112Cuenta:
+          type: integer
+          format: int32
+        L112additional:
+          type: integer
+          format: int32
+        L112DVSocio:
+          type: integer
+          format: int32
+        L112DVEan13:
+          type: integer
+          format: int32
+        L87Relleno:
+          type: integer
+          format: int32
+        L87TipoMoneda:
+          type: integer
+          format: int32
+        L87Cuenta:
+          type: integer
+          format: int32
+        L87additional:
+          type: integer
+          format: int32
+        L87DVSocio:
+          type: integer
+          format: int32
+        L87DVEan13:
+          type: integer
+          format: int32
+      description: Estructura de campos que responde la API LastStatementData
+    FinancialDataRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+        additional:
+          type: integer
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int64
+        cardNumber:
+          maxLength: 64
+          minLength: 0
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        fragmentMark:
+          type: integer
+          description: |-
+            Indicador numérico para determinar cuando existen mas registros a mostrar - Puede adoptar dos valores 
+            0 - Fin de los datos
+            1 - Hay más datos
+          format: int32
+        sequenceI:
+          maxLength: 26
+          minLength: 0
+          type: string
+          description: |
+            Campos ECO - Clave para la fragmentación de la consulta.
+            Se ingresan los datos que se obtienen en la primera llamada  -  cuando se indica que la respuesta debió fragmentarse. VC(26) Alfanumérico
+        orderI:
+          type: integer
+          description: |
+            Campos ECO - Clave para la fragmentación de la consulta.
+            Se ingresan los datos que se obtienen en la primera llamada  -  cuando se indica que la respuesta debió fragmentarse. N(09) 
+            Nro. DE ORDEN
+          format: int64
+      description: Estructura de campos para la solicitud de la API AccountFinData
+    FinancialDataResponse:
+      type: object
+      properties:
+        availReturnCodeDescr:
+          type: string
+          description: Descripción del codigo de respuesta para el retorno de consulta de disponibles.
+        creditLimit:
+          type: number
+          description: Este campo de salida informa el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente
+        installmentsLimit:
+          type: number
+          description: Este campo de salida informa el limite total para realizar operaciones en cuotas.
+        cashAdvanceLimit:
+          type: number
+          description: Este campo de salida informa el limite asignado para realizar adelantos.
+        availCreditLimit:
+          type: number
+          description: Este campo de salida informa el disponible para realizar operaciones de contado.
+        availInstallmentAmount:
+          type: number
+          description: Este campo de salida informa el disponible para realizar operaciones en cuotas.
+        availCashAdvance:
+          type: number
+          description: Este campo de salida informa el disponible para realizar adelantos en efectivo.
+        grupoctacte:
+          type: integer
+          description: Este campo de salida, permite ingresar el dato correspondiente al Grupo de cuenta corriente al que pertenecen las cuentas listadas del tarjetahabiente. Valores posibles  11 12 13 14  (que configuran las fechas correspondientes a movimientos y cálculos en  cierres y vencimientos)
+          format: int32
+        cierreCtaCteAnterior:
+          type: integer
+          description: Este campo indica la fecha anterior o ultima fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+        previusPaymentDueDate:
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de  Vencimiento de Resumen anterior.
+          format: int32
+        cierreCtaCteActual:
+          type: integer
+          description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+        paymentDueDate:
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
+          format: int32
+        proximoCierreCtaCte:
+          type: integer
+          description: Este campo proporciona la fecha de proximo cierre de cuenta.
+          format: int32
+        nextPaymentDueDate:
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
+          format: int32
+        dailyFinRateLOC:
+          type: number
+          description: Este campo informa la tasa  diaria de financiaciónpara moneda local.
+        dailyFinRateDOL:
+          type: number
+          description: Este campo informa la tasa  diaria de financiaciónpara  moneda local.
+        dailyCompensatoryRateLOC:
+          type: number
+          description: Este campo informa la tasa de intereses compensatorios para moneda local.
+        dailyCompensatoryRateUSD:
+          type: number
+          description: Este campo informa la tasa de intereses compensatorios para moneda extranjera.
+        dailyPunitiveRateLOC:
+          type: number
+          description: Este campo devuelve la tasa diaria correspondiente a punitorios en moneda local
+        dailyPunitiveRateDOL:
+          type: number
+          description: Este campo devuelve la tasa diaria correspondiente a punitorios en dólares
+        TEMLoc:
+          type: number
+          description: Este campo informa la Tasa efectiva mensual en moneda local.
+        TEMDol:
+          type: number
+          description: Este campo informa la Tasa Efectiva Mensual en moneda extranjera.
+        TNALoc:
+          type: number
+          description: Este campo informa la tasa nominal anual para moneda local.
+        TNADol:
+          type: number
+          description: Este campo informa la tasa nominal anual para moneda extranjera.
+      description: Estructura de campos que responde la API AccountFinData

@@ -1,6 +1,6 @@
 # Release Notes
 
-March 03 2022
+September 15 2023
 
 ## v1.0.0 (api version)
 
@@ -25,5 +25,4 @@ March 03 2022
 - N/A
 
 
-March 03 2023
-
+September 15 2023
