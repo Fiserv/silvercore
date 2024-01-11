@@ -27,12 +27,41 @@
 # are granted or extended by this work or 
 # the delivery of this work
 ################################################################################
+- sections:
+    - title: Getting Started
+      link: docs/getting-started.md
 
 - sections:
+  - title: Introduction
+    link: docs/1-introduction.md
+    access: public
+    groups: []
+    open: true
   - title: Getting Started
     link: docs/getting-started.md
+    access: public
+    groups: []
+    open: true
+    sections:
+    - title: API Reference
+      sections:
+        - title: Account
+          link: docs/api-reference/1-account.md
+        - title: Cards
+          link: docs/api-reference/2-cards.md
+        - title: Transactions
+          link: docs/api-reference/3-finantial.md
+    - title: Main Cases
+      sections:
+        - title: Audit and Monitoring
+          link: docs/main-cases/15-audit.md
+        - title: HMAC Signature
+          link: docs/main-cases/16-hmac.md  
 - sections:
   - title: Release notes
+    access: public
+    groups: []
+    open: true
     sections:
     - title: March 2022
       link: docs/release-notes/2022/march.md

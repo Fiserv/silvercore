@@ -28,43 +28,65 @@
 # the delivery of this work
 ################################################################################
 header:
-  productName: REPLACEME
-  productionDescription: REPLACEME
-  whoIsItFor: REPLACEME
-  image: 
-    link: "/assets/images/Fiserv_Logo.jpg"
-    altText: REPLACEME™
+#  productName: FirstVision - LATAM
+#  whoIsItFor: LATAM
+#  image: 
+#    link: "/assets/images/Fiserv_Logo.jpg"
+#    altText: FirstVision - LATAM™
+  productionDescription: Expand your business’ reach by taking the acceptance process to a different level. SILVERCORE ™ is our processing solution that meets your challenges head-on and transforms your technology capability. We provide an end-to-end solution. SILVERCORE™ Restful APIs enable you to achieve platform modernization and competitive edge delivering the following benefits to your business. Banking Issuers, Financial Institutions can rely on Fiserv for innovative solutions and services that offer a wide range of functionalities, such as account and card processing, tokenization validations, digital wallets;  also payment services, risk and fraud management, data analysis, cardholder call center and other needs for the payments business.
+getStarted: /docs/getting-started.md
+guides:
+  - title: Introduction
+    description: Introduction for Silvercore APIS.
+    link: docs/1-introduction.md
+benefits:
+  - title: Time to Market
+    description: Service-based architecture with API enabled and a fully integrated suite of solutions ensures quicker application development and integration.
+    icon: assets/images/time.jpg
+  - title: Transform Business
+    description: Platform architecture built around technology simplification and leveraging open APIs, reducing the cost of change and meeting the innovation.
+    icon: assets/images/transform1.png
+  - title: Speed to Market
+    description: SILVERCORE™ oriented architecture with open APIs enables service consumption rather than change management.
+    icon: assets/images/transform.png
 featuredFeatures:
-  - title: REPLACE ME
-    description:  REPLACE ME
-    tags: ["REPLACEME", "REPLACEME", "REPLACEME"]
-    bullets: ["REPLACEME", "REPLACEME" ]  
+  - title: Accounts
+    description: We offer different inquiries via Restful that allows to show account information and it´s components(main account + additionals). It also offer other satellite actions such as limit management, travel notification, card turn off, among others.
+    featured: true
     relatedDocs:
-      - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME1.md
-      - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME2.md
-      - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME3.md
+    - link: docs/api-reference/1-account.md
+      title: Accounts
     relatedAPIs:
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "patch"        
-        path: "/v1/REPLACEME1"
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "post"        
-        path: "/v1/REPLACEME2"
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "get"        
-        path: "/v1/REPLACEME3"
+    - title: Accound availability
+      type: "post"
+      path: "/accounts/availability"
+  - title: Cards
+    description: We provide APIs designed for credit and prepaid card management to support account/card sign-up,  lifecycle and other additional processing actions. Includes card level features such as card activation, issue, reissue, lost and stolen, replacement, Secured PIN management, card details, etc.
+    featured: true
+    relatedDocs:
+    - link: docs/api-reference/2-cards.md 
+      title: Cards
+    relatedAPIs:
+    - title: Instant Issuance
+      type: "put"
+      path: "/cards/instantIssuance"
+  - title: Transactions
+    description: Provides account and card transactional details. Statements Financial status and online transactional activity. Also offer different options for installment conversion for purchases or statement, and information for previous inquiries.
+    featured: true
+    relatedDocs:
+    - link: docs/api-reference/3-finantial.md 
+      title: Transactions
+    relatedAPIs:
+    - title: Selected Transactions
+      type: "get"
+      path: "/financialInformation/pendingTransactions"
+  # - title: Installment
+  #   description: We provide APIs designed for credit and prepaid card management to support account/card/financial info/ sign-up,  lifecycle and other additional processing actions. Includes card level features such as card activation, issue, reissue, lost and stolen, replacement, Secured PIN management, card details, etc.
+  #   featured: true
+  #   relatedDocs:
+  #   - link: docs/api-reference/4-installment.md 
+  #     title: Installment
+  #   relatedAPIs:
+  #   - title: Selected Transactions
+  #     type: "post"
+  #     path: "/purchaseInstallmentConversion/selectedTransactions"
