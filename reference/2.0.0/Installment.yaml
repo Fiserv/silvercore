@@ -1,0 +1,1513 @@
+openapi: 3.0.1
+info:
+  title: Silvercore™ Financial Installment Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
+servers:
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
+paths:
+  /transactions/statementPayment:
+    post:
+      tags:
+        - Statement Payment
+      summary: Esta API permite a la entidad enviar Pagos/Ajustes en Línea.
+      operationId: payment
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryPaymentRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummaryPaymentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Payment
+      x-group-name: Statement Payment
+      x-child-product-name: Statement Payment
+  /purchaseInstallmentConversion/transactions:
+    post:
+      tags:
+        - Purchases
+      summary: La consulta proporciona el listado de hasta 100 consumos en condiciones de ser cuotificados, de acuerdo a la configuración de la línea de préstamo generada por el emisor.
+      operationId: getTransactions
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Purchases
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
+  /purchaseInstallmentConversion/selectedTransactions:
+    post:
+      tags:
+        - Purchases Selection
+      summary: Genera la lista de consumos seleccionados por el cliente para ser cuotificados, con esta información, el sistema totaliza, calcula y  devuelve las simulaciones de los posibles planes.
+      operationId: saveSelectedTransactions
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectedTransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectedTransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Purchases Selection
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
+  /purchaseInstallmentConversion/plans:
+    post:
+      tags:
+        - Plans
+      summary: Retorna la simulación de planes de acuerdo a la configuración, esta consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o Conversion Contado a Cuotas.
+      operationId: getPlans
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailableInstallmentPlansRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableInstallmentPlansResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Plans
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
+  /purchaseInstallmentConversion/installmentConversion:
+    post:
+      tags:
+        - Installment Conversion
+      summary: |-
+        Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos.
+        Nota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación.
+      operationId: installmentConversion
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstallmentConversionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallmentConversionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Installment Conversion
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Purchase Installment Conversion
+  /installmentConversionHistory/transactionConversion:
+    post:
+      tags:
+        - Transaction Conversion
+      summary: La consulta permite listar todos los planes de cuotificación de consumos como cuotificación de saldos ya sean cuotas vigentes como no vigentes en las liquidaciones del cliente.
+      operationId: getCurrentTransactionConversions
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryInstallmentsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryInstallmentsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Transaction Conversion
+      x-group-name: Installment Conversion History
+      x-child-product-name: Installment Conversion History
+  /balanceInstallmentConversion/plans:
+    post:
+      tags:
+        - Plans
+      summary: Retorna la simulación de planes de acuerdo a la configuración, esta consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o  Refinanciación de Saldo.
+      operationId: getPlans_1
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/BalanceInstallmentPlansRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceInstallmentPlansResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Plans
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Balance Installment Conversion
+  /balanceInstallmentConversion/installmentConversion:
+    post:
+      tags:
+        - Installment Conversion
+      summary: "Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos.\r\nNota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación."
+      operationId: getAlta
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AltaCuotificacionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AltaCuotificacionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Installment Conversion
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Balance Installment Conversion
+  /balanceInstallmentConversion/balance:
+    post:
+      tags:
+        - Balance
+      summary: "La consulta inicial devuelve información de Saldos, Pagos mínimos y Pagos realizados; así como Ajustes en moneda $ y U$D  junto con el Saldo Consolidado, correspondiente al que el cliente podrá convertir total o parcialmente a un plan de  cuotas y liberar disponible al momento. \r\nEste monto se calcula en base a los parámetros que el emisor configure previamente en la aplicación de prestamos."
+      operationId: getBalance
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-contex
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/BalanceInstallmentConversionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceInstallmentConversionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Balance
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Balance Installment Conversion
+components:
+  schemas:
+    ErrorDetailsResponse:
+      type: object
+      properties:
+        dateError:
+          type: string
+          format: date-time
+        message:
+          type: string
+        detail:
+          type: string
+    SummaryPaymentRequest:
+      required:
+        - operAmount
+        - operCurrency
+        - operId
+        - operType
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        operId:
+          pattern: '[0-9]{1,8}'
+          type: string
+          description: Indica el id de la compra/transacción.
+          example: '99999999'
+        operAmount:
+          pattern: ^[0-9]{1,13}([.][0-9]{1,2})?$
+          type: string
+          description: Valor de la operación pactada por el cliente. Importe del Pago/Ajuste.
+          example: '99999.99'
+        operCurrency:
+          type: string
+          description: 'Moneda en que se realiza la operación. Ej: ARS=32, UYU=858, USD=840'
+          example: '32'
+        operType:
+          pattern: 0|1|2
+          type: string
+          description: 'Valor numérico de un digito que representa el tipo de movimiento. 0: ajuste débito, 1: ajuste crédito, 2: Pago'
+          example: '1'
+        flagDollar:
+          type: string
+          description: 'El campo indica el tipo de pago en dolares, D: dólar billete (devuelve impuesto país), N: pago en dólares con pesos (no devuelve impuesto país)'
+          example: D
+    SummaryPaymentResponse:
+      type: object
+      properties:
+        codigoAutorizacion:
+          type: string
+          example: WOD0000M
+        idPago:
+          type: string
+          example: '610020000000'
+      description: Estructura de campos que responde la API Pago Resumen
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    TransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        lastTransactionId:
+          type: integer
+          description: Este campo de entrada identifica el id de la última compra/transacción devuelta en una llamada anterior
+          format: int32
+    Transaction:
+      required:
+        - additional
+        - currencyCode
+        - date
+        - description
+        - id
+        - transactionAmount
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Este campo de salida indica el id de la compra/transacción
+          format: int32
+          example: 1
+        date:
+          type: string
+          description: Este campo de salida indica la fecha de la compra/transacción
+          format: date
+          example: '2004-03-23'
+        description:
+          maxLength: 22
+          minLength: 0
+          type: string
+          description: Este campo de salida indica la descripción de la compra/transacción
+          example: PASCO COMERCIAL SA
+        additional:
+          type: integer
+          description: Este campo de salida indica quién realizó la compra/transacción
+          format: int32
+          example: 0
+        currencyCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Este campo de salida indica la moneda en la que se realizó la compra/transacción
+          example: ARS
+        transactionAmount:
+          type: string
+          description: Este campo de salida indica el importe de la compra/transacción
+          example: '+8916.54'
+      description: Este campo de salida muestra un listado con todas las compras/transacciones cuotificables
+    TransactionsResponse:
+      required:
+        - exchangeRateUSD_PES
+        - more
+      type: object
+      properties:
+        transactions:
+          maxItems: 100
+          minItems: 0
+          type: array
+          description: Este campo de salida muestra un listado con todas las compras/transacciones cuotificables
+          items:
+            $ref: '#/components/schemas/Transaction'
+        exchangeRateUSD_PES:
+          type: number
+          description: Este campo de salida indica la cotización USD-PES
+          format: float
+          example: 96.41
+        more:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo de salida indica si existe más compras/transacciones cuotificables por consultar
+          example: '100'
+    SelectedTransactionsRequest:
+      required:
+        - selectedTransactionIds
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        selectedTransactionIds:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
+          items:
+            type: integer
+            description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
+            format: int32
+    SelectedTransactionsResponse:
+      type: object
+      properties:
+        returnCode:
+          type: integer
+          description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema
+          format: int32
+          example: 0
+        returnCodeDescription:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema
+          example: TRANSACCIÓN PROCESADA
+    AvailableInstallmentPlansRequest:
+      required:
+        - amountPesos
+        - amountUSD
+        - totalAmount
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        amountPesos:
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda local a cuotificar
+        amountUSD:
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar
+        totalAmount:
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: Este campo de entrada permite ingresar el monto total a cuotificar expresado en pesos
+    AvailableInstallmentPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Este campo de salida indica el id del plan
+          format: int32
+          example: 1
+        enabled:
+          type: string
+          description: Este campo indica si el plan se encuentra habilitado o no
+          example: S
+        quantityInstallments:
+          type: integer
+          description: Este campo de salida indica la cantidad de cuotas del plan
+          format: int32
+          example: 2
+        installmentAmount:
+          type: number
+          description: Este campo de salida indica el importe de la cuota
+          format: double
+          example: 50000
+        tna:
+          type: number
+          description: Este campo de salida indica la tasa nominal anual del plan
+          format: double
+          example: 0
+        lifeAssurance:
+          type: number
+          description: Este campo de salida indica el importe del seguro de vida
+          format: double
+          example: 0
+        grantFee:
+          type: number
+          description: Este campo de salida indica el importe del cargo por otorgamiento
+          format: double
+          example: 0
+        cft:
+          type: string
+          description: Este campo de salida indica el costo financiero total del plan
+          example: 0,00%
+        amortizationSystemId:
+          type: string
+          description: Este campo de salida muestra el identificador del sistema de amortización
+          example: F
+        amortizationSystemDescription:
+          type: string
+          description: Este campo de salida muestra la descripción del sistema de amortización
+          example: FRANCES
+        rateTypeId:
+          type: string
+          description: Este campo de salida muestra el identificador del tipo de tasa
+          example: F
+        rateTypeDescription:
+          type: string
+          description: Este campo de salida muestra la descripción del tipo de tasa
+          example: FIJA
+      description: Este campo de salida muestra el listado de planes de pago disponibles
+    AvailableInstallmentPlansResponse:
+      type: object
+      properties:
+        availableInstallmentPlans:
+          type: array
+          description: Este campo de salida muestra el listado de planes de pago disponibles
+          items:
+            $ref: '#/components/schemas/AvailableInstallmentPlan'
+        iva:
+          type: string
+          description: Este campo de salida indica la alícuota aplicable referente al impuesto al valor agregado.
+          example: 21.00%
+    InstallmentConversionRequest:
+      required:
+        - cvv
+        - expirationDate
+        - installmentPlanId
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        installmentPlanId:
+          type: integer
+          description: Este campo de entrada indica el id del plan seleccionado
+          format: int32
+        cvv:
+          pattern: '[0-9A-F]{32}$'
+          type: string
+          description: Este campo de entrada indica el cvc encriptado de la tarjeta
+        expirationDate:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo contiene el dato Vencimiento de Tarjeta encriptado
+    InstallmentConversionResponse:
+      type: object
+      properties:
+        authorizationCode:
+          type: string
+          description: Este campo de salida informa el código de autorización del plan de pago
+          example: '636935'
+    QueryInstallmentsRequest:
+      required:
+        - destino
+        - estado
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+        destino:
+          pattern: 99|RS|PP|CR|PC|RD
+          type: string
+          description: Este campo de entrada permite ingresar el destino de los planes realizados que se desea consultar
+        estado:
+          pattern: '[1,2,3,4,8]{1}'
+          type: string
+          description: Este campo de entrada permite ingresar el estado de de los planes realizados que se desea consultar
+    Installment:
+      type: object
+      properties:
+        operationDate:
+          type: string
+          description: Este campo de salida indica la fecha de la operación
+          format: date
+          example: '2023-07-01'
+        authorizationCode:
+          type: string
+          description: Este campo de salida informa el código de autorización del plan de pago
+          example: '41030'
+        installmentsQuantity:
+          type: integer
+          description: Este campo de salida indica la cantidad de cuotas del plan
+          format: int32
+          example: 6
+        currentInstallment:
+          type: integer
+          description: Este campo de salida indica la cuota vigente del plan
+          format: int32
+          example: 0
+        currencyCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Este campo de salida indica el código de moneda del plan
+          example: ARS
+        amount:
+          type: number
+          description: Este campo de salida indica el importe de la cuota
+          format: float
+          example: 1000
+        rate:
+          type: number
+          description: Este campo de salida indica la tasa del plan
+          format: float
+          example: 23
+        idPlan:
+          type: integer
+          description: Este campo de salida indica el id del plan
+          format: int32
+          example: 1
+        cft:
+          type: string
+          description: Este campo de salida indica el costo financiero total del plan
+          example: 31,00%
+      description: Este campo de salida muestra un listado de planes de pago
+    QueryInstallmentsResponse:
+      type: object
+      properties:
+        installmentPlans:
+          type: array
+          description: Este campo de salida muestra un listado de planes de pago
+          items:
+            $ref: '#/components/schemas/Installment'
+    BalanceInstallmentPlansRequest:
+      required:
+        - amountARS
+        - amountUSD
+        - cardLast4
+        - currencyPlan
+        - financeTotalAmount
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]{1}'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        currencyPlan:
+          pattern: '[0-9]{2}'
+          type: string
+          description: El tipo de moneda
+        financeTotalAmount:
+          pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: 'Monto a financiar 9999999999999.999 Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
+        amountARS:
+          pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
+        amountUSD:
+          pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
+        cardLast4:
+          pattern: '[0-9]{4}'
+          type: string
+          description: Ultimos 4 digitos de la tarjeta.
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+    BalanceInstallmentPlan:
+      type: object
+      properties:
+        enable:
+          type: string
+          description: Indicador si está habilitado el plan “S” o “N”
+          example: S
+        quantityInstallments:
+          type: integer
+          description: Cantidad de cuotas totales del plan
+          format: int32
+          example: 2
+        installment:
+          type: string
+          description: Valor de cada cuota
+          example: '+0000000000403900'
+        amortizationSystemId:
+          type: string
+          description: Código Amortización
+          example: F
+        amortizationSystemDescription:
+          type: string
+          description: Descripción amortización
+          example: FRANCES
+        rateTypeId:
+          type: string
+          description: Código de tasa
+          example: F
+        rateTypeDescription:
+          type: string
+          description: Descripción de la tasa
+          example: FIJA
+        grantFee:
+          type: string
+          description: Costo de Otorgamiento
+          example: '+0000000000000000'
+        lifeAssuranceAmount:
+          type: string
+          description: Impuesto seguro de vida
+          example: '+0000000000000000'
+        tna:
+          type: string
+          description: T.N.A (tasa nominal anual)
+          example: '+062000'
+        id:
+          type: integer
+          description: Número de plan
+          format: int32
+          example: 1
+        cfn:
+          type: string
+          description: Cft Costo financiero total
+          example: 106,84%
+    BalanceInstallmentPlansResponse:
+      type: object
+      properties:
+        listaPlanesHabilitados:
+          $ref: '#/components/schemas/ListBalanceInstallmentPlans'
+      description: Estructura de campos que responde la API Balance Planes
+    ListBalanceInstallmentPlans:
+      type: object
+      properties:
+        planesHabilitadosOperacion:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceInstallmentPlan'
+      description: Estructura de campos que agrupa a los planes
+    AltaCuotificacionRequest:
+      required:
+        - cvv
+        - expirationDate
+        - installmentPlanId
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: '[0-9]{1}'
+          type: string
+          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+        installmentPlanId:
+          pattern: '[0-9]{2}'
+          type: string
+        cvv:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada indica el cvc encriptado de la tarjeta
+        expirationDate:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo contiene el dato Vencimiento de Tarjeta encriptado
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+    AltaCuotificacionResponse:
+      type: object
+      properties:
+        authorizationCode:
+          type: string
+          description: Código de autorización
+          example: '636901'
+      description: Estructura de campos que responde la API Alta Cuotificacion
+    BalanceInstallmentConversionRequest:
+      type: object
+      properties:
+        accountNumber:
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+        additional:
+          pattern: ^[0-9]{1}
+          type: string
+          description: Este campo de entrada proporciona el código de la entidad del tarjetahabiente.
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+    BalanceInstallmentConversionResponse:
+      type: object
+      properties:
+        fechaUltimaCtaCorriente:
+          type: string
+          description: Fecha de ultimo cierre de cuenta corriente
+          example: '30122023'
+        fechaUltimoPagoMin:
+          type: string
+          description: Fecha de Ultimo Vencimiento de Pago Mínimo
+          example: '24112023'
+        fechaProximaCtaCorriente:
+          type: string
+          description: Fecha próximo cierre de cuenta corriente
+          example: '29012024'
+        saldoAnteriorPesos:
+          type: string
+          description: Último Saldo Liquidado en Pesos
+          example: '+0000000088648630'
+        saldoAnteriorDolares:
+          type: string
+          description: Último saldo liquidado Dólares
+          example: '+0000000000000000'
+        ajusteSaldoAntPesos:
+          type: string
+          description: Ajuste Ultimo Saldo Pesos
+          example: '+0000000000000000'
+        ajustePagoMinPesos:
+          type: string
+          description: Ajuste Pago Mínimo en Pesos
+          example: '+0000000000000000'
+        ajusteSaldoAntDolares:
+          type: string
+          description: Ajuste Ultimo Saldo Dólares
+          example: '+0000000000000000'
+        ajustePagoMinDolares:
+          type: string
+          description: Ajuste Pago Mínimo en Dólares
+          example: '+0000000000000000'
+        pagosPesos:
+          type: string
+          description: Pagos Realizados Pesos
+          example: '-0000000056000000'
+        pagosDolares:
+          type: string
+          description: Pagos Realizados Dólares
+          example: '+0000000000000000'
+        pagoMinimo:
+          type: string
+          description: Pago mínimo
+          example: '+0000000040740000'
+        cotizacionDolarPeso:
+          type: number
+          description: Cotización dólar pesos (pesificado - de dólar a pesos)
+          example: 96.41
+        cotizacionPesoDolar:
+          type: number
+          description: Cotización pesos dólar (para cotización en dólares)
+          example: 96.41
+        saldoConsMonedaLocal:
+          type: string
+          description: Saldo consolidado en moneda local (saldo pesificado)
+          example: '+0000000032648630'
+        saldoConsMonedaDolar:
+          type: string
+          description: Saldo consolidado en moneda dólar (saldo dolarizado)
+          example: '+0000000000337940'
+        topePagoMinMonedaLoc:
+          type: string
+          description: Tope Pago mínimo moneda local
+          example: '+0000000000100000'
+        topePagoMinMonedaDolar:
+          type: string
+          description: Tope pago mínimo moneda dólar
+          example: '+0000000000001040'
