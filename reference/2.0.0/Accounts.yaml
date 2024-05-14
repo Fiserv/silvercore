@@ -128,7 +128,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Trip Log PUT
+      x-proxy-name: Trip Log ABM
       x-group-name: Account
       x-child-product-name: Accounts
     post:
@@ -221,7 +221,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Trip Log GET
+      x-proxy-name: Trip Log Status
       x-group-name: Account
       x-child-product-name: Accounts
   /accounts/tripLog/delete:
@@ -315,7 +315,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: Trip Log DELETE
+      x-proxy-name: Trip Log Baja
       x-group-name: Account
       x-child-product-name: Accounts
   /accounts/limitIncrease:
@@ -684,15 +684,17 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          example: '5'
+          format: int32
+          example: 5
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         countriesList:
           maxItems: 5
           minItems: 5
@@ -701,6 +703,19 @@ components:
           items:
             $ref: '#/components/schemas/Country'
       description: Estructura de campos que responde a la API TripLog
+    Account:
+      type: object
+      properties:
+        additional:
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 5
+        countriesList:
+          type: array
+          description: Este campo de salida, proporciona los datos de los registros de viajes
+          items:
+            $ref: '#/components/schemas/Country'
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -714,18 +729,6 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
-    Account:
-      type: object
-      properties:
-        additional:
-          type: string
-          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          example: '5'
-        countriesList:
-          type: array
-          description: Este campo de salida, proporciona los datos de los registros de viajes
-          items:
-            $ref: '#/components/schemas/Country'
     TripLogRequest:
       type: object
       properties:
@@ -733,15 +736,17 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          example: '5'
+          format: int32
+          example: 5
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
       description: Estructura de campos para la solicitud de la API TripLog
     TripLogResponse:
       type: object
@@ -765,33 +770,41 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         requestNumber:
-          pattern: ^[0-9]{1,6}
-          type: string
+          type: integer
           description: Número de solicitud
+          format: int32
+          example: 194
         bankBranch:
-          pattern: '[0-9]{3}'
-          type: string
+          type: integer
           description: Identificador de Sucursal
+          format: int32
+          example: 125
         checkDigit:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Dígito Verificador
+          format: int32
+          example: 0
         newLimit:
-          pattern: '[0-9]{1,15}'
-          type: string
+          type: integer
           description: Nuevo Límite
+          format: int32
+          example: 500000
         deadline:
           type: string
           description: Fecha de finalización
+          example: '010624'
     LimitIncreaseResponse:
       type: object
       properties:
@@ -813,10 +826,12 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
           type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
           format: int32
+          example: 0
       description: Estructura de campos para la solicitud de la API Reissue Card
     Card:
       type: object
@@ -852,22 +867,26 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         blockActivateCode:
           pattern: 0|7
           type: string
           description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo o activación. 0 - permite listar tarjetas para activar, 7 - permite listar tarjetas para denunciar.
+          example: '0'
         additional:
-          pattern: ^[0-9]{1}
-          type: string
+          type: integer
           description: Esta campo de entrada, permite ingresar el número de Autorizado. 0 - tarejtas de la cuenta, [1-9] - tarjetas del autorizado.
+          format: int32
+          example: 0
       description: Estructura de campos para la solicitud de la API Card Holders
     CardAccount:
       type: object
       properties:
         additional:
-          type: string
+          type: integer
           description: Este campo de salida complementa al dato cuenta para identificar unívocamente titulares y adicionales de la misma. Conocido también como Autorizado.
-          example: '0'
+          format: int32
+          example: 0
         fullName:
           type: string
           description: Este campo de salida proporciona la información del apellido y nombre del solicitante de la tarjeta de crédito.
