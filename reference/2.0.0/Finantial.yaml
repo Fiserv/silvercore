@@ -506,22 +506,26 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         sequenceI:
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
           example: '5689'
         orderI:
-          pattern: '[0-9]{1,9}'
-          type: string
+          type: integer
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+          format: int32
+          example: 0
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -616,14 +620,17 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         dateI:
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
@@ -636,10 +643,12 @@ components:
           pattern: '[CEIP]'
           type: string
           description: 'Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse. C=Comercio  E=Entidad I=Miembro ICA P= Pais '
+          example: C
         reqNumberI:
-          pattern: '[0-9]{1,9}'
-          type: string
+          type: integer
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+          format: int32
+          example: 0
       description: Estructura de campos para la solicitud de la API PendingTransactions
     PendingTransaction:
       type: object
@@ -730,18 +739,22 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         sequenceI:
           pattern: '[0-9]{1,4}'
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse.
+          example: '1'
       description: Estructura de campos para la solicitud de la API LastStatementTransactions
     LastStatementTransaction:
       type: object
@@ -830,6 +843,7 @@ components:
           type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
           format: int64
+          example: 0
         cardNumber:
           pattern: ^[0-9A-F]{64}
           type: string
@@ -1167,3 +1181,4 @@ components:
           description: Este campo informa la tasa nominal anual para moneda extranjera.
           example: 0
       description: Estructura de campos que responde la API AccountFinData
+  

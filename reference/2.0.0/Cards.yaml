@@ -503,7 +503,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: On Off
+      x-proxy-name: On Off Status
       x-group-name: Card
       x-child-product-name: Cards
   /cards/instantIssuance:
@@ -1094,18 +1094,22 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         bankBranch:
-          pattern: '[0-9]{1,3}'
-          type: string
+          type: integer
           description: Identificador de Sucursal
+          format: int32
+          example: 562
         operationDate:
           maxLength: 6
           minLength: 5
@@ -1113,21 +1117,15 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación
           example: '2023-08-24'
         requestNumber:
-          pattern: ^[0-9]{1,6}
-          type: string
+          type: integer
           description: Número de solicitud
+          format: int32
+          example: 68
         issuingType:
           pattern: F|V|
           type: string
           description: Este campo permite ingresar el formato en que se emitira la tarjeta, puede tomar valores V para tarjetas emitidas solo en formato Virtual/Digital; F para tarjetas Físicas donde se generará el plástico para ser entregado o valor Vacio cuando no haya decisión al respecto.
           example: F
-    VirtualCardResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: NOVEDAD CARGADA CON EXITO
-      description: Estructura de campos que responde la API Virtual Card
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -1141,6 +1139,13 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    VirtualCardResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: NOVEDAD CARGADA CON EXITO
+      description: Estructura de campos que responde la API Virtual Card
     ReplacementRequest:
       required:
         - branchNumber
@@ -1155,14 +1160,17 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: ^[0-9]{1,3}
-          type: string
+          type: integer
           description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          format: int32
+          example: 0
         cardNumber:
           pattern: ^[0-9A-F]{64}
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         operationDate:
           maxLength: 10
           minLength: 10
@@ -1209,13 +1217,15 @@ components:
           description: Esto campo de entrada, permite ingresar el dato correspondiente al nombre o descripción del grupo de afinidad.
           example: APIS
         reissueCode:
-          pattern: 1|2|3|4|6|10
-          type: string
+          type: integer
           description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo y/o reimpresion.
+          format: int32
+          example: 1
         issuingType:
           pattern: 'F|V|| '
           type: string
           description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
+          example: F
       description: Estructura de campos para la solicitud de la API Replacement Card
     ReplacementResponse:
       type: object
@@ -1234,20 +1244,20 @@ components:
           description: Este campo de entrada, permite ingresar la dirección donde se hará el envío.
           example: Av. San Martín 1870
         nroPiso:
-          pattern: '[0-9]{0,2}'
-          type: string
+          type: integer
           description: Este campo de entrada, permite ingresar el numero de piso donde se hará el envío.
-          example: '2'
+          format: int32
+          example: 2
         dpto:
           pattern: '[a-z,A-Z]{0,1}'
           type: string
           description: Este campo de entrada, permite ingresar el departamento donde se hará envío
           example: A
         codProv:
-          pattern: '[0-9]{1,2}'
-          type: string
+          type: integer
           description: Este campo de entrada, permite ingresar el codigo de provincia a donde se hará el envío.
-          example: '2'
+          format: int32
+          example: 2
         city:
           maxLength: 20
           minLength: 0
@@ -1266,31 +1276,38 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: ^[0-9]{1,3}
-          type: string
+          type: integer
           description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          format: int32
+          example: 0
         cardNumber:
           pattern: ^[0-9A-F]{64}
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
           pattern: ^[0-9]{4}[0]{8}[0-9]{4}
           type: string
           description: 'Este campo de entrada, permite ingresar el número de tarjeta PAN, formato: 1234000000001234'
+          example: '1234000000001234'
         comments:
           maxLength: 120
           minLength: 0
           type: string
           description: Este campo de entrada, permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo y/o reimpresion.
+          example: Sin comentarios.
         addressId:
           pattern: C|N
           type: string
           description: Este campo de entrada, permite ingresar el Id de la dirección, C = dirección de la cuenta registrada en el sistema, N = dirección nueva que es proporcionada en la solicitud (No actualiza el domicilio del socio).
+          example: 'N'
         issuingType:
           pattern: 'F|V|| '
           type: string
           description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
+          example: F
         homeDeliveryCard:
           $ref: '#/components/schemas/HomeDeliveryCard'
       description: Estructura de campos para la solicitud de la API Reissue Card
@@ -1302,9 +1319,10 @@ components:
           description: Este campo de salida indica el número de denuncia / bloqueo / reimpresión
           example: A0000358
         orderNumber:
-          type: string
+          type: integer
           description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
-          example: '1583'
+          format: int32
+          example: 1583
         returnCodeDescription:
           type: string
           description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
@@ -1319,18 +1337,22 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         action:
           pattern: ^(AC|BL)$
           type: string
           description: Este campo de entrada permite indicar la acción a realizar. AC para activación y BL para Inhabilitación
+          example: AC
     OnOffResponse:
       type: object
       properties:
@@ -1350,14 +1372,17 @@ components:
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
       description: Estructura de campos para la solicitud de la API On Off
     InstantIssuanceRequest:
       required:
@@ -1552,6 +1577,7 @@ components:
           maximum: 9
           type: number
           description: Este campo de entrada, permite ingresar el dato correspondiente al coeficiente de modificación de limite de crédito.
+          example: 0
         creditLimit:
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente. Información asignada por la entidad otorgante.
@@ -1757,7 +1783,7 @@ components:
           minLength: 0
           type: string
           description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado
-          example: '9999000000009999'
+          example: '1234000000001234'
       description: Estructura de campos para la solicitud de la API CVV
     CvvResponse:
       type: object
@@ -1774,18 +1800,22 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
+          type: integer
           description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
           pattern: '[0-9]{4}0{8}[0-9]{4}'
           type: string
           description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
+          example: '1234000000001234'
       description: Estructura de campos para la solicitud de la API Card Number
     CardNumberResponse:
       type: object
@@ -1824,78 +1854,96 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: ^[0-9]{1,1}
-          type: string
+          type: integer
           description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          format: int32
+          example: 0
         cardNumber:
           pattern: ^[0-9A-F]{64}
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
           pattern: ^[0-9]{4}[0]{8}[0-9]{4}
           type: string
           description: 'Este campo de entrada permite ingresar el número de tarjeta (PAN) en formato: 1234000000001234.'
+          example: '1234000000001234'
         fullName:
           maxLength: 30
           minLength: 1
           type: string
           description: Este campo de entrada, permite ingresar el apellido y nombre de la persona, del denunciante y/o a la cual se le emitirá la tarjeta de crédito por la solicitud de denuncia o reimpresión.
+          example: 95A8667F36E3904376C0C9D03F9A12A85C62424AC2E98FFC431BA27C62DEA80FF36EA217EDD532B9A51D33852FDEE658
         type:
           pattern: DU|PA
           type: string
           description: Este campo de entrada, permite ingresar el código de documento (Tipo de documento). En Argentina y Uruguay los documentos tienen distintos tipos de código según su categoria. DU - Documento Único, PA - Pasaporte.
+          example: DU
         number:
           pattern: ^[0-9]{6,9}
           type: string
           description: Este campo de entrada, permite ingresar el número de documento de identidad del tarjetahabiente.
+          example: '999999999'
         isLost:
           pattern: S|N
           type: string
           description: Este campo de entrada, permite informar si el documento de identidad fue extraviado, con valores Sí o No (S o N).
+          example: 'N'
         comments:
           maxLength: 120
           minLength: 0
           type: string
           description: Este campo de entrada, permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo y/o reimpresion.
+          example: Bloqueo por perdida de tarjeta
         blockCode:
           pattern: '7'
           type: string
           description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo y/o reimpresion.
+          example: '7'
         isReissue:
           pattern: S|N
           type: string
           description: Este campo de entrada, permite ingresar el valor Sí o No (S o N) para informar si la tarjeta se reimprime.
+          example: S
         addressId:
           pattern: '[C,N]{1}'
           type: string
           description: Este campo de entrada, permite ingresar el Id de la dirección, C = dirección de la cuenta registrada en el sistema.
+          example: C
         addressStreetNumber:
           maxLength: 30
           minLength: 0
           type: string
           description: Este campo de entrada, permite ingresar el domicilio del tarjetahabiente detallando el nombre y número de la calle.
+          example: Av. San Martin 1882
         countryCode:
           pattern: ^[a-zA-Z0-9]{0,3}|N/I
           type: string
           description: 'Este campo de entrada, permite ingresar el código del país. '
+          example: ARG
         addressprovinceCode:
           pattern: ^[a-zA-Z0-9]{0,2}|N/I
           type: string
           description: Este campo de entrada, permite ingresar el código de la provincia.
+          example: '01'
         city:
           maxLength: 20
           minLength: 0
           type: string
           description: Este campo de entrada, permite ingresar la ciudad relacionada con el domicilio.
+          example: Capital Federal
         phoneNumber:
           pattern: ^[0-9]{0,20}|N/I
           type: string
           description: Este campo de entrada, permite ingresar el número de teléfono del tarjeta habiente.
+          example: '44211214'
         issuingType:
           pattern: 'F|V|| '
           type: string
           description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
+          example: F
         homeDeliveryCard:
           $ref: '#/components/schemas/HomeDeliveryCard'
       description: Estructura de campos para la solicitud de la API Block Card
@@ -1922,14 +1970,17 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: ^[0-9]{1}
-          type: string
+          type: integer
           description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          format: int32
+          example: 0
         cardNumber:
           pattern: ^[0-9A-F]{64}
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
       description: Estructura de campos para la solicitud de la API Block Fees Card
     BlockRequestFeesResponseb:
       type: object
@@ -1946,18 +1997,22 @@ components:
           pattern: ^[0-9A-F]{32}
           type: string
           description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: ^[0-9]{1,3}
-          type: string
+          type: integer
           description: Este campo de entrada complementa al dato cuenta para identificar unívocamente titulares y adicionales de la misma. Conocido támbien como 'Autorizado'.
+          format: int32
+          example: 0
         cardNumber:
           pattern: ^[0-9A-F]{64}
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
           pattern: ^[0-9]{4}[0]{8}[0-9]{4}
           type: string
           description: 'Este campo de entrada permite ingresar el número de tarjeta (PAN) en formato: 1234000000001234.'
+          example: '1234000000001234'
       description: Estructura de campos para la solicitud de la API Activation Card
     ActivationResponse:
       type: object
