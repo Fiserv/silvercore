@@ -44,33 +44,28 @@ paths:
       summary: Ejecuta Altas Bajas o Modificaciones de uno o varios avisos de viaje previamente cargado. El emisor armara el PUT con los datos que obtiene originalmente del GET (Viajes cargados) ofreciendo al cliente la modificación/baja de alguno de ellos.
       operationId: putTripLog
       parameters:
-        - name: X-ClientID
+        - name: apikey
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-        - name: requestId
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
           required: false
           schema:
+            maxLength: 44
+            minLength: 44
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -128,6 +123,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
+      security:
+        - Token: []
       x-proxy-name: Trip Log ABM
       x-group-name: Account
       x-child-product-name: Accounts
@@ -137,33 +134,28 @@ paths:
       summary: Permite listar los viajes previamente cargados, históricos, vigentes y futuros.
       operationId: getTripLog
       parameters:
-        - name: X-ClientID
+        - name: apikey
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-        - name: requestId
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
           required: false
           schema:
+            maxLength: 44
+            minLength: 44
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -221,6 +213,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
+      security:
+        - Token: []
       x-proxy-name: Trip Log Status
       x-group-name: Account
       x-child-product-name: Accounts
@@ -231,33 +225,28 @@ paths:
       summary: Permite la Baja o Borrado de todos los viajes previamente cargados. El emisor armara el DEL  ofreciendo al cliente la eliminación del histórico de  viajes previamente cargados.
       operationId: deleteTripLog
       parameters:
-        - name: X-ClientID
+        - name: apikey
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-        - name: requestId
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
           required: false
           schema:
+            maxLength: 44
+            minLength: 44
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -315,6 +304,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
+      security:
+        - Token: []
       x-proxy-name: Trip Log Baja
       x-group-name: Account
       x-child-product-name: Accounts
@@ -325,33 +316,28 @@ paths:
       summary: "Proporciona al cliente/tarjetahabiente la posibilidad de solicitar y procesar aumentos de limite transitorios en línea.\r\nEl limite podría tener un periodo determinado por el emisor donde vencido el plazo volverá a los limites determinados previamente.\r\n"
       operationId: setIncrementoLimiteTransitorio
       parameters:
-        - name: X-ClientID
+        - name: apikey
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-        - name: requestId
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
           required: false
           schema:
+            maxLength: 44
+            minLength: 44
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -371,6 +357,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
+      security:
+        - Token: []
       x-proxy-name: Limit Increase
       x-group-name: Account
       x-child-product-name: Accounts
@@ -381,32 +369,28 @@ paths:
       summary: La consulta lista todas las tarjetas en condiciones de operar, de manera de seleccionar sobre cual  de ellas se  solicitará la información para conformar la imagen de la tarjeta para que el cliente final pueda operar. Esta orientada a prevalidación de tarjeta vigentes ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado.
       operationId: getConsultaTarjetas
       parameters:
-        - name: X-ClientID
+        - name: apikey
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-        - name: requestId
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
           required: false
           schema:
+            maxLength: 44
+            minLength: 44
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -464,6 +448,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
+      security:
+        - Token: []
       x-proxy-name: Cards
       x-group-name: Account
       x-child-product-name: Accounts
@@ -474,32 +460,28 @@ paths:
       summary: "La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cuál de ellos se solicitará la acción de HABILITAR o ACTIVAR / BLOQUEAR / DENUNCIAR / REIMPRIMIR\r\nPuede utilizarse como complemento como prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado junto con mas datos de los clientes listados. \r\n"
       operationId: getConsultaMiembros
       parameters:
-        - name: X-ClientID
+        - name: apikey
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-        - name: requestId
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
           required: false
           schema:
+            maxLength: 44
+            minLength: 44
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -557,6 +539,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
+      security:
+        - Token: []
       x-proxy-name: Card Holders
       x-group-name: Account
       x-child-product-name: Accounts
@@ -564,35 +548,31 @@ paths:
     post:
       tags:
         - Availability
-      summary: Posibilita consultar la disponibilidad del servicio previo al uso de la API que realizará el input para generación de la nueva Cuenta/Tarjeta.
+      summary: Posibilita consultar la disponibilidad del servicio previo al uso de la API que realizará el input para generación de la nueva Cuenta/Tarjeta. Se recomienda la ejecución previa al consumo de la API /cards/instantIssuance
       operationId: getAvailability
       parameters:
-        - name: X-ClientID
+        - name: apikey
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-        - name: requestId
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
           required: false
           schema:
+            maxLength: 44
+            minLength: 44
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       responses:
         '200':
           description: OK
@@ -644,6 +624,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
+      security:
+        - Token: []
       x-proxy-name: Availability
       x-group-name: Account
       x-child-product-name: Accounts
@@ -681,15 +663,19 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
-          example: 5
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
@@ -733,15 +719,19 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
-          example: 5
+          example: 0
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
@@ -767,13 +757,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -823,13 +817,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
       description: Estructura de campos para la solicitud de la API Reissue Card
@@ -864,18 +862,24 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         blockActivateCode:
+          maxLength: 1
+          minLength: 1
           pattern: 0|7
           type: string
           description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo o activación. 0 - permite listar tarjetas para activar, 7 - permite listar tarjetas para denunciar.
           example: '0'
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Esta campo de entrada, permite ingresar el número de Autorizado. 0 - tarejtas de la cuenta, [1-9] - tarjetas del autorizado.
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
       description: Estructura de campos para la solicitud de la API Card Holders
@@ -883,48 +887,72 @@ components:
       type: object
       properties:
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
           description: Este campo de salida complementa al dato cuenta para identificar unívocamente titulares y adicionales de la misma. Conocido también como Autorizado.
           format: int32
           example: 0
         fullName:
+          maxLength: 30
+          minLength: 1
           type: string
           description: Este campo de salida proporciona la información del apellido y nombre del solicitante de la tarjeta de crédito.
           example: BERTAZZINI,JORGE
         cardNumber:
+          maxLength: 16
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el número de tarjeta enmascarado (1234000000001234).
           example: '5505000000007223'
         isRenewal:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el información si el tarjetahabiente tiene la marca de renovación de tarjeta.
           example: S
         desist:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Este campo de salida se relaciona con la renovación de la tarjeta y conlleva un SI/NO.
           example: 'N'
         addressStreetNumber:
+          maxLength: 30
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el domicilio del tarjetahabiente detallando el nombre y número de la calle.
           example: SIN DOMICILIO
         addressFloor:
+          maxLength: 2
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el número de piso relacionado al domicilio
         addressApartment:
+          maxLength: 3
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el número de departamento relacionado al domicilio.
         countryCode:
+          maxLength: 3
+          minLength: 1
           type: string
           description: 'Este campo de salida proporciona el código del país. '
         addressprovinceCode:
+          maxLength: 2
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el código de la provincia.
           example: '0'
         addressZipCode:
+          maxLength: 5
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el código postal.
           example: '0'
         city:
+          maxLength: 20
+          minLength: 1
           type: string
           description: Este campo de salida proporciona la ciudad relacionada con el domicilio.
       description: Corresponde a un listado. Cada elemento es un elemento tarjeta-cuenta
@@ -941,12 +969,21 @@ components:
       type: object
       properties:
         returnCode:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema - Ver listado de códigos + descripciones  para la API correspondiente
           format: int32
           example: 1
         returnCodeDescription:
+          maxLength: 200
+          minLength: 1
           type: string
           description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema - Ver listado de códigos + descripciones  para la API correspondiente
           example: SISTEMA DISPONIBLE
       description: Estructura de campos que responde la API Availability
+  securitySchemes:
+    Token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
