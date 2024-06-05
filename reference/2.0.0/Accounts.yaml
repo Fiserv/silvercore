@@ -28,6 +28,7 @@
 # the delivery of this work
 ################################################################################
 
+
 openapi: 3.0.1
 info:
   title: Silvercore™ Account Service - API Documentation
