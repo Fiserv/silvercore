@@ -37,11 +37,203 @@ servers:
   - url: https://int.api.firstdata.com/latam-gfs-apis/
     description: Sandbox Test
 paths:
+  /cards/v1/pin:
+    put:
+      tags:
+        - Pin Block
+      summary: 'Esta API permite la posibilidad de gestión de PIN para ATM. El impacto de cambio de PIN/OFFSET NO es online. '
+      operationId: setPinBlock
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            pattern: '[0-9]{1,3}'
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PinBlockRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PinBlockResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: PIN
+      x-group-name: Card
+      x-child-product-name: PIN Block
+  /cards/transactions/v1/block:
+    put:
+      tags:
+        - Block
+      summary: Esta API tiene como objetivo que el Emisor pueda ofrecer al cliente la posibilidad realizar la Denuncia – Bloqueo según Motivo 19
+      operationId: block
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplaintRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplaintResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Card already blocked
+                  value:
+                    code: '2617'
+                    description: ERROR, LA TARJETA YA FUE DENUNCIADA
+                Reponse 2:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 3:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Block
+      x-group-name: Card
+      x-child-product-name: Cards
   /cards/virtual:
     post:
       tags:
         - Virtual Card
-      summary: 'Esta API permite la impresión de la tarjeta que se encuentra activa virtual, por ende, no se genera bloqueo ni nuevo número. '
+      summary: El presente servicio ofrece al tarjetahabiente la posibilidad de solicitar la generación de la tarjeta en formato plástico al domicilio de la cuenta. Esta API permite la impresión de la tarjeta que se encuentra activa virtual, por ende, no se genera bloqueo ni nuevo número. La misma ingresa como novedad en el sistema de generación de plástico y flujo de envío a domicilio del cliente en sistema con permisionaria del emisor.
       operationId: setActivarTarjeta
       parameters:
         - name: X-ClientID
@@ -130,11 +322,209 @@ paths:
       x-proxy-name: Virtual Card
       x-group-name: Card
       x-child-product-name: Cards
+  /cards/transactions/v1/transactions:
+    post:
+      tags:
+        - Transactions
+      summary: Esta API tiene como objetivo que el Emisor pueda ofrecer al cliente la posibilidad del ingreso de reclamos al permitirle listar transacciones del Ultimo resumen (Transacciones liquidadas) y del periodo actual (pendientes de liquidación) para ser marcadas como “Desconocidas” o “Reclamadas” y el posterior envío de información de la operación para ingreso del reclamo a los sistemas FISERV + Claim Manager
+      operationId: transactions
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisputeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Transactions Not Found
+                  value:
+                    code: '0'
+                    description: EOF/NOT FOUND
+                Reponse 2:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 3:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Transactions
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/transactions/v1/claims:
+    post:
+      tags:
+        - Claims
+      summary: Esta API tiene como objetivo que el Emisor pueda ofrecer al cliente la posibilidad del ingreso de reclamos o desconocimientos, sobre las transacciones listadas, a los sistemas FISERV + Claim Manager.
+      operationId: claims
+      parameters:
+        - name: X-ClientID
+          in: header
+          description: Número que representa la entidad cliente del servicio en Fiserv.
+          required: true
+          schema:
+            type: string
+            description: Número que representa la entidad cliente del servicio en Fiserv.
+        - name: username
+          in: header
+          description: Identificador que representa al usuario.
+          required: true
+          schema:
+            type: string
+            description: Identificador que representa al usuario.
+        - name: security-context
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: requestId
+          in: header
+          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          required: false
+          schema:
+            type: string
+            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Error 600 COBOL. Transactions already claimed
+                  value:
+                    errorResponse: string
+                    code: '0'
+                    returnCodeDescription1: '*** NO SE HA GENERADO RECLAMO ***'
+                    returnCodeDescription2: TODOS LOS CUPONES SELECCIONADOS FUERON RECLAMADOS ANTERIORMENTE
+                Reponse 2:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 3:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Claim
+      x-group-name: Card
+      x-child-product-name: Cards
   /cards/replacement:
     post:
       tags:
         - Replacement Card
-      summary: Ejecuta el pedido de REIMPRESION/REEMPLAZO sin BLOQUEO
+      summary: Esta API permite generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F).Este movimiento genera la novedad tomando en cuenta el domicilio de la cuenta cargado en sistema. Es decir, no admite detalle de domicilio de entrega diferente.
       operationId: setReplacement
       parameters:
         - name: X-ClientID
@@ -1083,49 +1473,43 @@ components:
           type: string
         detail:
           type: string
-    VirtualCardRequest:
-      required:
-        - bankBranch
-        - operationDate
-        - requestNumber
+    AccountRequest:
       type: object
       properties:
         accountNumber:
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: Este campo de entrada proporciona el código de la entidad del tarjetahabiente.
           format: int32
           example: 0
+    PinBlockRequest:
+      required:
+        - currPinBlock
+      type: object
+      properties:
         cardNumber:
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
-        bankBranch:
-          type: integer
-          description: Identificador de Sucursal
-          format: int32
-          example: 562
-        operationDate:
-          maxLength: 6
-          minLength: 5
+        account:
+          $ref: '#/components/schemas/AccountRequest'
+        currPinBlock:
+          pattern: ^[0-9A-F]{16}
           type: string
-          description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación
-          example: '2023-08-24'
-        requestNumber:
-          type: integer
-          description: Número de solicitud
-          format: int32
-          example: 68
-        issuingType:
-          pattern: F|V|
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J1
+    PinBlockResponse:
+      type: object
+      properties:
+        returnDescription:
           type: string
-          description: Este campo permite ingresar el formato en que se emitira la tarjeta, puede tomar valores V para tarjetas emitidas solo en formato Virtual/Digital; F para tarjetas Físicas donde se generará el plástico para ser entregado o valor Vacio cuando no haya decisión al respecto.
-          example: F
+          description: Retorna un mensaje de salida que confirma que el cambio de clave se realizo con exito.
+          example: OPERACIÓN REALIZADA CON EXITO
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -1139,6 +1523,160 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    AccountBlock:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+      description: Datos de la cuenta.
+    AddressBlock:
+      type: object
+      properties:
+        streetNumber:
+          type: string
+          description: Dato correspondiente al Domicilio del Tarjetahabiente, detallando el Nombre y Número de la calle.
+          example: OCAMPO 25001
+        provinceCode:
+          type: string
+          description: Dato correspondiente al Código de la Provincia.
+          example: '01'
+        city:
+          type: string
+          description: Dato correspondiente a la Ciudad relacionada con el domicilio.
+          example: CAPITAL FEDERAL
+        countryCode:
+          type: string
+          description: 'Dato correspondiente al Código del País: Argentina = ARG, Uruguay= URY.'
+          example: ARG
+      example: Datos de dirección del cliente.
+    ComplaintRequest:
+      required:
+        - disputeRegion
+      type: object
+      properties:
+        cardNumber:
+          type: string
+          description: Numero PAN completo de la tarjeta, encriptado.
+          example: FCBDA6EEB6BE198F41D19D38C8B7AD1F66C91533A439A78F006628214AB6A02E
+        account:
+          $ref: '#/components/schemas/AccountBlock'
+        customer:
+          $ref: '#/components/schemas/CustomerBlock'
+        disputeRegion:
+          pattern: 0|B|1|A|C|D|E
+          type: string
+          description: |-
+            Codigo de Sector que indica la región del reclamo. 
+
+            BOLETINL = "0". 
+            LATINOAM = "B". (limítrofe o Latinoamérica)  
+            ESTADOSU = "1". 
+            CANADA = "A". 
+            OCEANIA-ASIA = "C". 
+            EUROPA = "D". 
+            AFRICA = "E". 
+        comments:
+          maxLength: 120
+          minLength: 0
+          type: string
+          description: Permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo con reimpresión.
+          example: NINGÚN COMENTARIO
+      description: Estructura de campos para la solicitud de la API RF 210_1 Ingreso de Reclamos y Desconocimientos - Denuncia
+    CustomerBlock:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: Nombre y apellido del socio a quien le fue/ron imputado/s el/los cargo/s y que efectúa el reclamo.
+          example: Nombre Apellido
+        document:
+          type: string
+          description: Número de Documento de identidad del tarjetahabiente.
+          example: '193916'
+        lostDocument:
+          type: string
+          description: Informa si el Documento de Identidad, Pasaporte o cualquier otro documento identificatorio del tarjetahabiente fue extraviado junto con su tarjeta. SI o NO (S o N).
+          example: S
+        phone:
+          type: string
+          description: Número de teléfono del tarjetahabiente.
+          example: '44211214'
+        address:
+          $ref: '#/components/schemas/AddressBlock'
+      description: Datos del cliente.
+    ComplaintResponse:
+      type: object
+      properties:
+        orderNumber:
+          type: string
+          description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
+          example: ER
+        blockNumber:
+          type: string
+          description: Este campo de salida indica el número de denuncia
+          example: '969000001'
+        returnCodeDescription:
+          type: string
+          description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
+      description: Estructura de campos que responde la API Reclamos y Desconocimientos - Denuncia
+    VirtualCardRequest:
+      required:
+        - bankBranch
+        - operationDate
+        - requestNumber
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        bankBranch:
+          type: integer
+          description: Corresponde al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta
+          format: int32
+          example: 562
+        operationDate:
+          maxLength: 6
+          minLength: 5
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación
+          example: '2023-08-24'
+        requestNumber:
+          type: integer
+          description: Número de solicitud interno de la entidad emisora.
+          format: int32
+          example: 68
+        issuingType:
+          pattern: F|V|
+          type: string
+          description: Este campo permite ingresar el formato en que se emitira la tarjeta, puede tomar valores V para tarjetas emitidas solo en formato Virtual/Digital; F para tarjetas Físicas donde se generará el plástico para ser entregado o valor Vacio cuando no haya decisión al respecto.
+          example: F
     VirtualCardResponse:
       type: object
       properties:
@@ -1146,6 +1684,264 @@ components:
           type: string
           example: NOVEDAD CARGADA CON EXITO
       description: Estructura de campos que responde la API Virtual Card
+    AccountTransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+      description: Datos de la cuenta.
+    DisputeRequest:
+      required:
+        - fase
+        - sequence
+      type: object
+      properties:
+        cardNumber:
+          type: string
+          description: Numero PAN completo de la tarjeta, encriptado.
+          example: FCBDA6EEB6BE198F41D19D38C8B7AD1F66C91533A439A78F006628214AB6A02E
+        account:
+          $ref: '#/components/schemas/AccountTransactionsRequest'
+        type:
+          type: string
+          description: 'Criterio de búsqueda de los cupones a reclamar. Tipo de operación. “S”: Local. “N” Internacional.'
+          example: 'N'
+        statementDate:
+          type: string
+          description: Fecha de Cierre de Cuenta Corriente. Criterio de búsqueda de los cupones a reclamar.
+          example: '20240101'
+        transactionDateRange:
+          $ref: '#/components/schemas/RangeTransactions'
+        fase:
+          pattern: 0|1
+          type: string
+          description: Campos ECO. Campos de Orden / Paginado.
+          example: '0'
+        sequence:
+          pattern: ^[0-9]{1,3}
+          type: string
+          description: Campos ECO. Campos de Orden / Paginado. Si hay más información debe ingresar el último cupón de la página enviada anteriormente.
+          example: '0'
+      description: Estructura de campos para la solicitud de la API RF 210_2 Ingreso de Reclamos y Desconocimientos – Consulta Transacciones.
+    RangeTransactions:
+      type: object
+      properties:
+        from:
+          type: string
+          description: Fecha desde.
+          example: '20240101'
+        to:
+          type: string
+          description: Fecha hasta.
+          example: '20240101'
+      description: Criterio de búsqueda de los cupones a reclamar.
+    AccountTransactionsResponse:
+      type: object
+      properties:
+        accountNumber:
+          type: integer
+          description: Número de cuenta del tarjetahabiente encriptado.
+          format: int64
+          example: 649
+        additional:
+          type: integer
+          description: Identifica unívocamente Titulares y Adicionales de una cuenta. Conocido también como "AUTORIZADO".
+          format: int32
+          example: 0
+      description: Datos de la cuenta.
+    DetailsTransactionsResponse:
+      type: object
+      properties:
+        sequence:
+          type: integer
+          description: Incremental. Número de secuencia asignado en la consulta.
+          format: int32
+          example: 1
+        operationDate:
+          type: integer
+          description: Fecha de cuando se realizó la compra / Consumo. Formato “ddmmaaa”.
+          format: int32
+          example: 7112021
+        statementDate:
+          type: integer
+          description: Fecha de cierre de cuenta corriente. Formato “ddmmaaa”.
+          format: int32
+          example: 2122021
+        installmentQuantity:
+          type: integer
+          description: Cantidad de cuotas.
+          format: int32
+          example: 0
+        currencyCode:
+          type: integer
+          description: |-
+            Código de moneda del consumo. 
+
+            032: ARS – Pesos argentinos  
+
+            858: URU – Pesos Uruguayos 
+
+            840: USD - Dólares 
+          format: int32
+          example: 840
+        amount:
+          type: number
+          description: Importe del consumo. Hasta 13 posiciones enteras. 2 decimales.
+          format: double
+          example: 1.99
+        authorizationCode:
+          type: string
+          description: Código de autorización de la compar / consumo.
+          example: '00000746'
+        locationType:
+          type: string
+          description: 'Tipo de operación. “S”: Local. “N” Internacional.'
+          example: 'N'
+        storeNumber:
+          type: string
+          description: Número de comercio.
+          example: '00000000'
+        merchantName:
+          type: string
+          description: Descripción del consumo.
+          example: Spotify P17D9ED95F
+    DisputeResponse:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/AccountTransactionsResponse'
+        transaction:
+          $ref: '#/components/schemas/TransactionsTransactionResponse'
+      description: Estructura de campos que responde la API Reclamos y Desconocimientos - Consulta.
+    TransactionsTransactionResponse:
+      type: object
+      properties:
+        operationDate:
+          type: integer
+          description: Fecha de ejecución del proceso. Generalmente fecha de sistema.
+          format: int32
+          example: 20240101
+        hasMoreTransactionsAvailable:
+          type: string
+          description: Indica si hay mas registros por mostrar.
+          example: 'N'
+        recordsNumber:
+          type: integer
+          description: Cantidad de elementos de la consulta.
+          format: int32
+          example: 10
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailsTransactionsResponse'
+      description: Datos generales de la consulta.
+    AccountClaimRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+      description: Datos de la cuenta.
+    ClaimRequest:
+      type: object
+      properties:
+        cardNumber:
+          type: string
+          description: Numero PAN completo de la tarjeta, encriptado.
+          example: FCBDA6EEB6BE198F41D19D38C8B7AD1F66C91533A439A78F006628214AB6A02E
+        account:
+          $ref: '#/components/schemas/AccountClaimRequest'
+        transactions:
+          type: array
+          description: Datos de las transacciones a reclamar.
+          items:
+            $ref: '#/components/schemas/TransactionsClaim'
+        notes:
+          type: array
+          description: Notas. Texto libre.
+          items:
+            $ref: '#/components/schemas/TextClaim'
+      description: Estructura de campos para la solicitud de la API RF 210_3 Ingreso de Reclamos y Desconocimientos – Alta de Reclamos.
+    TextClaim:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Texto que describe el motivo por el cual se realiza el reclamo o desconocimiento.
+          example: Good Morning
+      description: Notas. Texto libre.
+    TransactionsClaim:
+      type: object
+      properties:
+        operationDate:
+          type: string
+          description: Fecha de la compra / consumo.
+          example: '20240101'
+        sequence:
+          type: string
+          description: Número de secuencia asignado en la consulta.
+          example: '193916'
+        currencyCode:
+          type: string
+          description: |-
+            Código de Moneda del consumo. 032: ARS – Pesos argentinos  
+
+            858: URU – Pesos Uruguayos 
+
+            840: USD - Dólares
+          example: '032'
+        installmentQuantity:
+          type: string
+          description: Cantidad total de cuotas del plan de cuotas.
+          example: '01'
+        amount:
+          type: string
+          description: Importe del consumo. Hasta 13 posiciones enteras. 2 decimales.
+          example: '5310000.0'
+      description: Datos de las transacciones a reclamar.
+    ClaimResponse:
+      type: object
+      properties:
+        orderNumber:
+          type: integer
+          description: 'N° Reclamo: Número que identifica al reclamo.'
+          format: int32
+          example: 0
+        errorsVoucher:
+          type: integer
+          description: Número de vaucher con error.
+          format: int32
+          example: 0
+        returnCodeDescription1:
+          type: string
+          description: Descripción de los diferentes códigos de respuesta.
+          example: 'RECLAMO OTORGADO NRO:  CON 01 CUPONES GRABADOS Y  CUPONES SIN GRABAR'
+        returnCodeDescription2:
+          type: string
+          description: Descripción de los diferentes códigos de respuesta.
+          example: INGRESAR A CONSULTA DE RECLAMOS PARA VERIFICAR LOS CUPONES GRABADOS
+      description: Estructura de campos que responde la API Reclamo - ALta
     ReplacementRequest:
       required:
         - branchNumber
@@ -1157,13 +1953,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -1273,13 +2073,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -1334,13 +2138,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -1369,13 +2177,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -1435,11 +2247,13 @@ components:
           maxLength: 32
           minLength: 0
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: 'Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO". Valores posibles: 1 a 9. En caso de ser socio titular se informará cero.'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         checkDigit:
@@ -1455,7 +2269,7 @@ components:
           maxLength: 24
           minLength: 1
           type: string
-          description: Este campo de entrada, permite el ingreso del Apellido y Nombre de la persona, a la cual se le emitirá la tarjeta de crédito.
+          description: Este campo de entrada, permite el ingreso del Apellido y Nombre de la persona, a la cual se le emitirá la tarjeta.
           example: Julian Martínez
         affinityGroupCode:
           type: integer
@@ -1575,9 +2389,12 @@ components:
           example: '6'
         creditLimitCoefficient:
           maximum: 9
+          maxLength: 3
+          minLength: 3
           type: number
-          description: Este campo de entrada, permite ingresar el dato correspondiente al coeficiente de modificación de limite de crédito.
-          example: 0
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente al coeficiente de modificación de limite de crédito. Longitud: 1 entero y 2 decimales (0.00)'
+          format: decimal
+          example: 0.01
         creditLimit:
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente. Información asignada por la entidad otorgante.
@@ -1629,13 +2446,17 @@ components:
           format: int32
         guarantor:
           type: integer
-          description: 'Este campo de entrada, permite ingresas el dato correspondiente a si tiene o no garante asignado. 1: SI - 2: NO'
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente a si tiene o no garante asignado. 1: SI - 2: NO'
           format: int32
           example: 1
         advanceATMCoefficient:
           maximum: 9
+          maxLength: 3
+          minLength: 3
           type: number
-          description: Este campo de entrada, permite ingresar el dato correspondiente al coeficiente de adelanto en ATM. Son datos standard de altas de tarjetas y son de uso habitual de operaciones del emisor, en este caso define el disponible para adelantos en Cajeros / ATM.
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente al coeficiente de adelanto en ATM. Son datos standard de altas de tarjetas y son de uso habitual de operaciones del emisor, en este caso define el disponible para adelantos en Cajeros / ATM. Longitud: 1 entero y 2 decimales (0.00)'
+          format: decimal
+          example: 0.01
         occupationCode:
           type: integer
           description: Este campo de entrada, permite ingresar el código correspondiente al tipo de ocupación/empleo del solicitante de la tarjeta. Son  datos adicionales opcionales que complementan el alta de una cuenta/tarjeta.
@@ -1763,14 +2584,18 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          format: int64
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
           example: 0
         cardNumber:
           maxLength: 64
@@ -1797,13 +2622,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -1851,13 +2680,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -1967,13 +2800,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Esta campo de entrada, permite ingresar el número de Autorizado.
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
@@ -1994,13 +2831,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: ^[0-9A-F]{32}
           type: string
-          description: Este campo de entrada proporciona el número de cuenta del tarjetahabiente.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada complementa al dato cuenta para identificar unívocamente titulares y adicionales de la misma. Conocido támbien como 'Autorizado'.
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:

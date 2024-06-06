@@ -28,7 +28,6 @@
 # the delivery of this work
 ################################################################################
 
-
 openapi: 3.0.1
 info:
   title: Silvercore™ Account Service - API Documentation
@@ -42,9 +41,20 @@ paths:
     put:
       tags:
         - TripLog
-      summary: Ejecuta Altas Bajas o Modificaciones de uno o varios avisos de viaje previamente cargado. El emisor armara el PUT con los datos que obtiene originalmente del GET (Viajes cargados) ofreciendo al cliente la modificación/baja de alguno de ellos.
+      summary: Posibilita generar la carga de un nuevo viaje para uno o varios integrantes de la cuenta. Además, ejecuta Bajas o Modificaciones de uno o varios avisos de viaje previamente cargado. El emisor armara el PUT con los datos que obtiene originalmente de la Consulta de Viajes ofreciendo al cliente la gestión sobre alguno de ellos.
       operationId: putTripLog
       parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
         - name: apikey
           in: header
           description: Provisto por Fiserv ClientKey de ApiGee.
@@ -124,8 +134,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      security:
-        - Token: []
       x-proxy-name: Trip Log ABM
       x-group-name: Account
       x-child-product-name: Accounts
@@ -135,6 +143,17 @@ paths:
       summary: Permite listar los viajes previamente cargados, históricos, vigentes y futuros.
       operationId: getTripLog
       parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
         - name: apikey
           in: header
           description: Provisto por Fiserv ClientKey de ApiGee.
@@ -214,8 +233,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      security:
-        - Token: []
       x-proxy-name: Trip Log Status
       x-group-name: Account
       x-child-product-name: Accounts
@@ -226,6 +243,17 @@ paths:
       summary: Permite la Baja o Borrado de todos los viajes previamente cargados. El emisor armara el DEL  ofreciendo al cliente la eliminación del histórico de  viajes previamente cargados.
       operationId: deleteTripLog
       parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
         - name: apikey
           in: header
           description: Provisto por Fiserv ClientKey de ApiGee.
@@ -305,8 +333,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      security:
-        - Token: []
       x-proxy-name: Trip Log Baja
       x-group-name: Account
       x-child-product-name: Accounts
@@ -317,6 +343,17 @@ paths:
       summary: "Proporciona al cliente/tarjetahabiente la posibilidad de solicitar y procesar aumentos de limite transitorios en línea.\r\nEl limite podría tener un periodo determinado por el emisor donde vencido el plazo volverá a los limites determinados previamente.\r\n"
       operationId: setIncrementoLimiteTransitorio
       parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
         - name: apikey
           in: header
           description: Provisto por Fiserv ClientKey de ApiGee.
@@ -358,8 +395,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDetailsResponse'
-      security:
-        - Token: []
       x-proxy-name: Limit Increase
       x-group-name: Account
       x-child-product-name: Accounts
@@ -370,6 +405,17 @@ paths:
       summary: La consulta lista todas las tarjetas en condiciones de operar, de manera de seleccionar sobre cual  de ellas se  solicitará la información para conformar la imagen de la tarjeta para que el cliente final pueda operar. Esta orientada a prevalidación de tarjeta vigentes ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado.
       operationId: getConsultaTarjetas
       parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
         - name: apikey
           in: header
           description: Provisto por Fiserv ClientKey de ApiGee.
@@ -449,8 +495,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      security:
-        - Token: []
       x-proxy-name: Cards
       x-group-name: Account
       x-child-product-name: Accounts
@@ -461,6 +505,17 @@ paths:
       summary: "La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cuál de ellos se solicitará la acción de HABILITAR o ACTIVAR / BLOQUEAR / DENUNCIAR / REIMPRIMIR\r\nPuede utilizarse como complemento como prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado junto con mas datos de los clientes listados. \r\n"
       operationId: getConsultaMiembros
       parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
         - name: apikey
           in: header
           description: Provisto por Fiserv ClientKey de ApiGee.
@@ -540,8 +595,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      security:
-        - Token: []
       x-proxy-name: Card Holders
       x-group-name: Account
       x-child-product-name: Accounts
@@ -552,6 +605,17 @@ paths:
       summary: Posibilita consultar la disponibilidad del servicio previo al uso de la API que realizará el input para generación de la nueva Cuenta/Tarjeta. Se recomienda la ejecución previa al consumo de la API /cards/instantIssuance
       operationId: getAvailability
       parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
         - name: apikey
           in: header
           description: Provisto por Fiserv ClientKey de ApiGee.
@@ -625,8 +689,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      security:
-        - Token: []
       x-proxy-name: Availability
       x-group-name: Account
       x-child-product-name: Accounts
