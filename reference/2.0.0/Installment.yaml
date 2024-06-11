@@ -1,11 +1,10 @@
 openapi: 3.0.1
 info:
-  title: Silvercore™ Financial Installment Service - API Documentation
-  description: This documentation describes the REST APIs provided by the Silvercore™
-  version: "2.0"
+  title: OpenAPI definition
+  version: v0
 servers:
-  - url: https://int.api.firstdata.com/latam-gfs-apis/
-    description: Sandbox Test
+  - url: https://cert-latam-gfs-silvercore-apis-installment-conversion-v2.apps.us-oma1-ip01.1dc.com
+    description: Generated server url
 paths:
   /transactions/statementPayment:
     post:
@@ -14,33 +13,39 @@ paths:
       summary: Esta API permite a la entidad enviar Pagos/Ajustes en Línea.
       operationId: payment
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -108,33 +113,39 @@ paths:
       summary: La consulta proporciona el listado de hasta 100 consumos en condiciones de ser cuotificados, de acuerdo a la configuración de la línea de préstamo generada por el emisor.
       operationId: getTransactions
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -202,33 +213,39 @@ paths:
       summary: Genera la lista de consumos seleccionados por el cliente para ser cuotificados, con esta información, el sistema totaliza, calcula y  devuelve las simulaciones de los posibles planes.
       operationId: saveSelectedTransactions
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -296,33 +313,39 @@ paths:
       summary: Retorna la simulación de planes de acuerdo a la configuración, esta consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o Conversion Contado a Cuotas.
       operationId: getPlans
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -392,33 +415,39 @@ paths:
         Nota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación.
       operationId: installmentConversion
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -486,33 +515,39 @@ paths:
       summary: La consulta permite listar todos los planes de cuotificación de consumos como cuotificación de saldos ya sean cuotas vigentes como no vigentes en las liquidaciones del cliente.
       operationId: getCurrentTransactionConversions
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -580,33 +615,39 @@ paths:
       summary: Retorna la simulación de planes de acuerdo a la configuración, esta consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o  Refinanciación de Saldo.
       operationId: getPlans_1
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           '*/*':
@@ -674,33 +715,39 @@ paths:
       summary: "Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos.\r\nNota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación."
       operationId: getAlta
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           '*/*':
@@ -768,33 +815,39 @@ paths:
       summary: "La consulta inicial devuelve información de Saldos, Pagos mínimos y Pagos realizados; así como Ajustes en moneda $ y U$D  junto con el Saldo Consolidado, correspondiente al que el cliente podrá convertir total o parcialmente a un plan de  cuotas y liberar disponible al momento. \r\nEste monto se calcula en base a los parámetros que el emisor configure previamente en la aplicación de prestamos."
       operationId: getBalance
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-contex
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           '*/*':
@@ -876,16 +929,22 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
-          pattern: '[0-9]'
-          type: string
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          example: '0'
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -913,16 +972,6 @@ components:
           type: string
           description: 'El campo indica el tipo de pago en dolares, D: dólar billete (devuelve impuesto país), N: pago en dólares con pesos (no devuelve impuesto país)'
           example: D
-    SummaryPaymentResponse:
-      type: object
-      properties:
-        codigoAutorizacion:
-          type: string
-          example: '637089'
-        idPago:
-          type: string
-          example: '00000074'
-      description: Estructura de campos que responde la API Pago Resumen
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -936,15 +985,29 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    SummaryPaymentResponse:
+      type: object
+      properties:
+        codigoAutorizacion:
+          type: string
+          example: '637089'
+        idPago:
+          type: string
+          example: '00000074'
+      description: Estructura de campos que responde la API Pago Resumen
     TransactionsRequest:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -992,8 +1055,10 @@ components:
           description: Este campo de salida indica la moneda en la que se realizó la compra/transacción
           example: ARS
         transactionAmount:
+          maxLength: 15
           type: string
-          description: Este campo de salida indica el importe de la compra/transacción
+          description: Este campo de salida indica el importe de la compra/transacción. (signo (+), 1 – 13 parte entera, 2 parte decimal)
+          format: decimal
           example: '+8916.54'
       description: Este campo de salida muestra un listado con todas las compras/transacciones cuotificables
     TransactionsResponse:
@@ -1010,32 +1075,39 @@ components:
           items:
             $ref: '#/components/schemas/Transaction'
         exchangeRateUSD_PES:
+          maxLength: 8
           type: number
-          description: Este campo de salida indica la cotización USD-PES
-          format: float
+          description: Este campo de salida indica la cotización USD-PES. (1 – 6 parte entera, 2 parte decimal)
+          format: decimal
           example: 96.41
         more:
           maxLength: 1
           minLength: 1
           type: string
           description: Este campo de salida indica si existe más compras/transacciones cuotificables por consultar
-          example: '100'
+          example: 'N'
     SelectedTransactionsRequest:
       required:
         - selectedTransactionIds
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -1075,34 +1147,46 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         amountPesos:
+          maxLength: 17
           pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
-          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda local a cuotificar
+          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda local a cuotificar. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: decimal
           example: '1500.5'
         amountUSD:
+          maxLength: 17
           pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
-          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar
-          example: '0'
+          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: decimal
+          example: '0.0'
         totalAmount:
+          maxLength: 17
           pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
-          description: Este campo de entrada permite ingresar el monto total a cuotificar expresado en pesos
+          description: Este campo de entrada permite ingresar el monto total a cuotificar expresado en pesos. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: decimal
           example: '1500.5'
     AvailableInstallmentPlan:
       type: object
@@ -1122,28 +1206,33 @@ components:
           format: int32
           example: 2
         installmentAmount:
+          maxLength: 17
           type: number
-          description: Este campo de salida indica el importe de la cuota
+          description: Este campo de salida indica el importe de la cuota. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: double
           example: 50000
         tna:
+          maxLength: 7
           type: number
-          description: Este campo de salida indica la tasa nominal anual del plan
+          description: Este campo de salida indica la tasa nominal anual del plan. (1 – 3 parte entera, 3 parte decimal)
           format: double
           example: 0
         lifeAssurance:
+          maxLength: 17
           type: number
-          description: Este campo de salida indica el importe del seguro de vida
+          description: Este campo de salida indica el importe del seguro de vida. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: double
           example: 0
         grantFee:
+          maxLength: 17
           type: number
-          description: Este campo de salida indica el importe del cargo por otorgamiento
+          description: Este campo de salida indica el importe del cargo por otorgamiento. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: double
           example: 0
         cft:
+          maxLength: 7
           type: string
-          description: Este campo de salida indica el costo financiero total del plan
+          description: Este campo de salida indica el costo financiero total del plan. (1 – 3 parte entera, 3 parte decimal)
           example: 0,00%
         amortizationSystemId:
           type: string
@@ -1182,16 +1271,22 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -1225,24 +1320,39 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         destino:
+          maxLength: 2
+          minLength: 2
           pattern: 99|RS|PP|CR|PC|RD
           type: string
-          description: Este campo de entrada permite ingresar el destino de los planes realizados que se desea consultar
+          description: |-
+            Este campo de entrada permite ingresar el destino de los planes realizados que se desea consultar.
+            PC: PRESTAMO DE CONSUMO.
+            CR: PAGO DE RESUMEN EN CUOTAS.
+            PP: PRESTAMO PERSONAL.
+            RD: REFINANCIACION DE DEUDAS.
+            RS: REFINANCIACION DE SALDOS.
+            99: TODOS LOS DESTINOS
           example: RD
         estado:
           type: integer
@@ -1253,6 +1363,8 @@ components:
       type: object
       properties:
         operationDate:
+          maxLength: 10
+          minLength: 10
           type: string
           description: Este campo de salida indica la fecha de la operación
           format: date
@@ -1279,7 +1391,7 @@ components:
           example: ARS
         amount:
           type: number
-          description: Este campo de salida indica el importe de la cuota
+          description: Este campo de salida indica el importe de la cuota. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: float
           example: 1000
         rate:
@@ -1294,7 +1406,7 @@ components:
           example: 1
         cft:
           type: string
-          description: Este campo de salida indica el costo financiero total del plan
+          description: Este campo de salida indica el costo financiero total del plan. (1 – 3 parte entera, 3 parte decimal)
           example: 31,00%
       description: Este campo de salida muestra un listado de planes de pago
     QueryInstallmentsResponse:
@@ -1315,13 +1427,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         currencyPlan:
@@ -1350,6 +1466,8 @@ components:
           format: int32
           example: 1234
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -1404,8 +1522,10 @@ components:
           format: int32
           example: 1
         cfn:
+          maxLength: 7
           type: string
-          description: Cft Costo financiero total
+          description: Cft Costo financiero total. (1 – 4 parte entera, 1 – 2 parte decimal)
+          format: decimal
           example: 106,84%
     BalanceInstallmentPlansResponse:
       type: object
@@ -1429,13 +1549,17 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         installmentPlanId:
@@ -1454,6 +1578,8 @@ components:
           description: Este campo contiene el dato Vencimiento de Tarjeta encriptado
           example: CFB385D755623C2171D06684D4ABE303
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -1470,16 +1596,22 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
+          minLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
-          description: Este campo de entrada, permite ingresar el número de cuenta del tarjetahabiente encriptado.
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Este campo de entrada proporciona el código de la entidad del tarjetahabiente.
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -1536,12 +1668,14 @@ components:
           description: Pago mínimo
           example: '+0000000040740000'
         cotizacionDolarPeso:
+          maxLength: 9
           type: number
-          description: Cotización dólar pesos (pesificado - de dólar a pesos)
+          description: Cotización dólar pesos (pesificado - de dólar a pesos). (1 – 7 parte entera, 2 parte decimal)
           example: 96.41
         cotizacionPesoDolar:
+          maxLength: 9
           type: number
-          description: Cotización pesos dólar (para cotización en dólares)
+          description: Cotización pesos dólar (para cotización en dólares). (1 – 7 parte entera, 2 parte decimal)
           example: 96.41
         saldoConsMonedaLocal:
           type: string

@@ -30,12 +30,11 @@
 
 openapi: 3.0.1
 info:
-  title: Silvercore™ Account Service - API Documentation
-  description: This documentation describes the REST APIs provided by the Silvercore™
-  version: "2.0"
+  title: OpenAPI definition
+  version: v0
 servers:
-  - url: https://int.api.firstdata.com/latam-gfs-apis/
-    description: Sandbox Test
+  - url: https://cert-latam-gfs-silvercore-apis-account-v2.apps.us-oma1-ip01.1dc.com
+    description: Generated server url
 paths:
   /accounts/tripLog:
     put:
@@ -740,6 +739,8 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -752,19 +753,6 @@ components:
           items:
             $ref: '#/components/schemas/Country'
       description: Estructura de campos que responde a la API TripLog
-    Account:
-      type: object
-      properties:
-        additional:
-          type: integer
-          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          format: int32
-          example: 5
-        countriesList:
-          type: array
-          description: Este campo de salida, proporciona los datos de los registros de viajes
-          items:
-            $ref: '#/components/schemas/Country'
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -778,6 +766,19 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    Account:
+      type: object
+      properties:
+        additional:
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 5
+        countriesList:
+          type: array
+          description: Este campo de salida, proporciona los datos de los registros de viajes
+          items:
+            $ref: '#/components/schemas/Country'
     TripLogRequest:
       type: object
       properties:
@@ -796,6 +797,8 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -834,33 +837,42 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         requestNumber:
+          maxLength: 6
           type: integer
           description: Número de solicitud
           format: int32
           example: 194
         bankBranch:
+          maxLength: 3
           type: integer
           description: Identificador de Sucursal
           format: int32
           example: 125
         checkDigit:
+          maxLength: 1
+          minLength: 1
           type: integer
-          description: Dígito Verificador
+          description: Dígito Verificador de la cuenta
           format: int32
           example: 0
         newLimit:
+          maxLength: 15
           type: integer
-          description: Nuevo Límite
+          description: 'Monto del nuevo límite Numéricos enteros, miles, no admite negativos) Ej: 200000 / 150000'
           format: int32
           example: 500000
         deadline:
+          maxLength: 6
+          minLength: 6
           type: string
-          description: Fecha de finalización
+          description: Fecha de finalización. Formato DDMMYY
           example: '010624'
     LimitIncreaseResponse:
       type: object
@@ -1045,8 +1057,3 @@ components:
           description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema - Ver listado de códigos + descripciones  para la API correspondiente
           example: SISTEMA DISPONIBLE
       description: Estructura de campos que responde la API Availability
-  securitySchemes:
-    Token:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
