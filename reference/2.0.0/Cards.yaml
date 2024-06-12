@@ -30,12 +30,11 @@
 
 openapi: 3.0.1
 info:
-  title: Silvercore™ Cards Service - API Documentation
-  description: This documentation describes the REST APIs provided by the Silvercore™
-  version: "2.0"
+  title: OpenAPI definition
+  version: v0
 servers:
-  - url: https://int.api.firstdata.com/latam-gfs-apis/
-    description: Sandbox Test
+  - url: https://cert-latam-gfs-silvercore-apis-card-v2.apps.us-oma1-ip01.1dc.com
+    description: Generated server url
 paths:
   /cards/v1/pin:
     put:
@@ -44,33 +43,39 @@ paths:
       summary: 'Esta API permite la posibilidad de gestión de PIN para ATM. El impacto de cambio de PIN/OFFSET NO es online. '
       operationId: setPinBlock
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -138,32 +143,39 @@ paths:
       summary: Esta API tiene como objetivo que el Emisor pueda ofrecer al cliente la posibilidad realizar la Denuncia – Bloqueo según Motivo 19
       operationId: block
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -236,32 +248,39 @@ paths:
       summary: El presente servicio ofrece al tarjetahabiente la posibilidad de solicitar la generación de la tarjeta en formato plástico al domicilio de la cuenta. Esta API permite la impresión de la tarjeta que se encuentra activa virtual, por ende, no se genera bloqueo ni nuevo número. La misma ingresa como novedad en el sistema de generación de plástico y flujo de envío a domicilio del cliente en sistema con permisionaria del emisor.
       operationId: setActivarTarjeta
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -329,32 +348,39 @@ paths:
       summary: Esta API tiene como objetivo que el Emisor pueda ofrecer al cliente la posibilidad del ingreso de reclamos al permitirle listar transacciones del Ultimo resumen (Transacciones liquidadas) y del periodo actual (pendientes de liquidación) para ser marcadas como “Desconocidas” o “Reclamadas” y el posterior envío de información de la operación para ingreso del reclamo a los sistemas FISERV + Claim Manager
       operationId: transactions
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -427,32 +453,39 @@ paths:
       summary: Esta API tiene como objetivo que el Emisor pueda ofrecer al cliente la posibilidad del ingreso de reclamos o desconocimientos, sobre las transacciones listadas, a los sistemas FISERV + Claim Manager.
       operationId: claims
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -527,32 +560,39 @@ paths:
       summary: Esta API permite generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F).Este movimiento genera la novedad tomando en cuenta el domicilio de la cuenta cargado en sistema. Es decir, no admite detalle de domicilio de entrega diferente.
       operationId: setReplacement
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -622,32 +662,39 @@ paths:
         *Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
       operationId: setReimpresion
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -715,33 +762,39 @@ paths:
       summary: 'El presente servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar, la presente API ofrece al cliente  tomar acción sobre la tarjeta, activar / pausar  (ON / OFF) '
       operationId: PauseOrActive
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -809,33 +862,39 @@ paths:
       summary: El presente servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar, la presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitirá habilitar al cliente para la acción a tomar (ON / OFF)
       operationId: getCardStatus
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -906,32 +965,39 @@ paths:
         *Posee campos referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
       operationId: postInstantIssuanceService
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -999,32 +1065,39 @@ paths:
       summary: Posibilita la obtención del dato CVC2/CVV2 para la tarjeta seleccionada según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado), de manera que el emisor pueda mostrar los datos de la tarjeta para su utilización en cualquier UX, control u onboarding a diferentes billeteras.
       operationId: getCvv
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -1092,33 +1165,39 @@ paths:
       summary: La API informa los datos completos del producto seleccionado según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado);  permitiendo conformar los datos de la tarjeta (PAN VTO Datos del cliente)  para su utilización en cualquier UX, control/actualización de datos u onboarding a diferentes billeteras.
       operationId: getCardNumber
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            pattern: '[0-9]{1,3}'
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -1189,32 +1268,39 @@ paths:
         *Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
       operationId: setBloqueo
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -1282,32 +1368,39 @@ paths:
       summary: Permite obtener el costo de Denuncia/Bloqueo para la tarjeta que el cliente selecciona. El dato precio se encuentra seteado previamente por el emisor y puede variar entre productos de la misma institución financiera.
       operationId: getCostoBloqueo
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -1375,32 +1468,39 @@ paths:
       summary: Brinda la posibilidad de solicitar en forma online la ACTIVACION para la tarjeta seleccionada. El emisor puede instrumentar esta API con 1 o N tarjetas y combinar la acción con la previa consulta de las tarjetas que conforman la cuenta (Titular + Adicionales)
       operationId: setActivarTarjeta_1
       parameters:
-        - name: X-ClientID
+        - name: Authorization
           in: header
-          description: Número que representa la entidad cliente del servicio en Fiserv.
-          required: true
-          schema:
-            type: string
-            description: Número que representa la entidad cliente del servicio en Fiserv.
-        - name: username
-          in: header
-          description: Identificador que representa al usuario.
-          required: true
-          schema:
-            type: string
-            description: Identificador que representa al usuario.
-        - name: security-context
-          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
           required: false
           schema:
+            maxLength: 35
+            minLength: 35
             type: string
-        - name: requestId
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
           in: header
-          description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+          description: Provisto por Fiserv ClientKey de ApiGee.
           required: false
           schema:
+            maxLength: 32
+            minLength: 32
             type: string
-            description: ' Identificador único global de la solicitud enviada con formato de dígitos hexadecimales con grupos separados por guiones. Ejemplo: b3d27f9b-d21d-327c-164e-7fb6776f87b0'
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
       requestBody:
         content:
           application/json:
@@ -1492,6 +1592,8 @@ components:
       type: object
       properties:
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -1503,13 +1605,6 @@ components:
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J1
-    PinBlockResponse:
-      type: object
-      properties:
-        returnDescription:
-          type: string
-          description: Retorna un mensaje de salida que confirma que el cambio de clave se realizo con exito.
-          example: OPERACIÓN REALIZADA CON EXITO
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -1523,6 +1618,13 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    PinBlockResponse:
+      type: object
+      properties:
+        returnDescription:
+          type: string
+          description: Retorna un mensaje de salida que confirma que el cambio de clave se realizo con exito.
+          example: OPERACIÓN REALIZADA CON EXITO
     AccountBlock:
       type: object
       properties:
@@ -1566,9 +1668,11 @@ components:
       type: object
       properties:
         cardNumber:
+          maxLength: 64
+          minLength: 64
           type: string
-          description: Numero PAN completo de la tarjeta, encriptado.
-          example: FCBDA6EEB6BE198F41D19D38C8B7AD1F66C91533A439A78F006628214AB6A02E
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         account:
           $ref: '#/components/schemas/AccountBlock'
         customer:
@@ -1652,6 +1756,8 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -1708,9 +1814,11 @@ components:
       type: object
       properties:
         cardNumber:
+          maxLength: 64
+          minLength: 64
           type: string
-          description: Numero PAN completo de la tarjeta, encriptado.
-          example: FCBDA6EEB6BE198F41D19D38C8B7AD1F66C91533A439A78F006628214AB6A02E
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         account:
           $ref: '#/components/schemas/AccountTransactionsRequest'
         type:
@@ -1867,9 +1975,11 @@ components:
       type: object
       properties:
         cardNumber:
+          maxLength: 64
+          minLength: 64
           type: string
-          description: Numero PAN completo de la tarjeta, encriptado.
-          example: FCBDA6EEB6BE198F41D19D38C8B7AD1F66C91533A439A78F006628214AB6A02E
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         account:
           $ref: '#/components/schemas/AccountClaimRequest'
         transactions:
@@ -1967,9 +2077,11 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: ^[0-9A-F]{64}
           type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         operationDate:
           maxLength: 10
@@ -2087,14 +2199,18 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: ^[0-9A-F]{64}
           type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
+          maxLength: 16
+          minLength: 16
           pattern: ^[0-9]{4}[0]{8}[0-9]{4}
           type: string
-          description: 'Este campo de entrada, permite ingresar el número de tarjeta PAN, formato: 1234000000001234'
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
           example: '1234000000001234'
         comments:
           maxLength: 120
@@ -2152,6 +2268,8 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -2191,6 +2309,8 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
@@ -2607,7 +2727,7 @@ components:
           maxLength: 16
           minLength: 0
           type: string
-          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
           example: '1234000000001234'
       description: Estructura de campos para la solicitud de la API CVV
     CvvResponse:
@@ -2636,11 +2756,15 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: '[0-9A-F]{64}'
           type: string
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
+          maxLength: 16
+          minLength: 16
           pattern: '[0-9]{4}0{8}[0-9]{4}'
           type: string
           description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
@@ -2694,14 +2818,18 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: ^[0-9A-F]{64}
           type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
+          maxLength: 16
+          minLength: 16
           pattern: ^[0-9]{4}[0]{8}[0-9]{4}
           type: string
-          description: 'Este campo de entrada permite ingresar el número de tarjeta (PAN) en formato: 1234000000001234.'
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
           example: '1234000000001234'
         fullName:
           maxLength: 30
@@ -2814,9 +2942,11 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: ^[0-9A-F]{64}
           type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
       description: Estructura de campos para la solicitud de la API Block Fees Card
     BlockRequestFeesResponseb:
@@ -2845,14 +2975,18 @@ components:
           format: int32
           example: 0
         cardNumber:
+          maxLength: 64
+          minLength: 64
           pattern: ^[0-9A-F]{64}
           type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado en formato hexadecimal con longitud de 64 caracteres.
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cardNumberM:
+          maxLength: 16
+          minLength: 16
           pattern: ^[0-9]{4}[0]{8}[0-9]{4}
           type: string
-          description: 'Este campo de entrada permite ingresar el número de tarjeta (PAN) en formato: 1234000000001234.'
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
           example: '1234000000001234'
       description: Estructura de campos para la solicitud de la API Activation Card
     ActivationResponse:
