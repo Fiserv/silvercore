@@ -30,11 +30,12 @@
 
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Silvercore™ Account Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
 servers:
-  - url: https://cert-latam-gfs-silvercore-apis-account-v2.apps.us-oma1-ip01.1dc.com
-    description: Generated server url
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
 paths:
   /accounts/tripLog:
     put:
@@ -707,14 +708,20 @@ components:
       type: object
       properties:
         dateFrom:
+          maxLength: 10
+          minLength: 10
           type: string
           description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
           example: '2023-09-03'
         dateTo:
+          maxLength: 10
+          minLength: 10
           type: string
           description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
           example: '2023-09-05'
         countryCode:
+          maxLength: 3
+          minLength: 3
           type: string
           description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
           example: CUB
@@ -753,6 +760,21 @@ components:
           items:
             $ref: '#/components/schemas/Country'
       description: Estructura de campos que responde a la API TripLog
+    Account:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 5
+        countriesList:
+          type: array
+          description: Este campo de salida, proporciona los datos de los registros de viajes
+          items:
+            $ref: '#/components/schemas/Country'
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -766,19 +788,6 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
-    Account:
-      type: object
-      properties:
-        additional:
-          type: integer
-          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
-          format: int32
-          example: 5
-        countriesList:
-          type: array
-          description: Este campo de salida, proporciona los datos de los registros de viajes
-          items:
-            $ref: '#/components/schemas/Country'
     TripLogRequest:
       type: object
       properties:

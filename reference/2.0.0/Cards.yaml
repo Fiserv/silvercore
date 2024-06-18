@@ -30,11 +30,12 @@
 
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Silvercore™ Cards Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
 servers:
-  - url: https://cert-latam-gfs-silvercore-apis-card-v2.apps.us-oma1-ip01.1dc.com
-    description: Generated server url
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
 paths:
   /cards/v1/pin:
     put:
@@ -1858,11 +1859,14 @@ components:
       type: object
       properties:
         accountNumber:
+          maxLength: 32
           type: integer
           description: Número de cuenta del tarjetahabiente encriptado.
           format: int64
           example: 649
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
           description: Identifica unívocamente Titulares y Adicionales de una cuenta. Conocido también como "AUTORIZADO".
           format: int32
@@ -1872,26 +1876,33 @@ components:
       type: object
       properties:
         sequence:
+          maxLength: 3
           type: integer
           description: Incremental. Número de secuencia asignado en la consulta.
           format: int32
           example: 1
         operationDate:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Fecha de cuando se realizó la compra / Consumo. Formato “ddmmaaa”.
           format: int32
           example: 7112021
         statementDate:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Fecha de cierre de cuenta corriente. Formato “ddmmaaa”.
           format: int32
           example: 2122021
         installmentQuantity:
+          maxLength: 2
           type: integer
           description: Cantidad de cuotas.
           format: int32
           example: 0
         currencyCode:
+          minLength: 3
           type: integer
           description: |-
             Código de moneda del consumo. 
@@ -1904,23 +1915,29 @@ components:
           format: int32
           example: 840
         amount:
+          maxLength: 15
           type: number
-          description: Importe del consumo. Hasta 13 posiciones enteras. 2 decimales.
+          description: Importe del consumo. (1-13 posiciones enteras, 2 decimales.
           format: double
           example: 1.99
         authorizationCode:
+          maxLength: 8
           type: string
           description: Código de autorización de la compar / consumo.
           example: '00000746'
         locationType:
+          maxLength: 1
+          minLength: 1
           type: string
           description: 'Tipo de operación. “S”: Local. “N” Internacional.'
           example: 'N'
         storeNumber:
+          maxLength: 8
           type: string
           description: Número de comercio.
           example: '00000000'
         merchantName:
+          maxLength: 22
           type: string
           description: Descripción del consumo.
           example: Spotify P17D9ED95F
@@ -1936,15 +1953,20 @@ components:
       type: object
       properties:
         operationDate:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Fecha de ejecución del proceso. Generalmente fecha de sistema.
           format: int32
           example: 20240101
         hasMoreTransactionsAvailable:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Indica si hay mas registros por mostrar.
           example: 'N'
         recordsNumber:
+          maxLength: 3
           type: integer
           description: Cantidad de elementos de la consulta.
           format: int32
@@ -2028,7 +2050,8 @@ components:
         amount:
           type: string
           description: Importe del consumo. Hasta 13 posiciones enteras. 2 decimales.
-          example: '5310000.0'
+          format: decimal
+          example: '5310000.01'
       description: Datos de las transacciones a reclamar.
     ClaimResponse:
       type: object
@@ -2275,6 +2298,8 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         action:
+          maxLength: 2
+          minLength: 2
           pattern: ^(AC|BL)$
           type: string
           description: Este campo de entrada permite indicar la acción a realizar. AC para activación y BL para Inhabilitación
