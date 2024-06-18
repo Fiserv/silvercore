@@ -1,10 +1,11 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Silvercore™ Financial Installment Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
 servers:
-  - url: https://cert-latam-gfs-silvercore-apis-installment-conversion-v2.apps.us-oma1-ip01.1dc.com
-    description: Generated server url
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
 paths:
   /transactions/statementPayment:
     post:
@@ -958,6 +959,7 @@ components:
           pattern: ^[0-9]{1,13}([.][0-9]{1,2})?$
           type: string
           description: Valor de la operación pactada por el cliente. Importe del Pago/Ajuste.
+          format: decimal
           example: '100.5'
         operCurrency:
           type: string
@@ -1180,7 +1182,7 @@ components:
           type: string
           description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: decimal
-          example: '0.0'
+          example: '30000.05'
         totalAmount:
           maxLength: 17
           pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
@@ -1210,29 +1212,30 @@ components:
           type: number
           description: Este campo de salida indica el importe de la cuota. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: double
-          example: 50000
+          example: 50000.01
         tna:
           maxLength: 7
           type: number
           description: Este campo de salida indica la tasa nominal anual del plan. (1 – 3 parte entera, 3 parte decimal)
           format: double
-          example: 0
+          example: 0.01
         lifeAssurance:
           maxLength: 17
           type: number
           description: Este campo de salida indica el importe del seguro de vida. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: double
-          example: 0
+          example: 0.01
         grantFee:
           maxLength: 17
           type: number
           description: Este campo de salida indica el importe del cargo por otorgamiento. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: double
-          example: 0
+          example: 0.01
         cft:
           maxLength: 7
           type: string
           description: Este campo de salida indica el costo financiero total del plan. (1 – 3 parte entera, 3 parte decimal)
+          format: decimal
           example: 0,00%
         amortizationSystemId:
           type: string
@@ -1370,15 +1373,18 @@ components:
           format: date
           example: '2023-07-01'
         authorizationCode:
+          maxLength: 8
           type: string
           description: Este campo de salida informa el código de autorización del plan de pago
           example: '41030'
         installmentsQuantity:
+          maxLength: 2
           type: integer
           description: Este campo de salida indica la cantidad de cuotas del plan
           format: int32
           example: 6
         currentInstallment:
+          maxLength: 3
           type: integer
           description: Este campo de salida indica la cuota vigente del plan
           format: int32
@@ -1390,23 +1396,28 @@ components:
           description: Este campo de salida indica el código de moneda del plan
           example: ARS
         amount:
+          maxLength: 8
           type: number
-          description: Este campo de salida indica el importe de la cuota. (1 – 13 parte entera, 0 – 3 parte decimal)
+          description: Este campo de salida indica el importe de la cuota. (1 – 5 parte entera, 0 – 3 parte decimal)
           format: float
-          example: 1000
+          example: 1000.01
         rate:
+          maxLength: 8
           type: number
-          description: Este campo de salida indica la tasa del plan
+          description: Este campo de salida indica la tasa del plan (1 – 5 parte entera, 0 – 3 parte decimal)
           format: float
           example: 23
         idPlan:
+          maxLength: 2
           type: integer
           description: Este campo de salida indica el id del plan
           format: int32
           example: 1
         cft:
+          maxLength: 7
           type: string
           description: Este campo de salida indica el costo financiero total del plan. (1 – 3 parte entera, 3 parte decimal)
+          format: decimal
           example: 31,00%
       description: Este campo de salida muestra un listado de planes de pago
     QueryInstallmentsResponse:
@@ -1441,6 +1452,7 @@ components:
           format: int32
           example: 0
         currencyPlan:
+          maxLength: 2
           type: integer
           description: El tipo de moneda
           format: int32
@@ -1449,18 +1461,22 @@ components:
           pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: 'Monto a financiar 9999999999999.999 Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
-          example: '6330'
+          format: decimal
+          example: '6330.001'
         amountARS:
           pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
-          example: '150000'
+          format: decimal
+          example: '150000.001'
         amountUSD:
           pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
-          example: '10000'
+          format: decimal
+          example: '10000.001'
         cardLast4:
+          maxLength: 4
           type: integer
           description: Ultimos 4 digitos de la tarjeta.
           format: int32
@@ -1476,47 +1492,61 @@ components:
       type: object
       properties:
         enable:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Indicador si está habilitado el plan “S” o “N”
           example: S
         quantityInstallments:
+          maxLength: 2
           type: integer
           description: Cantidad de cuotas totales del plan
           format: int32
           example: 2
         installment:
+          maxLength: 17
           type: string
           description: Valor de cada cuota
           example: '+0000000000403900'
         amortizationSystemId:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Código Amortización
           example: F
         amortizationSystemDescription:
+          maxLength: 10
           type: string
           description: Descripción amortización
           example: FRANCES
         rateTypeId:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Código de tasa
           example: F
         rateTypeDescription:
+          maxLength: 10
           type: string
           description: Descripción de la tasa
           example: FIJA
         grantFee:
+          maxLength: 17
           type: string
           description: Costo de Otorgamiento
           example: '+0000000000000000'
         lifeAssuranceAmount:
+          maxLength: 17
           type: string
           description: Impuesto seguro de vida
           example: '+0000000000000000'
         tna:
+          maxLength: 7
           type: string
           description: T.N.A (tasa nominal anual)
           example: '+062000'
         id:
+          maxLength: 2
           type: integer
           description: Número de plan
           format: int32
@@ -1524,7 +1554,7 @@ components:
         cfn:
           maxLength: 7
           type: string
-          description: Cft Costo financiero total. (1 – 4 parte entera, 1 – 2 parte decimal)
+          description: Cft Costo financiero total. (1 – 4 parte entera, 1 – 2 parte decimal,signo (%))
           format: decimal
           example: 106,84%
     BalanceInstallmentPlansResponse:
@@ -1671,11 +1701,13 @@ components:
           maxLength: 9
           type: number
           description: Cotización dólar pesos (pesificado - de dólar a pesos). (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
           example: 96.41
         cotizacionPesoDolar:
           maxLength: 9
           type: number
           description: Cotización pesos dólar (para cotización en dólares). (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
           example: 96.41
         saldoConsMonedaLocal:
           type: string

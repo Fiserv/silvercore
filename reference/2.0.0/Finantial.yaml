@@ -1,10 +1,11 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Silvercore™ Financial Information Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
 servers:
-  - url: https://cert-latam-gfs-silvercore-apis-finantial-info-v2.apps.us-oma1-ip01.1dc.com
-    description: Generated server url
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
 paths:
   /financialInformation/transactions:
     post:
@@ -613,7 +614,7 @@ components:
         operAmount:
           maxLength: 9
           type: number
-          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.(1 – 7 parte entera, 0 – 2 parte decimal)
           format: float
           example: 1251.11
         totalInstallments:
@@ -720,19 +721,26 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         dateI:
+          maxLength: 8
+          minLength: 8
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
-          example: '240313'
+          example: '20240313'
         releaseTime:
+          maxLength: 8
+          minLength: 8
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
           example: '17282015'
         reqCodeI:
+          maxLength: 1
+          minLength: 1
           pattern: '[CEIP]'
           type: string
           description: 'Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta C=Comercio  E=Entidad I=Miembro ICA P= Pais '
           example: C
         reqNumberI:
+          maxLength: 9
           type: integer
           description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
           format: int32
@@ -742,42 +750,55 @@ components:
       type: object
       properties:
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
           description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
           format: int32
           example: 0
         authDate:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Este campo de salida identifica el día en que se realiza la operación / autorización.
           format: int32
           example: 20230223
         authorizationCode:
+          maxLength: 8
+          minLength: 8
           type: string
           description: Este campo de salida informa el codigo de autorización que brinda el sistema para la transacción realizada y se conforma de 6 digitos numericos.
           example: '132944'
         description:
+          maxLength: 30
           type: string
           description: Nombre del comercio en que realiza la compra o descripcion del movimiento cuando se trata de Campañas de descuentos, Ajustes, y otras acciones.
           example: COMPRA EN COMERCIO LOCAL
         currency:
+          maxLength: 20
           type: string
           description: Este campo indica la moneda en que se realiza la operación.
           example: PESO ARGENTINO
         operAmountSign:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Identifica el tipo de operación credito o debito según sea el signo.
           example: +
         operAmount:
+          maxLength: 15
           type: number
-          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.(1 – 13 parte entera, 0 – 2 parte decimal)
           format: double
           example: 8317.35
         totalInstallments:
+          maxLength: 2
           type: integer
           description: Muestra el plan de cuotas total
           format: int32
           example: 1
         merchantID:
+          maxLength: 8
           type: integer
           description: Numero que identiifca al comercio donde se realiza la operación.
           format: int32
@@ -787,29 +808,38 @@ components:
       type: object
       properties:
         additional:
+          maxLength: 1
+          minLength: 1
           type: integer
           description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
           format: int32
           example: 0
         fragmentMark:
+          maxLength: 1
+          minLength: 1
           type: integer
           description: 'Indicador numérico para determinar cuando existen más registros a mostrar - Puede adoptar dos valores: 0 = Fin de los datos, 1 = Hay más datos'
           format: int32
           example: 0
         dateO:
+          maxLength: 8
           type: integer
           description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
           format: int32
           example: 0
         releaseTime:
+          maxLength: 8
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
           example: '00000000'
         reqCodeO:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta. C=Comercio  E=Entidad I=Miembro ICA P= Pais
           example: '0'
         reqNumberO:
+          maxLength: 9
           type: integer
           description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
           format: int32
@@ -913,7 +943,7 @@ components:
         operAmount:
           maxLength: 13
           type: number
-          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.(1 – 11 parte entera, 0 – 2 parte decimal)
           format: double
           example: 56.59
         postingDate:
@@ -928,11 +958,13 @@ components:
       type: object
       properties:
         cierreCtaCteActual:
+          maxLength: 8
           type: integer
           description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
           format: int64
           example: 20230330
         sequenceO:
+          maxLength: 4
           type: integer
           description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
           format: int64
@@ -1035,7 +1067,8 @@ components:
         currentBalanceLOC:
           maxLength: 15
           type: number
-          description: Este campo detalla el saldo actual en moneda local.
+          description: Este campo detalla el saldo actual en moneda local. (1 – 13 parte entera, 2 parte decimal)
+          format: decimal
           example: 20667.55
         currentBalanceSignUSD:
           maxLength: 1
@@ -1046,7 +1079,8 @@ components:
         currentBalanceUSD:
           maxLength: 15
           type: number
-          description: Este campo detalla el saldo actual en moneda extranjera.
+          description: Este campo detalla el saldo actual en moneda extranjera. (1 – 13 parte entera, 2 parte decimal)
+          format: decimal
           example: 74.94
         minPaySign:
           maxLength: 1
@@ -1057,8 +1091,9 @@ components:
         minimumPay:
           maxLength: 15
           type: number
-          description: Este campo de salida, proporciona la información correspondiente importe de Pago Mínimo.
-          example: 12890
+          description: Este campo de salida, proporciona la información correspondiente importe de Pago Mínimo. (1 – 13 parte entera, 2 parte decimal)
+          format: decimal
+          example: 12890.01
         minPayDueDate:
           maxLength: 8
           minLength: 8
@@ -1320,109 +1355,155 @@ components:
       type: object
       properties:
         availReturnCodeDescr:
+          maxLength: 30
           type: string
           description: Descripción del codigo de respuesta para el retorno de consulta de disponibles.
         creditLimit:
+          maxLength: 9
           type: number
-          description: Este campo de salida informa el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente
-          example: 1995000
+          description: Este campo de salida informa el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 1995000.01
         installmentsLimit:
+          maxLength: 9
           type: number
-          description: Este campo de salida informa el limite total para realizar operaciones en cuotas.
-          example: 0
+          description: Este campo de salida informa el limite total para realizar operaciones en cuotas. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
         cashAdvanceLimit:
+          maxLength: 9
           type: number
-          description: Este campo de salida informa el limite asignado para realizar adelantos.
-          example: 0
+          description: Este campo de salida informa el limite asignado para realizar adelantos. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
         availCreditLimit:
+          maxLength: 9
           type: number
-          description: Este campo de salida informa el disponible para realizar operaciones de contado.
+          description: Este campo de salida informa el disponible para realizar operaciones de contado. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
           example: 1964456.5
         availInstallmentAmount:
+          maxLength: 9
           type: number
-          description: Este campo de salida informa el disponible para realizar operaciones en cuotas.
-          example: 0
+          description: Este campo de salida informa el disponible para realizar operaciones en cuotas. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
         availCashAdvance:
+          maxLength: 9
           type: number
-          description: Este campo de salida informa el disponible para realizar adelantos en efectivo.
-          example: 0
+          description: Este campo de salida informa el disponible para realizar adelantos en efectivo. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
         grupoctacte:
+          maxLength: 2
           type: integer
           description: Este campo de salida, permite ingresar el dato correspondiente al Grupo de cuenta corriente al que pertenecen las cuentas listadas del tarjetahabiente. Valores posibles  11 12 13 14  (que configuran las fechas correspondientes a movimientos y cálculos en  cierres y vencimientos)
           format: int32
           example: 12
         cierreCtaCteAnterior:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Este campo indica la fecha anterior o ultima fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
           format: int32
           example: 20230126
         previusPaymentDueDate:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Este campo de salida, proporciona la información correspondiente a la fecha de  Vencimiento de Resumen anterior.
           format: int32
           example: 20230206
         cierreCtaCteActual:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
           format: int32
           example: 20230302
         paymentDueDate:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
           format: int32
           example: 20230310
         proximoCierreCtaCte:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Este campo proporciona la fecha de proximo cierre de cuenta.
           format: int32
           example: 20230330
         nextPaymentDueDate:
+          maxLength: 8
+          minLength: 8
           type: integer
           description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
           format: int32
           example: 20230410
         dailyFinRateLOC:
+          maxLength: 13
           type: number
-          description: Este campo informa la tasa  diaria de financiaciónpara moneda local.
+          description: Este campo informa la tasa  diaria de financiaciónpara moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
           example: 0.122
         dailyFinRateDOL:
+          maxLength: 13
           type: number
-          description: Este campo informa la tasa  diaria de financiaciónpara  moneda local.
-          example: 0
+          description: Este campo informa la tasa  diaria de financiaciónpara  moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
         dailyCompensatoryRateLOC:
+          maxLength: 13
           type: number
-          description: Este campo informa la tasa de intereses compensatorios para moneda local.
-          example: 0
+          description: Este campo informa la tasa de intereses compensatorios para moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
         dailyCompensatoryRateUSD:
+          maxLength: 13
           type: number
-          description: Este campo informa la tasa de intereses compensatorios para moneda extranjera.
-          example: 0
+          description: Este campo informa la tasa de intereses compensatorios para moneda extranjera. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
         dailyPunitiveRateLOC:
+          maxLength: 13
           type: number
-          description: Este campo devuelve la tasa diaria correspondiente a punitorios en moneda local
+          description: Este campo devuelve la tasa diaria correspondiente a punitorios en moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
           example: 0.061
         dailyPunitiveRateDOL:
+          maxLength: 13
           type: number
-          description: Este campo devuelve la tasa diaria correspondiente a punitorios en dólares
-          example: 0
+          description: Este campo devuelve la tasa diaria correspondiente a punitorios en dólares. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
         cardType:
           type: string
           description: Identifica tipo de tarjeta - Para Mastercard se utiliza MC
           example: MC
         TEMLoc:
+          maxLength: 13
           type: number
-          description: Este campo informa la Tasa efectiva mensual en moneda local.
-          example: 3.66
+          description: Este campo informa la Tasa efectiva mensual en moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 3.606
         TEMDol:
+          maxLength: 13
           type: number
-          description: Este campo informa la Tasa Efectiva Mensual en moneda extranjera.
-          example: 0
+          description: Este campo informa la Tasa Efectiva Mensual en moneda extranjera. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
         TNALoc:
+          maxLength: 13
           type: number
-          description: Este campo informa la tasa nominal anual para moneda local.
-          example: 44.64
+          description: Este campo informa la tasa nominal anual para moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 44.604
         TNADol:
+          maxLength: 13
           type: number
-          description: Este campo informa la tasa nominal anual para moneda extranjera.
-          example: 0
+          description: Este campo informa la tasa nominal anual para moneda extranjera. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
       description: Estructura de campos que responde la API AccountFinData
