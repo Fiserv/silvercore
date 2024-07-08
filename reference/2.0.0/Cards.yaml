@@ -134,10 +134,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: PIN
+      x-proxy-name: PIN block
       x-group-name: Card
-      x-child-product-name: PIN Block
-  /cards/transactions/v1/block:
+      x-child-product-name: Cards
+  /cards/v1/block:
     put:
       tags:
         - Block
@@ -181,7 +181,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ComplaintRequest'
+              $ref: '#/components/schemas/BlockRequest'
         required: true
       responses:
         '200':
@@ -189,7 +189,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ComplaintResponse'
+                $ref: '#/components/schemas/BlockResponse'
         '400':
           description: Bad Request
           content:
@@ -200,16 +200,11 @@ paths:
                   type: string
               examples:
                 Reponse 1:
-                  description: Card already blocked
-                  value:
-                    code: '2617'
-                    description: ERROR, LA TARJETA YA FUE DENUNCIADA
-                Reponse 2:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 3:
+                Reponse 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -246,7 +241,7 @@ paths:
     post:
       tags:
         - Virtual Card
-      summary: El presente servicio ofrece al tarjetahabiente la posibilidad de solicitar la generación de la tarjeta en formato plástico al domicilio de la cuenta. Esta API permite la impresión de la tarjeta que se encuentra activa virtual, por ende, no se genera bloqueo ni nuevo número. La misma ingresa como novedad en el sistema de generación de plástico y flujo de envío a domicilio del cliente en sistema con permisionaria del emisor.
+      summary: "Ofrece al tarjetahabiente la posibilidad de solicitar la generación de la tarjeta en formato físico. \r\nLa solicitud indica el inicio del proceso de impresión/embozado/personalización de la tarjeta que se encuentra activa virtualmente en nuestro centro de embozado. No se genera bloqueo ni nuevo número de tarjeta. \r\nIngresa como novedad en el sistema de generación de plástico y flujo de envío a domicilio del cliente en sistema con permisionaria del emisor."
       operationId: setActivarTarjeta
       parameters:
         - name: Authorization
@@ -386,7 +381,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DisputeRequest'
+              $ref: '#/components/schemas/TransactionsRequest'
         required: true
       responses:
         '200':
@@ -394,7 +389,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DisputeResponse'
+                $ref: '#/components/schemas/TransactionsResponse'
         '400':
           description: Bad Request
           content:
@@ -405,16 +400,11 @@ paths:
                   type: string
               examples:
                 Reponse 1:
-                  description: Transactions Not Found
-                  value:
-                    code: '0'
-                    description: EOF/NOT FOUND
-                Reponse 2:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 3:
+                Reponse 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -510,18 +500,11 @@ paths:
                   type: string
               examples:
                 Reponse 1:
-                  description: Error 600 COBOL. Transactions already claimed
-                  value:
-                    errorResponse: string
-                    code: '0'
-                    returnCodeDescription1: '*** NO SE HA GENERADO RECLAMO ***'
-                    returnCodeDescription2: TODOS LOS CUPONES SELECCIONADOS FUERON RECLAMADOS ANTERIORMENTE
-                Reponse 2:
                   description: Validation of required fields
                   value:
                     fieldName1: string
                     fieldName2: string
-                Reponse 3:
+                Reponse 2:
                   description: Mainframe message
                   value:
                     errorResponse:
@@ -558,7 +541,7 @@ paths:
     post:
       tags:
         - Replacement Card
-      summary: Esta API permite generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F).Este movimiento genera la novedad tomando en cuenta el domicilio de la cuenta cargado en sistema. Es decir, no admite detalle de domicilio de entrega diferente.
+      summary: "Ofrece la posibilidad de generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F). \r\nGenera una nueva tarjeta que la reemplazará en forma solapada, la cual solo desactivará la anterior al momento que finalice el solapamiento determinado por el emisor, el cliente reciba este reemplazo, active o utilice."
       operationId: setReplacement
       parameters:
         - name: Authorization
@@ -658,9 +641,7 @@ paths:
     post:
       tags:
         - Reissue Card
-      summary: |-
-        Ejecuta el pedido de REIMPRESION/REEMPLAZO con BLOQUEO; inhabilitando la tarjeta original que genera el movimiento y completando la acción con la REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual /unitario de la nueva credencial.
-        *Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
+      summary: "Ejecuta el pedido de REIMPRESION/REEMPLAZO con BLOQUEO; inhabilitando la tarjeta original que genera el movimiento y completando la acción con la REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual/unitario de la nueva credencial.\r\n*Posee campos opcionales referentes a la administración para la emisión (Tipo de Emisión)"
       operationId: setReimpresion
       parameters:
         - name: Authorization
@@ -860,7 +841,7 @@ paths:
     post:
       tags:
         - On Off
-      summary: El presente servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar, la presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitirá habilitar al cliente para la acción a tomar (ON / OFF)
+      summary: "Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar.  \r\nLa presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitirá habilitar al cliente para la acción a tomar (ON/OFF)"
       operationId: getCardStatus
       parameters:
         - name: Authorization
@@ -960,10 +941,7 @@ paths:
     post:
       tags:
         - Instant Issuance
-      summary: |-
-        Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital.
-        También proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia) 
-        *Posee campos referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
+      summary: "Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital. \r\nTambién proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia) \r\n*Posee campos referentes a la administración para la emisión virtual (Tipo de Emisión). </br></br>Según los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" es el alta que se generara:</br>- Caso 1 (Alta Titular c/ GAFF): La entidad envía solo los campos \"affinityGroupCheckDigit\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" en la request.</br>- Caso 2 (Alta Titular SIN GAFF): La entidad NO envía los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" en la request.</br>- Caso 3 (Alta Adicional c/ GAFF): La entidad envía los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" en la request.</br>- Caso 4 (Alta Adicional SIN GAFF): La entidad envía solo los campos \"accountNumber\", \"additional\" y \"checkDigit\" en la request."
       operationId: postInstantIssuanceService
       parameters:
         - name: Authorization
@@ -1163,7 +1141,7 @@ paths:
     post:
       tags:
         - Card Number
-      summary: La API informa los datos completos del producto seleccionado según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado);  permitiendo conformar los datos de la tarjeta (PAN VTO Datos del cliente)  para su utilización en cualquier UX, control/actualización de datos u onboarding a diferentes billeteras.
+      summary: La API informa los datos completos del producto seleccionado según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado);  permitiendo conformar los datos de la tarjeta (PAN VTO Datos del cliente) para su utilización en cualquier UX, control/actualización de datos u onboarding a diferentes billeteras.
       operationId: getCardNumber
       parameters:
         - name: Authorization
@@ -1263,10 +1241,7 @@ paths:
     post:
       tags:
         - Block Card
-      summary: |-
-        Brinda la posibilidad de aplicar en forma inmediata online la  DENUNCIA y BLOQUEO según el código seleccionado para la tarjeta detallada. 
-        Permite además complementar la acción con la solicitud de NO REIMPRESION/REEMPLAZO o REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración. Y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual /unitario de la nueva credencial.
-        *Posee campos opcionales referentes a la administración para la emisión virtual que será habilitada en futuro Release. (Tipo de Emisión)
+      summary: "Este servicio permite a las entidades ofrecer a los socios la posibilidad de denunciar sus tarjetas por Robo o extravío en forma inmediata online.  \r\nPermite además complementar la acción con la solicitud de No Reimpresión/Reimpresión o Reemplazo de la tarjeta con una nueva numeración.  \r\nLa reimpresión es enviada a la dirección del socio/tarjetahabiente que se encuentre en el sistema o a uno nuevo detallado en el mensaje para el envío puntual/unitario de la nueva credencial.  \r\n*Posee campos opcionales referentes a la administración para la emisión virtual (Tipo de Emisión)"
       operationId: setBloqueo
       parameters:
         - name: Authorization
@@ -1466,7 +1441,7 @@ paths:
     post:
       tags:
         - Activation Card
-      summary: Brinda la posibilidad de solicitar en forma online la ACTIVACION para la tarjeta seleccionada. El emisor puede instrumentar esta API con 1 o N tarjetas y combinar la acción con la previa consulta de las tarjetas que conforman la cuenta (Titular + Adicionales)
+      summary: Brinda la posibilidad de solicitar en forma online la ACTIVACION para la tarjeta seleccionada (Prepagas, Crédito tanto para segmentos Individuo y Corporativo). El emisor puede instrumentar esta API con 1 o N tarjetas y combinar la acción con la previa consulta de las tarjetas que conforman la cuenta (Titular + Adicionales)
       operationId: setActivarTarjeta_1
       parameters:
         - name: Authorization
@@ -1589,7 +1564,7 @@ components:
           example: 0
     PinBlockRequest:
       required:
-        - currPinBlock
+        - pin
       type: object
       properties:
         cardNumber:
@@ -1601,11 +1576,56 @@ components:
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         account:
           $ref: '#/components/schemas/AccountRequest'
-        currPinBlock:
+        pin:
+          $ref: '#/components/schemas/PinData'
+        organizationNumber:
+          type: string
+        logo:
+          type: string
+        channelIndicator:
+          type: string
+        keyAssociation:
+          type: string
+    PinData:
+      required:
+        - requestedBlockNumber
+      type: object
+      properties:
+        requestedBlockNumber:
           pattern: ^[0-9A-F]{16}
           type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          description: Este campo de entrada permite ingresar el nuevo PIN
           example: C3D4E5F6G7H8I9J1
+        currentBlockNumber:
+          type: string
+        offsetNumber:
+          type: string
+    FeePinBlockData:
+      type: object
+      properties:
+        amount:
+          pattern: '[0-9]{0,999999999}'
+          type: integer
+          description: Monto de la tarifa calculada
+          format: int32
+          example: 35
+        waiveReason:
+          pattern: '[0-9]{1}'
+          type: integer
+          description: Motivo de la extension de tarifas
+          format: int32
+          example: 1
+        responseCode:
+          pattern: '[0-9]{2}'
+          type: integer
+          description: Código de respuesta de tarifa
+          format: int32
+          example: 23
+    PinBlockResponse:
+      type: object
+      properties:
+        fee:
+          $ref: '#/components/schemas/FeePinBlockData'
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -1619,14 +1639,7 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
-    PinBlockResponse:
-      type: object
-      properties:
-        returnDescription:
-          type: string
-          description: Retorna un mensaje de salida que confirma que el cambio de clave se realizo con exito.
-          example: OPERACIÓN REALIZADA CON EXITO
-    AccountBlock:
+    AccountReclamo:
       type: object
       properties:
         accountNumber:
@@ -1646,24 +1659,30 @@ components:
     AddressBlock:
       type: object
       properties:
-        streetNumber:
+        streetAddress:
+          maxLength: 30
+          minLength: 0
           type: string
           description: Dato correspondiente al Domicilio del Tarjetahabiente, detallando el Nombre y Número de la calle.
           example: OCAMPO 25001
         provinceCode:
+          pattern: '[0-9]{2}| ||'
           type: string
           description: Dato correspondiente al Código de la Provincia.
           example: '01'
         city:
+          maxLength: 20
+          minLength: 0
           type: string
           description: Dato correspondiente a la Ciudad relacionada con el domicilio.
           example: CAPITAL FEDERAL
         countryCode:
+          pattern: ARG|URY| ||
           type: string
           description: 'Dato correspondiente al Código del País: Argentina = ARG, Uruguay= URY.'
           example: ARG
-      example: Datos de dirección del cliente.
-    ComplaintRequest:
+      description: Datos de dirección del cliente.
+    BlockRequest:
       required:
         - disputeRegion
       type: object
@@ -1675,7 +1694,7 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         account:
-          $ref: '#/components/schemas/AccountBlock'
+          $ref: '#/components/schemas/AccountReclamo'
         customer:
           $ref: '#/components/schemas/CustomerBlock'
         disputeRegion:
@@ -1697,44 +1716,71 @@ components:
           type: string
           description: Permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo con reimpresión.
           example: NINGÚN COMENTARIO
-      description: Estructura de campos para la solicitud de la API RF 210_1 Ingreso de Reclamos y Desconocimientos - Denuncia
+        organizationNumber:
+          type: integer
+          description: Número de organización
+          format: int32
+          example: 999
+        sequenceNumber:
+          type: integer
+          description: El campo representa el número de secuencia de la tarjeta.
+          format: int32
+          example: 1234
+        functionCode:
+          type: string
+          description: 'Código de función. Valores: B = bloquear cuenta; U = desbloquear cuenta'
+          example: B
+        blockCode:
+          type: string
+          description: 'Valores: A-Z = código de bloque;  espacio = desbloquear cuenta.'
+          example: Z
     CustomerBlock:
+      required:
+        - fullName
+        - isIdLost
       type: object
       properties:
         fullName:
+          maxLength: 30
+          minLength: 1
           type: string
           description: Nombre y apellido del socio a quien le fue/ron imputado/s el/los cargo/s y que efectúa el reclamo.
           example: Nombre Apellido
-        document:
+        idNumber:
+          pattern: '[a-zA-Z0-9]{6,9}'
           type: string
           description: Número de Documento de identidad del tarjetahabiente.
           example: '193916'
-        lostDocument:
-          type: string
-          description: Informa si el Documento de Identidad, Pasaporte o cualquier otro documento identificatorio del tarjetahabiente fue extraviado junto con su tarjeta. SI o NO (S o N).
-          example: S
-        phone:
+        isIdLost:
+          type: boolean
+          description: 'Informa si el Documento de Identidad, Pasaporte o cualquier otro documento identificatorio del tarjetahabiente fue extraviado junto con su tarjeta. true: SI; false: NO.'
+          example: false
+        phoneNumber:
+          pattern: '[0-9]{0,20}'
           type: string
           description: Número de teléfono del tarjetahabiente.
           example: '44211214'
         address:
           $ref: '#/components/schemas/AddressBlock'
       description: Datos del cliente.
-    ComplaintResponse:
+    BlockResponse:
       type: object
       properties:
+        blockNumber:
+          maxLength: 8
+          type: string
+          description: Este campo de salida indica el número de denuncia / bloqueo / reimpresión
+          example: A0000371
         orderNumber:
           type: string
           description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
-          example: ER
-        blockNumber:
-          type: string
-          description: Este campo de salida indica el número de denuncia
-          example: '969000001'
+          example: '2031'
         returnCodeDescription:
+          maxLength: 200
           type: string
           description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
-      description: Estructura de campos que responde la API Reclamos y Desconocimientos - Denuncia
+          example: DENUNCIA EFECTUADA
+      description: Estructura de campos que responde la API Block Card
     VirtualCardRequest:
       required:
         - bankBranch
@@ -1764,6 +1810,8 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         bankBranch:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: Corresponde al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta
           format: int32
@@ -1775,11 +1823,14 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación
           example: '2023-08-24'
         requestNumber:
+          maxLength: 6
+          minLength: 1
           type: integer
           description: Número de solicitud interno de la entidad emisora.
           format: int32
           example: 68
         issuingType:
+          maxLength: 1
           pattern: F|V|
           type: string
           description: Este campo permite ingresar el formato en que se emitira la tarjeta, puede tomar valores V para tarjetas emitidas solo en formato Virtual/Digital; F para tarjetas Físicas donde se generará el plástico para ser entregado o valor Vacio cuando no haya decisión al respecto.
@@ -1788,27 +1839,37 @@ components:
       type: object
       properties:
         message:
+          maxLength: 200
           type: string
           example: NOVEDAD CARGADA CON EXITO
       description: Estructura de campos que responde la API Virtual Card
-    AccountTransactionsRequest:
+    RangeTransactionsRequest:
       type: object
       properties:
-        accountNumber:
-          maxLength: 32
-          minLength: 32
+        from:
           type: string
-          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
-          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
-        additional:
-          maxLength: 1
-          minLength: 1
+          description: Fecha desde.
+          example: 01-01-2024
+        to:
+          type: string
+          description: Fecha hasta.
+          example: 01-01-2024
+      description: Criterio de búsqueda de los cupones a reclamar. Menor a 91 días entre “from” y “to
+    TransactionAmountRangeRequest:
+      type: object
+      properties:
+        from:
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: Rango de monto de la transacción. Este campo indica el monto "Desde".
           format: int32
-          example: 0
-      description: Datos de la cuenta.
-    DisputeRequest:
+          example: 100000
+        to:
+          type: integer
+          description: Rango de monto de la transacción. Este campo indica el monto "hasta".
+          format: int32
+          example: 100000
+      description: Criterio de búsqueda de los cupones a reclamar.
+    TransactionsRequest:
       required:
         - fase
         - sequence
@@ -1821,178 +1882,476 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         account:
-          $ref: '#/components/schemas/AccountTransactionsRequest'
-        type:
+          $ref: '#/components/schemas/AccountReclamo'
+        transaction:
+          $ref: '#/components/schemas/TransactionsTransactionRequest'
+        fase:
+          pattern: 0|1
+          type: string
+          description: 'Fase. En el primer llamado se informa "0". Llamados posteriores, sólo si hay más información, se debe ingresar el valor del último cupón de la página enviada anteriormente. Campos de Orden / Paginado. Valores: 0: Primer llamado; 1: Llamados posteriores.'
+          example: '0'
+        sequence:
+          pattern: ^[0-9]{1,3}
+          type: string
+          description: Secuencia. Si hay más información debe ingresar el último cupón de la página enviada anteriormente.
+          example: '0'
+        organizationNumber:
+          type: integer
+          description: Número de organización.
+          format: int32
+          example: 998
+        keyword:
+          type: string
+          description: Palabra clave.
+          example: user's_keyword
+        startToken:
+          type: string
+          description: Start Token es el token generado para que la API comprenda el siguiente conjunto de transacciones que se recuperarán.
+          example: 177100079202316ES000000013
+        isMerchantInformationRequired:
+          type: boolean
+          description: "Exclusivo VisionPLUS. El campo isMerchantInformationRequired indica si la información del comerciante es obligatoria o no.\nValores:\n•\tfalse = No se requiere información del comerciante;\n•\ttrue = Se requiere información del comerciante.\n"
+          example: false
+        isForeign:
+          type: boolean
+          description: "Exclusivo VisionPLUS. El campo isForeign se proporciona en el mensaje de entrada para que la fuente solicitante pueda especificar si la solicitud se aplica a la cuenta local o extranjera cuando la cuenta está en una organización de procesamiento de doble moneda. El valor predeterminado es la cuenta local.\nValores:\n•\tfalso = Cuenta local;\n•\tverdadero = Cuenta extranjera.\n"
+          example: false
+        queryMoreTransactions:
+          type: string
+          description: "Exclusivo VisionPLUS. El campo queryMoreTransactions se utiliza cuando se completa el campo \"startToken\" para obtener más transacciones.\nValores:\n•\tN = Próximas transacciones;\n•\tP = Transacciones anteriores.\n"
+          example: 'N'
+    TransactionsTransactionRequest:
+      required:
+        - locationType
+      type: object
+      properties:
+        locationType:
+          pattern: N|S
           type: string
           description: 'Criterio de búsqueda de los cupones a reclamar. Tipo de operación. “S”: Local. “N” Internacional.'
           example: 'N'
         statementDate:
           type: string
           description: Fecha de Cierre de Cuenta Corriente. Criterio de búsqueda de los cupones a reclamar.
-          example: '20240101'
+          example: 01-01-2024
+        details:
+          type: string
+          description: "Exclusivo VisionPLUS. El campo de detalles representa el indicador de detalles de la transacción.\nValores:\n•\tEspacio = Usar tanto actual como reciente (Mostrar la transacción pendiente/publicada);\n•\tB = Usar tanto actual como reciente (Mostrar la transacción pendiente/publicada)\n•\tC = Actual (Transacciones del ciclo hasta la fecha);\n•\tR = Recientes (Transacciones detalladas del estado de cuenta);\n•\tS = Sólo el primer estado de cuenta reciente\n•\tM = Mensual (Transacciones detalladas del estado de cuenta);\n•\tP = Transacciones contabilizadas.\n"
+          example: B
+        type:
+          type: integer
+          description: "Exclusivo VisionPLUS. El campo tipo representa el tipo de transacción.\nValores:\n•\t0 = Todos;\n•\t1 = Intereses y comisiones;\n•\t2 = Pago;\n•\t3 = Disputa;\n•\t4 = Almacén;\n•\t5 = Sólo intereses;\n•\t6 = Solo tarifa;\n•\t7 = Sólo tarjeta.\n"
+          format: int32
+          example: 0
+        transactionsNumber:
+          type: integer
+          description: Exclusivo VisionPLUS. El número de transacciones representa el número de transacciones. El número máximo es 50.
+          format: int32
+          example: 50
+        monthsNumber:
+          type: string
+          description: Exclusivo VisionPLUS. El número de transacciones representa el número de transacciones. El número máximo es 50.
+          example: '12'
         transactionDateRange:
-          $ref: '#/components/schemas/RangeTransactions'
-        fase:
-          pattern: 0|1
-          type: string
-          description: Campos ECO. Campos de Orden / Paginado.
-          example: '0'
-        sequence:
-          pattern: ^[0-9]{1,3}
-          type: string
-          description: Campos ECO. Campos de Orden / Paginado. Si hay más información debe ingresar el último cupón de la página enviada anteriormente.
-          example: '0'
-      description: Estructura de campos para la solicitud de la API RF 210_2 Ingreso de Reclamos y Desconocimientos – Consulta Transacciones.
-    RangeTransactions:
+          $ref: '#/components/schemas/RangeTransactionsRequest'
+        transactionAmountRange:
+          $ref: '#/components/schemas/TransactionAmountRangeRequest'
+      description: Datos de busqueda.
+    TransactionsResponse:
       type: object
       properties:
-        from:
-          type: string
-          description: Fecha desde.
-          example: '20240101'
-        to:
-          type: string
-          description: Fecha hasta.
-          example: '20240101'
-      description: Criterio de búsqueda de los cupones a reclamar.
-    AccountTransactionsResponse:
-      type: object
-      properties:
-        accountNumber:
-          maxLength: 32
+        organizationNumber:
           type: integer
-          description: Número de cuenta del tarjetahabiente encriptado.
-          format: int64
-          example: 649
-        additional:
-          maxLength: 1
-          minLength: 1
-          type: integer
-          description: Identifica unívocamente Titulares y Adicionales de una cuenta. Conocido también como "AUTORIZADO".
+          description: Exclusivo VisionPLUS. El campo OrganizationNumber es un atributo que contiene el número de identificación único asignado a una organización dentro de la API.
           format: int32
-          example: 0
-      description: Datos de la cuenta.
-    DetailsTransactionsResponse:
-      type: object
-      properties:
-        sequence:
-          maxLength: 3
+          example: 998
+        logo:
           type: integer
-          description: Incremental. Número de secuencia asignado en la consulta.
+          description: Exclusivo VisionPLUS. El campo del logo almacena el código del logo del emisor asociado con una tarjeta de pago. Representa el identificador o código único asignado al logotipo del emisor de la tarjeta, lo que permite una identificación y asociación precisas con el banco emisor.
           format: int32
-          example: 1
-        operationDate:
-          maxLength: 8
-          minLength: 8
-          type: integer
-          description: Fecha de cuando se realizó la compra / Consumo. Formato “ddmmaaa”.
-          format: int32
-          example: 7112021
-        statementDate:
-          maxLength: 8
-          minLength: 8
-          type: integer
-          description: Fecha de cierre de cuenta corriente. Formato “ddmmaaa”.
-          format: int32
-          example: 2122021
-        installmentQuantity:
-          maxLength: 2
-          type: integer
-          description: Cantidad de cuotas.
-          format: int32
-          example: 0
+          example: 501
         currencyCode:
-          minLength: 3
           type: integer
-          description: |-
-            Código de moneda del consumo. 
-
-            032: ARS – Pesos argentinos  
-
-            858: URU – Pesos Uruguayos 
-
-            840: USD - Dólares 
+          description: Exclusivo VisionPLUS. Código de moneda estándar ISO que identifica la unidad monetaria de esta organización.
           format: int32
-          example: 840
-        amount:
-          maxLength: 15
-          type: number
-          description: Importe del consumo. (1-13 posiciones enteras, 2 decimales.
-          format: double
-          example: 1.99
-        authorizationCode:
-          maxLength: 8
+          example: 123
+        currencyDescription:
           type: string
-          description: Código de autorización de la compar / consumo.
-          example: '00000746'
-        locationType:
-          maxLength: 1
-          minLength: 1
-          type: string
-          description: 'Tipo de operación. “S”: Local. “N” Internacional.'
-          example: 'N'
-        storeNumber:
-          maxLength: 8
-          type: string
-          description: Número de comercio.
-          example: '00000000'
-        merchantName:
-          maxLength: 22
-          type: string
-          description: Descripción del consumo.
-          example: Spotify P17D9ED95F
-    DisputeResponse:
-      type: object
-      properties:
-        account:
-          $ref: '#/components/schemas/AccountTransactionsResponse'
+          description: Exclusivo VisionPLUS. Descripción de la moneda.
+          example: currency description
+        isForeign:
+          type: boolean
+          description: "Exclusivo VisionPLUS. El indicador USO EXTRANJERO se proporciona en el mensaje de entrada para que la fuente solicitante pueda especificar si la solicitud se aplica a la cuenta local o extranjera cuando la cuenta está en una organización de procesamiento de doble moneda.\nValores:\n•\tfalse = cuenta local; (por defecto)\n•\ttrue = cuenta extranjera.\n"
+          example: false
         transaction:
           $ref: '#/components/schemas/TransactionsTransactionResponse'
-      description: Estructura de campos que responde la API Reclamos y Desconocimientos - Consulta.
+    TransactionsTransactionDetails:
+      type: object
+      properties:
+        sequence:
+          type: integer
+          format: int32
+        type:
+          type: string
+        organizationNumber:
+          type: integer
+          format: int32
+        logo:
+          type: integer
+          format: int32
+        accountNumber:
+          type: string
+        categoryCode:
+          type: integer
+          format: int32
+        categoryDescription:
+          type: string
+        logicModuleNumber:
+          type: integer
+          format: int32
+        transactionType:
+          type: string
+        statementDate:
+          type: string
+        locationType:
+          type: string
+        insuranceProduct:
+          type: string
+        virtualIndicator:
+          type: string
+        qualifierIndicator:
+          type: string
+        hasFeeAdjustment:
+          type: boolean
+        hasInterestAdjustment:
+          type: boolean
+        hasDispute:
+          type: boolean
+        isChargebackEligible:
+          type: boolean
+        isCopyRequest:
+          type: boolean
+        isReversal:
+          type: boolean
+        isMisapplied:
+          type: boolean
+        isIssuerClearingHouse:
+          type: boolean
+        isDisputeAuxiliaryFile:
+          type: boolean
+        recurringTransaction:
+          type: boolean
+        visaId:
+          type: integer
+          format: int64
+        effectiveDate:
+          type: string
+        postDate:
+          type: string
+        batchDate:
+          type: string
+        totalEffectiveValue:
+          type: integer
+          format: int32
+        demandDepositAccountIndicator:
+          type: string
+        record:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsRecord'
+        loyalty:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsLoyalty'
+        terminal:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsTerminal'
+        authorization:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsAuthorization'
+        fraud:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsFraud'
+        original:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsOriginal'
+        conversionRate:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsConversionRate'
+        usd:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsUsd'
+        interchange:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInterchange'
+        principal:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsPrincipal'
+        purchase:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsPurchase'
+        card:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsCard'
+        installment:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInstallment'
+        merchant:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsMerchant'
+      description: Detalle de las transacciones.
+    TransactionsTransactionDetailsAuthorization:
+      type: object
+      properties:
+        authorizationTime:
+          type: string
+        authorizationCode:
+          type: string
+    TransactionsTransactionDetailsCard:
+      type: object
+      properties:
+        number:
+          type: string
+        sequence:
+          type: integer
+          format: int32
+        blockCode:
+          type: string
+        acceptorId:
+          type: string
+        embossedName:
+          type: string
+    TransactionsTransactionDetailsConversionRate:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+        formattedValue:
+          type: string
+    TransactionsTransactionDetailsFraud:
+      type: object
+      properties:
+        transferredStatus:
+          type: string
+        transferIndicator:
+          type: boolean
+        fraudIndicator:
+          type: boolean
+    TransactionsTransactionDetailsInstallment:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+        originalTransactionAmount:
+          type: number
+          format: double
+        firstEarlyRelease:
+          type: integer
+          format: int32
+        lastEarlyRelease:
+          type: integer
+          format: int32
+        terms:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInstallmentTerms'
+        plan:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInstallmentPlan'
+    TransactionsTransactionDetailsInstallmentPlan:
+      type: object
+      properties:
+        type:
+          type: string
+        number:
+          type: integer
+          format: int32
+        sequenceNumber:
+          type: integer
+          format: int32
+        openDate:
+          type: string
+    TransactionsTransactionDetailsInstallmentTerms:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+        originalTotal:
+          type: integer
+          format: int32
+        current:
+          type: integer
+          format: int32
+        remaining:
+          type: integer
+          format: int32
+    TransactionsTransactionDetailsInterchange:
+      type: object
+      properties:
+        reference:
+          type: string
+        fee:
+          type: integer
+          format: int32
+    TransactionsTransactionDetailsLoyalty:
+      type: object
+      properties:
+        points:
+          type: integer
+          format: int32
+        programNumber:
+          type: string
+    TransactionsTransactionDetailsMerchant:
+      type: object
+      properties:
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        countryCode:
+          type: string
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        storeNumber:
+          type: string
+    TransactionsTransactionDetailsOriginal:
+      type: object
+      properties:
+        amount:
+          type: integer
+          format: int32
+        formattedAmount:
+          type: number
+          format: double
+        currency:
+          type: integer
+          format: int32
+        currencyDescription:
+          type: string
+    TransactionsTransactionDetailsPrincipal:
+      type: object
+      properties:
+        unbilled:
+          type: integer
+          format: int64
+        remaining:
+          type: number
+          format: double
+    TransactionsTransactionDetailsPurchase:
+      type: object
+      properties:
+        order:
+          type: string
+        ticketNumber:
+          type: string
+        referenceNumber:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+        unitPrice:
+          type: integer
+          format: int32
+        itemNumber:
+          type: integer
+          format: int32
+        inventoryNumber:
+          type: integer
+          format: int32
+        department:
+          type: string
+        source:
+          type: string
+        salesperson:
+          type: string
+        description:
+          type: string
+        payment:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsPurchasePayment'
+    TransactionsTransactionDetailsPurchasePayment:
+      type: object
+      properties:
+        recurringIndicator:
+          type: string
+        referenceNumber:
+          type: integer
+          format: int64
+        originalAmount:
+          type: integer
+          format: int32
+        relationshipAmount:
+          type: integer
+          format: int32
+    TransactionsTransactionDetailsRecord:
+      type: object
+      properties:
+        recordNumber:
+          type: integer
+          format: int32
+        code:
+          type: integer
+          format: int32
+        reference:
+          type: string
+        channelId:
+          type: string
+    TransactionsTransactionDetailsTerminal:
+      type: object
+      properties:
+        id:
+          type: string
+        entryMode:
+          type: string
+    TransactionsTransactionDetailsUsd:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsUsdAmount'
+        conversionRate:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsUsdConversionRate'
+    TransactionsTransactionDetailsUsdAmount:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+        formattedValue:
+          type: string
+    TransactionsTransactionDetailsUsdConversionRate:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+        formattedValue:
+          type: string
     TransactionsTransactionResponse:
       type: object
       properties:
         operationDate:
-          maxLength: 8
-          minLength: 8
-          type: integer
-          description: Fecha de ejecución del proceso. Generalmente fecha de sistema.
-          format: int32
-          example: 20240101
-        hasMoreTransactionsAvailable:
-          maxLength: 1
-          minLength: 1
           type: string
-          description: Indica si hay mas registros por mostrar.
-          example: 'N'
+          description: Fecha de operación. Generalmente corresponde a la fecha de ejecución del procesola (fecha de sistema). En formato ISO 8601
+          example: 31-05-2024
+        monthsNumber:
+          type: string
+          description: Exclusivo VisionPLUS. Número de meses para recuperar registros de transacciones.
+          example: '12'
         recordsNumber:
-          maxLength: 3
           type: integer
-          description: Cantidad de elementos de la consulta.
+          description: Cantidad de elementos resultados de la consulta.
           format: int32
-          example: 10
+          example: 100
+        hasMoreTransactionsAvailable:
+          type: boolean
+          description: "Indicador de más transacciones disponibles.\nValores:\n•\tfalse = No hay más transacciones;\n•\ttrue = Hay más transacciones por mostrar.\n"
+          example: false
         details:
           type: array
+          description: Detalle de las transacciones.
           items:
-            $ref: '#/components/schemas/DetailsTransactionsResponse'
-      description: Datos generales de la consulta.
-    AccountClaimRequest:
+            $ref: '#/components/schemas/TransactionsTransactionDetails'
+        token:
+          $ref: '#/components/schemas/TransactionsTransactionToken'
+      description: Datos generales de las consulta de transacciones.
+    TransactionsTransactionToken:
       type: object
       properties:
-        accountNumber:
-          maxLength: 32
-          minLength: 32
+        previous:
           type: string
-          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
-          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
-        additional:
-          maxLength: 1
-          minLength: 1
-          type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
-          format: int32
-          example: 0
-      description: Datos de la cuenta.
+        next:
+          type: string
+      description: Exclusivo VisionPLUS.
     ClaimRequest:
       type: object
       properties:
@@ -2003,51 +2362,58 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         account:
-          $ref: '#/components/schemas/AccountClaimRequest'
+          $ref: '#/components/schemas/AccountReclamo'
         transactions:
           type: array
           description: Datos de las transacciones a reclamar.
           items:
-            $ref: '#/components/schemas/TransactionsClaim'
+            $ref: '#/components/schemas/TransactionsClaimRequest'
         notes:
           type: array
           description: Notas. Texto libre.
           items:
-            $ref: '#/components/schemas/TextClaim'
-      description: Estructura de campos para la solicitud de la API RF 210_3 Ingreso de Reclamos y Desconocimientos – Alta de Reclamos.
-    TextClaim:
+            $ref: '#/components/schemas/TextClaimRequest'
+    TextClaimRequest:
       type: object
       properties:
         text:
+          maxLength: 64
+          minLength: 0
           type: string
           description: Texto que describe el motivo por el cual se realiza el reclamo o desconocimiento.
           example: Good Morning
       description: Notas. Texto libre.
-    TransactionsClaim:
+    TransactionsClaimRequest:
+      required:
+        - amount
+        - currencyCode
+        - installmentQuantity
+        - operationDate
+        - sequence
       type: object
       properties:
         operationDate:
+          pattern: '[0-9]{2}-[0-9]{2}-[0-9]{4}'
           type: string
           description: Fecha de la compra / consumo.
-          example: '20240101'
+          example: 01-01-2024
         sequence:
+          pattern: '[0-9]{1,3}'
           type: string
           description: Número de secuencia asignado en la consulta.
-          example: '193916'
+          example: '19'
         currencyCode:
+          pattern: 032|32|840|858
           type: string
-          description: |-
-            Código de Moneda del consumo. 032: ARS – Pesos argentinos  
-
-            858: URU – Pesos Uruguayos 
-
-            840: USD - Dólares
+          description: 'Código de Moneda del consumo. 32: ARS – Pesos argentinos. 858: URU – Pesos Uruguayos. 840: USD - Dólares.'
           example: '032'
         installmentQuantity:
+          pattern: '[0-9]{1,2}'
           type: string
           description: Cantidad total de cuotas del plan de cuotas.
           example: '01'
         amount:
+          pattern: 0|[0-9]{1,13}[.][0-9]{1,2}
           type: string
           description: Importe del consumo. Hasta 13 posiciones enteras. 2 decimales.
           format: decimal
@@ -2056,7 +2422,7 @@ components:
     ClaimResponse:
       type: object
       properties:
-        orderNumber:
+        clamId:
           type: integer
           description: 'N° Reclamo: Número que identifica al reclamo.'
           format: int32
@@ -2066,15 +2432,14 @@ components:
           description: Número de vaucher con error.
           format: int32
           example: 0
-        returnCodeDescription1:
+        claimMessage:
           type: string
           description: Descripción de los diferentes códigos de respuesta.
           example: 'RECLAMO OTORGADO NRO:  CON 01 CUPONES GRABADOS Y  CUPONES SIN GRABAR'
-        returnCodeDescription2:
+        observationMessage:
           type: string
           description: Descripción de los diferentes códigos de respuesta.
           example: INGRESAR A CONSULTA DE RECLAMOS PARA VERIFICAR LOS CUPONES GRABADOS
-      description: Estructura de campos que responde la API Reclamo - ALta
     ReplacementRequest:
       required:
         - branchNumber
@@ -2114,21 +2479,29 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación.
           example: '2023-08-24'
         internalRequestNumber:
+          maxLength: 6
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el número de solicitud interno de la entidad emisora.
           format: int32
           example: 900105
         branchNumber:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta.
           format: int32
           example: 100
         brandCode:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el código correspondiente a la marca/bandera de la tarjeta a la cual se solicita el alta instantánea. Ejemplo: Código 1: Mastercard '
           format: int32
           example: 1
         productCode:
+          maxLength: 5
+          minLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el código correspondiente al tipo de producto de la marca/bandera. Ejemplo: 43: Mastercard Black </br>Algunos valores referenciales estándar.</br> 1: MasterCard Regional </br> 2: MasterCard Internacional </br> 3: Gold MasterCard </br> 5: MC Corporate Regional </br> 6: MC Corporate Internacional </br> 7: MC Executive Corporate </br> 8: Platinum MasterCard </br> 21: Tarjeta Prepaga </br> 22: MC Corporate Int Débitos </br> 23: MC Corporate Int Travel </br> 24: MC Corporate Int Purchase </br> 28: MC Corporate Int Combustible </br> 43: MasterCard Black </br> 124: Mastercard Black Corporativa '
           format: int32
@@ -2152,11 +2525,14 @@ components:
           description: Esto campo de entrada, permite ingresar el dato correspondiente al nombre o descripción del grupo de afinidad.
           example: APIS
         reissueCode:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo y/o reimpresion.
           format: int32
           example: 1
         issuingType:
+          maxLength: 1
           pattern: 'F|V|| '
           type: string
           description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
@@ -2166,6 +2542,7 @@ components:
       type: object
       properties:
         statusResponse:
+          maxLength: 200
           type: string
           example: Replacement OK
       description: Estructura de campos que responde la API Replacement Card
@@ -2179,16 +2556,21 @@ components:
           description: Este campo de entrada, permite ingresar la dirección donde se hará el envío.
           example: Av. San Martín 1870
         nroPiso:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el numero de piso donde se hará el envío.
           format: int32
           example: 2
         dpto:
+          maxLength: 1
           pattern: '[a-z,A-Z]{0,1}'
           type: string
           description: Este campo de entrada, permite ingresar el departamento donde se hará envío
           example: A
         codProv:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el codigo de provincia a donde se hará el envío.
           format: int32
@@ -2200,6 +2582,8 @@ components:
           description: Este campo de entrada, permite ingresar el nombre de la ciudad a donde se hará el envío.
           example: Quilmes
         postCode:
+          maxLength: 5
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el codigo postal de envío donde se hará el envío.
           format: int32
@@ -2242,11 +2626,13 @@ components:
           description: Este campo de entrada, permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo y/o reimpresion.
           example: Sin comentarios.
         addressId:
+          maxLength: 1
           pattern: C|N
           type: string
           description: Este campo de entrada, permite ingresar el Id de la dirección, C = dirección de la cuenta registrada en el sistema, N = dirección nueva que es proporcionada en la solicitud (No actualiza el domicilio del socio).
           example: 'N'
         issuingType:
+          maxLength: 1
           pattern: 'F|V|| '
           type: string
           description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
@@ -2258,6 +2644,7 @@ components:
       type: object
       properties:
         blockNumber:
+          maxLength: 8
           type: string
           description: Este campo de salida indica el número de denuncia / bloqueo / reimpresión
           example: A0000358
@@ -2267,6 +2654,7 @@ components:
           format: int32
           example: 1583
         returnCodeDescription:
+          maxLength: 200
           type: string
           description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
           example: DENUNCIA EFECTUADA
@@ -2308,10 +2696,12 @@ components:
       type: object
       properties:
         code:
+          maxLength: 5
           type: string
           description: Informa el código de retorno de la operación realizada.
           example: '+2863'
         message:
+          maxLength: 200
           type: string
           description: Informa el resultado de la operación solicitada.
           example: Tarjeta inhabilitada
@@ -2357,21 +2747,28 @@ components:
       type: object
       properties:
         branchNumber:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta.
           format: int32
           example: 100
         brandCode:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el código correspondiente a la marca/bandera de la tarjeta a la cual se solicita el alta instantánea. Ejemplo: Código 1: Mastercard '
           format: int32
           example: 1
         productCode:
+          maxLength: 5
+          minLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el código correspondiente al tipo de producto de la marca/bandera. Ejemplo: 43: Mastercard Black </br>Algunos valores referenciales estándar.</br> 1: MasterCard Regional </br> 2: MasterCard Internacional </br> 3: Gold MasterCard </br> 5: MC Corporate Regional </br> 6: MC Corporate Internacional </br> 7: MC Executive Corporate </br> 8: Platinum MasterCard </br> 21: Tarjeta Prepaga </br> 22: MC Corporate Int Débitos </br> 23: MC Corporate Int Travel </br> 24: MC Corporate Int Purchase </br> 28: MC Corporate Int Combustible </br> 43: MasterCard Black </br> 124: Mastercard Black Corporativa '
           format: int32
           example: 3
         issuingType:
+          maxLength: 1
           pattern: 'F|V|| '
           type: string
           description: Este campo permite ingresar el formato en que se generara la reimpresión de tarjeta, puede tomar valores V para tarjetas emitidas solo en formato Virtual/Digital; F para tarjetas Físicas donde se generará el plástico para ser entregado o valor 0 (cero) cuando no haya decisión al respecto.
@@ -2384,6 +2781,8 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación de Alta Instantánea.
           example: '2023-08-24'
         internalRequestNumber:
+          maxLength: 6
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el número de solicitud interno de la entidad emisora.
           format: int32
@@ -2402,11 +2801,13 @@ components:
           format: int32
           example: 0
         checkDigit:
+          maxLength: 9
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al Dígito Verificador correspondiente a la cuenta que se informa.
           format: int32
           example: 0
         corporateAccount:
+          maxLength: 9
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al número asignado a la cuenta empresa para la cual se emitirá la tarjeta. Aplica a altas de extensiones para cuentas/productos corporativos.
           format: int32
@@ -2417,11 +2818,13 @@ components:
           description: Este campo de entrada, permite el ingreso del Apellido y Nombre de la persona, a la cual se le emitirá la tarjeta.
           example: Julian Martínez
         affinityGroupCode:
+          maxLength: 5
           type: integer
           description: Este campo de entrada, permite ingresar el código correspondiente al grupo de afinidad al momento de realizar el alta instantánea.
           format: int32
           example: 3794
         affinityGroupCheckDigit:
+          maxLength: 1
           type: integer
           description: Esto campo de entrada, permite ingresar el dato correspondiente al Dígito Verificador del grupo de afinidad.
           format: int32
@@ -2451,6 +2854,8 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente al Número de Departamento relacionado al domicilio.
           example: A
         addressZipCode:
+          maxLength: 5
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al Código Postal relacionado al domicilio.
           format: int32
@@ -2462,6 +2867,8 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente a la Ciudad relacionada con el domicilio.
           example: Capital Federal
         addressprovinceCode:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al Código de la Provincia relacionada al domicilio
           format: int32
@@ -2479,6 +2886,7 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente al número de teléfono del tarjetahabiente.
           example: '541122334455'
         cuit:
+          maxLength: 11
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al nro. de CUIT en Argentina o RUT en Uruguay. El CUIT o RUT son los números de identificación de las empresas ante el Fisco. Es obligatorio y se controla solo en cuentas empresas.
           format: int64
@@ -2488,6 +2896,8 @@ components:
           type: string
           description: Este campo de entrada, permite el ingreso del Código de Cedula. Es un dato opcional para las cedulas provinciales que se expendían históricamente.
         numeroCedula:
+          maxLength: 9
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al número de cédula de identidad del tarjetahabiente.
           format: int32
@@ -2498,6 +2908,8 @@ components:
           description: 'Este campo de entrada, permite ingresar el Código de Documento. En Argentina y Uruguay, los documentos tienen distintos tipos de códigos según su categoría. Por ejemplo: DU (Documento Único)'
           example: DU
         number:
+          maxLength: 9
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al número de Documento de identidad del tarjetahabiente.
           format: int32
@@ -2522,6 +2934,8 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente para la identificación del Sexo/Genero del tarjetahabiente.
           example: M
         cardDuration:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el dato correspondiente a la Duración de la tarjeta. Siendo las opciones 12: Anual; 24: Bienal; 36: Trienal.'
           format: int32
@@ -2541,14 +2955,19 @@ components:
           format: decimal
           example: 0.01
         creditLimit:
+          maxLength: 15
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente. Información asignada por la entidad otorgante.
           format: int64
         minimumPaymentTerm:
+          minLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el dato correspondiente a la cantidad de días que deben sumarse a los configurados en parámetros / modelos de liquidación para fijar la fecha de vencimiento del plazo de pago del resumen de cuenta actual y futuros. Valores posibles: 00 a 09.'
           format: int32
         loyaltyProgramCode:
+          maxLength: 5
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar los datos correspondientes al código de Sumapuntos/Millaje al que debe pertenecer la cuenta, con el fin de establecer los puntajes pertenecientes al programa
           format: int32
@@ -2559,37 +2978,50 @@ components:
           description: 'Este campo de entrada, permite ingresar el método de la forma/método de pago seleccionado por el tarjetahabiente. </br>Método o Tipo de PAGO declarado desde el emisor: Valores posibles: </br>1 Por ventanilla </br>2 Débito en Cuenta Corriente (para Debitar en Cuenta o Débito Directo Interbancario) </br>3 Débito en Caja de Ahorro (para Debitar en Cuenta o Débito Directo Interbancario) </br>4 Por ventanilla con retención del resumen en la Entidad </br>5 Débito en Cuenta Corriente con retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) </br>6 Débito en Caja de Ahorro con retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) </br>7 Retenido Judicial </br>8 Por ventanilla cuando se quieran unificar todas las transacciones del socio bajo un mismo número interno de cliente </br>A Débito en Cuenta Corriente Especial sin retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) - solo Argentina. </br>B Débito en Cuenta Corriente Especial con retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) - solo Argentina.'
           example: '1'
         paymentMethodDEBIT:
+          maxLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el método o tipo de importe de la forma de pago por débito en la cuenta de la entidad bancaria (emisora) </br>Método o Tipo de importe a debitar. </br>Valores posibles y relación con los valores en el campo paymentMethod </br>1: Pago total del saldo actual (solo para Débito en Cuenta) </br>2: Pago mínimo (para Débito en Cuenta o Débito Directo Interbancario) </br>3: Pago a debitar según instrucciones del socio (solo para Débito en Cuenta) </br>4: Pago total consolidado en pesos (solo para Débito Directo Interbancario) </br>5: Pago total consolidado en dólares (solo para Débito Directo Interbancario)'
           format: int32
           example: 0
         paymentMethodACCOUNT:
+          maxLength: 10
+          minLength: 1
           type: integer
           description: 'Solo para Débito en Cuenta. Número de cuenta para las formas de pago tipo 2, 3, 5, 6, A ó B. Para el tipo 8 se deberá indicar el número interno de cliente. Se informarán sólo números, sin barras ni guiones. Se completarán con ceros los espacios libres delante del número. </br>Valores posibles y relación con los valores en el campo paymentMethod </br>No informar para formas de pago tipo: 1, 4 y 7'
           format: int64
         paymentMethodBANK:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar los datos correspondiente a la Forma de Pago de Debito en Cuenta con la entidad otorgante. Código de la sucursal donde se encuentra radicada la Cuenta Corriente o Caja de Ahorro. </br>Valores posibles y relación con los valores en el campo paymentMethod </br>No informar para formas de pago tipo: 1, 4 y 7'
           format: int32
         instalmentsServiceFee:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar los datos correspondientes para determinar la cantidad de cuotas para el cobro del mantenimiento de cuenta.
           format: int32
           example: 1
         waiveServiceFee:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar los datos correspondientes para determinar si al tarjetahabiente se le bonificará el cargo por el servicio. Este campo también permitirá conocer el porcentaje de bonificación que se aplicará.  Este valor podrá  variar entre 000 y 100. Para eliminar esta bonificación se informará 999. Si no se modifica este campo se informarán ceros. Para valores N - Opcionales, se utiliza 0 o no informar.
           format: int32
         keepServFeeWaiver:
+          maxLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar los datos correspondientes para determinar si el tarjetahabiente mantiene o no la bonificación del cargo. </br>Valores Posibles </br>1: Mantiene la bonificación para la renovación </br>2: No mantiene la bonificación para la renovación </br>3: Mantiene la bonificación para cargo intermedio </br>Para adicionales el sistema aplica el valor configurado para titular'
           format: int32
           example: 2
         grupoctacte:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al Grupo de cuenta corriente al que pertenecen las cuentas listadas del tarjetahabiente. Valores posibles 11 12 13 14 (que configuran las fechas correspondientes a movimientos y cálculos en  cierres y vencimientos).
           format: int32
         guarantor:
+          maxLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el dato correspondiente a si tiene o no garante asignado. 1: SI - 2: NO'
           format: int32
@@ -2603,6 +3035,8 @@ components:
           format: decimal
           example: 0.01
         occupationCode:
+          maxLength: 6
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el código correspondiente al tipo de ocupación/empleo del solicitante de la tarjeta. Son  datos adicionales opcionales que complementan el alta de una cuenta/tarjeta.
           format: int32
@@ -2624,16 +3058,19 @@ components:
           description: Este campo de entrada, permite ingresar el dato correspondiente al tipo de modelo de liquidación seleccionado por el tarjetahabiente.
           example: DEF01
         sbmTasasLiquidacion:
+          maxLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar los datos correspondientes para indicar la configuración del Submodelo de Tasar que forma parte del Modelo de Liquidación asignado a la cuenta del tarjetahabiente.
           format: int32
           example: 1
         sbmGastosLiq:
+          maxLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar los datos correspondientes a la definición del SubModelo de Gastos de Liquidación, el cual es un conjunto de parámetros y atributos necesarios para la liquidación de la cuenta corriente del tarjetahabiente.
           format: int32
           example: 1
         sbmParametroLiquidacion:
+          maxLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar los datos correspondientes para indicar la ocurrencia del Submodelo de Parámetros que forma parte del Modelo de Liquidación asignado a la cuenta del tarjetahabiente.
           format: int32
@@ -2649,10 +3086,13 @@ components:
           type: string
           description: 'Este campo de entrada, envía la novedad de chip en la instrucción de Personalización y esta relacionada a la impresión del plástico en punto de venta con embozadora homologada. Es dato requerido solo en las configuraciones donde la emisión es descentralizada y corresponde a la tecnología de la tarjeta a personalizar, en este modelo puede no popularse. Valores posibles: D - N - P (D CHIP CDA DDA  P Contactless N Banda).'
         IVA:
+          maxLength: 1
           type: integer
           description: 'Este campo de entrada, permite ingresar el dato correspondiente para indicar cual es la situación del tarjetahabiente ante el IVA (Impuesto al valor agregado) </br> “0”: No Informado </br> “1”: Responsable Inscripto </br> “2”: Responsable No Inscripto (*) </br> “3”: Exento </br> “4”: Monotributista'
           format: int32
         ATMChargeServiceWaiver:
+          maxLength: 3
+          minLength: 1
           type: integer
           description: Este campo de entrada, permite ingresar el dato correspondiente al porcentaje de bonificación a aplica al cargo que se debitara en la cuenta del tarjetahabiente, por las transacciones realizadas mediante el uso de cajeros automáticos, excepto que la misma sea un Adelanto en Efectivo
           format: int32
@@ -2666,58 +3106,72 @@ components:
       type: object
       properties:
         fullName:
+          maxLength: 200
           type: string
           description: Este campo de salida, proporciona la información del Apellido y Nombre del solicitante de la tarjeta de crédito
           example: 95A8667F36E3904376C0C9D03F9A12A85C62424AC2E98FFC431BA27C62DEA80FF36EA217EDD532B9A51D33852FDEE658
         cardNumber:
+          maxLength: 64
           type: string
           description: Este campo de salida, proporciona la información del número de tarjeta completo del tarjetahabiente en manera encriptada. En formatos asociados a la mensajería de personalización que se envía en la opción de impresión en punto de venta  con embozadora homologada.
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         cvv:
+          maxLength: 32
           type: string
           description: Esta campo de salida, proporciona los datos relacionados al número de CVC de la tarjeta en voucher.
           example: E5F6G7H8I9J10K11L12M13N14O15P16Q
         cvcChip:
+          maxLength: 32
           type: string
           description: Esta campo de salida, proporciona los datos relacionados al número de CVC/Chip. Este dato es para la embozadora.
           example: 7B292CF185A86031D6A5087280A0C182
         accountNumber:
+          maxLength: 32
           type: string
           description: 'Este campo de salida, proporciona el número de cuenta del tarjetahabiente. '
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
         branchNumber:
+          maxLength: 32
           type: string
           description: Este mensaje de salida, proporciona datos correspondiente al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta.
           example: DC2F0E847982449324053C761156C17A
         expirationDate:
+          maxLength: 32
           type: string
           description: Este campo de salida, proporciona la información correspondiente a la fecha de validez de la tarjeta
           example: G7H8I9J10K11L12M13N14O15P16Q17R1
         magStripe1:
+          maxLength: 64
           type: string
           description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
           example: 84BA33108535CC62F7AF57A4F4FC0AD7F103407CCAA3E6D158E50A479BB3F0AA
         magStripe2:
+          maxLength: 64
           type: string
           description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
           example: 8ACDE757FCC671440DD32711C38082651B752E6AD9433C1EA18F2D7903908BBA
         magStripe3:
+          maxLength: 64
           type: string
           description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
           example: 8EA85A30A5B4E7046DEA1DE6F0D84D97D2D48D0B529EA1DE5EC5844919452B73
         magStripe4:
+          maxLength: 64
           type: string
           description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
           example: 7AA117BB24FAC266882324EB1A25825A699F32F65285140B334380C2221A6DD9
         reversesideCardInformation:
+          maxLength: 64
           type: string
           description: Este campo de salida, proporcionará los datos del dorso de la tarjeta.
           example: B8906899F23D3911467C0158A411E726720971CEFFB6D0058D5AB481ECB464B4
         loyaltyNumber:
+          maxLength: 32
           type: string
           description: Este campo de salida, proporciona el código correspondiente al programa de Fidelización al cual pertenece el tarjetahabiente.
           example: 9C8D2A4948A38A74DA6EC8CF3C554AFA
         chipCheck:
+          maxLength: 32
           type: string
           description: Este campo de salida, proporciona información correspondiente a la marca de la tecnología chip o banda. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
           example: 8D5228C373EE4F6C5834E4A33A868413
@@ -2759,6 +3213,8 @@ components:
       type: object
       properties:
         cvv:
+          maxLength: 32
+          minLength: 32
           type: string
           description: Este campo de salida, proporciona el dato correspondiente al código CVC2 (si es Mastercard) CVV2 (si es Visa)
           example: E5F6G7H8I9J10K11L12M13N14O15P16Q
@@ -2817,138 +3273,6 @@ components:
           description: Este campo de salida, proporciona la información del Apellido y Nombre que esta realizando la consulta
           example: 95A8667F36E3904376C0C9D03F9A12A85C62424AC2E98FFC431BA27C62DEA80FF36EA217EDD532B9A51D33852FDEE658
       description: Estructura de campos que responde la API Card Number
-    BlockRequest:
-      required:
-        - addressId
-        - blockCode
-        - fullName
-        - isLost
-        - isReissue
-        - number
-        - type
-      type: object
-      properties:
-        accountNumber:
-          maxLength: 32
-          minLength: 32
-          pattern: ^[0-9A-F]{32}
-          type: string
-          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
-          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
-        additional:
-          maxLength: 1
-          minLength: 1
-          type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
-          format: int32
-          example: 0
-        cardNumber:
-          maxLength: 64
-          minLength: 64
-          pattern: ^[0-9A-F]{64}
-          type: string
-          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
-          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
-        cardNumberM:
-          maxLength: 16
-          minLength: 16
-          pattern: ^[0-9]{4}[0]{8}[0-9]{4}
-          type: string
-          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
-          example: '1234000000001234'
-        fullName:
-          maxLength: 30
-          minLength: 1
-          type: string
-          description: Este campo de entrada, permite ingresar el apellido y nombre de la persona, del denunciante y/o a la cual se le emitirá la tarjeta de crédito por la solicitud de denuncia o reimpresión.
-          example: 95A8667F36E3904376C0C9D03F9A12A85C62424AC2E98FFC431BA27C62DEA80FF36EA217EDD532B9A51D33852FDEE658
-        type:
-          pattern: DU|PA
-          type: string
-          description: Este campo de entrada, permite ingresar el código de documento (Tipo de documento). En Argentina y Uruguay los documentos tienen distintos tipos de código según su categoria. DU - Documento Único, PA - Pasaporte.
-          example: DU
-        number:
-          pattern: ^[0-9]{6,9}
-          type: string
-          description: Este campo de entrada, permite ingresar el número de documento de identidad del tarjetahabiente.
-          example: '999999999'
-        isLost:
-          pattern: S|N
-          type: string
-          description: Este campo de entrada, permite informar si el documento de identidad fue extraviado, con valores Sí o No (S o N).
-          example: 'N'
-        comments:
-          maxLength: 120
-          minLength: 0
-          type: string
-          description: Este campo de entrada, permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo y/o reimpresion.
-          example: Bloqueo por perdida de tarjeta
-        blockCode:
-          pattern: '7'
-          type: string
-          description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo y/o reimpresion.
-          example: '7'
-        isReissue:
-          pattern: S|N
-          type: string
-          description: Este campo de entrada, permite ingresar el valor Sí o No (S o N) para informar si la tarjeta se reimprime.
-          example: S
-        addressId:
-          pattern: '[C,N]{1}'
-          type: string
-          description: Este campo de entrada, permite ingresar el Id de la dirección, C = dirección de la cuenta registrada en el sistema.
-          example: C
-        addressStreetNumber:
-          maxLength: 30
-          minLength: 0
-          type: string
-          description: Este campo de entrada, permite ingresar el domicilio del tarjetahabiente detallando el nombre y número de la calle.
-          example: Av. San Martin 1882
-        countryCode:
-          pattern: ^[a-zA-Z0-9]{0,3}|N/I
-          type: string
-          description: 'Este campo de entrada, permite ingresar el código del país. '
-          example: ARG
-        addressprovinceCode:
-          pattern: ^[a-zA-Z0-9]{0,2}|N/I
-          type: string
-          description: Este campo de entrada, permite ingresar el código de la provincia.
-          example: '01'
-        city:
-          maxLength: 20
-          minLength: 0
-          type: string
-          description: Este campo de entrada, permite ingresar la ciudad relacionada con el domicilio.
-          example: Capital Federal
-        phoneNumber:
-          pattern: ^[0-9]{0,20}|N/I
-          type: string
-          description: Este campo de entrada, permite ingresar el número de teléfono del tarjeta habiente.
-          example: '44211214'
-        issuingType:
-          pattern: 'F|V|| '
-          type: string
-          description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
-          example: F
-        homeDeliveryCard:
-          $ref: '#/components/schemas/HomeDeliveryCard'
-      description: Estructura de campos para la solicitud de la API Block Card
-    BlockResponse:
-      type: object
-      properties:
-        blockNumber:
-          type: string
-          description: Este campo de salida indica el número de denuncia / bloqueo / reimpresión
-          example: A0000371
-        orderNumber:
-          type: string
-          description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
-          example: '2031'
-        returnCodeDescription:
-          type: string
-          description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
-          example: DENUNCIA EFECTUADA
-      description: Estructura de campos que responde la API Block Card
     BlockRequestFeesRequest:
       type: object
       properties:
@@ -2978,6 +3302,7 @@ components:
       type: object
       properties:
         rate:
+          pattern: '[0-9]{1,13}([.][0-9]{1,3})'
           type: string
           description: Este campo de salida proporciona la información correspondiente al valor asociado al bloqueo o denuncia.
           example: '991.0'
@@ -3018,10 +3343,12 @@ components:
       type: object
       properties:
         orderNumber:
+          maxLength: 8
           type: string
           description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
           example: A0000369
         returnCodeDescription:
+          maxLength: 200
           type: string
           description: Este campo de salida proporciona la descripción del código de retorno/rechazo que devuelve el sistema
           example: ACTIVACION EFECTUADA
