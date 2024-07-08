@@ -211,7 +211,7 @@ paths:
     post:
       tags:
         - Purchases Selection
-      summary: Genera la lista de consumos seleccionados por el cliente para ser cuotificados, con esta información, el sistema totaliza, calcula y  devuelve las simulaciones de los posibles planes.
+      summary: Genera la lista de consumos seleccionados por el cliente para ser cuotificados. Con esta información, el sistema totaliza, calcula y  devuelve las simulaciones de los posibles planes.
       operationId: saveSelectedTransactions
       parameters:
         - name: Authorization
@@ -311,7 +311,7 @@ paths:
     post:
       tags:
         - Plans
-      summary: Retorna la simulación de planes de acuerdo a la configuración, esta consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o Conversion Contado a Cuotas.
+      summary: Retorna la simulación de planes de acuerdo a la configuración. La consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o Conversion Contado a Cuotas.
       operationId: getPlans
       parameters:
         - name: Authorization
@@ -411,9 +411,7 @@ paths:
     post:
       tags:
         - Installment Conversion
-      summary: |-
-        Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos.
-        Nota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación.
+      summary: "Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos. \r\nNota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación."
       operationId: installmentConversion
       parameters:
         - name: Authorization
@@ -513,7 +511,7 @@ paths:
     post:
       tags:
         - Transaction Conversion
-      summary: La consulta permite listar todos los planes de cuotificación de consumos como cuotificación de saldos ya sean cuotas vigentes como no vigentes en las liquidaciones del cliente.
+      summary: La consulta permite listar todos los planes de Cuotificación de consumos y saldos, vigentes y no vigentes realizadas por el cliente.
       operationId: getCurrentTransactionConversions
       parameters:
         - name: Authorization
@@ -613,7 +611,7 @@ paths:
     post:
       tags:
         - Plans
-      summary: Retorna la simulación de planes de acuerdo a la configuración, esta consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o  Refinanciación de Saldo.
+      summary: Retorna la simulación de planes de acuerdo a la configuración. La consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de préstamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o  Refinanciación de Saldo.
       operationId: getPlans_1
       parameters:
         - name: Authorization
@@ -713,7 +711,7 @@ paths:
     post:
       tags:
         - Installment Conversion
-      summary: "Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos.\r\nNota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación."
+      summary: "Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos. \r\nNota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación."
       operationId: getAlta
       parameters:
         - name: Authorization
@@ -813,7 +811,7 @@ paths:
     post:
       tags:
         - Balance
-      summary: "La consulta inicial devuelve información de Saldos, Pagos mínimos y Pagos realizados; así como Ajustes en moneda $ y U$D  junto con el Saldo Consolidado, correspondiente al que el cliente podrá convertir total o parcialmente a un plan de  cuotas y liberar disponible al momento. \r\nEste monto se calcula en base a los parámetros que el emisor configure previamente en la aplicación de prestamos."
+      summary: La consulta inicial devuelve información de Saldos, Pagos mínimos y Pagos realizados; así como Ajustes en moneda $ y U$D  junto con el Saldo Consolidado, correspondiente al que el cliente podrá convertir total o parcialmente a un plan de cuotas y liberar disponible al momento. Este monto se calcula en base a los parámetros que el emisor configure previamente en la aplicación de préstamos.
       operationId: getBalance
       parameters:
         - name: Authorization
@@ -1015,6 +1013,8 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         lastTransactionId:
+          maxLength: 4
+          minLength: 1
           type: integer
           description: Este campo de entrada identifica el id de la última compra/transacción devuelta en una llamada anterior
           format: int32
@@ -1030,11 +1030,14 @@ components:
       type: object
       properties:
         id:
+          maxLength: 4
+          minLength: 1
           type: integer
           description: Este campo de salida indica el id de la compra/transacción
           format: int32
           example: 1
         date:
+          maxLength: 10
           type: string
           description: Este campo de salida indica la fecha de la compra/transacción
           format: date
@@ -1046,6 +1049,7 @@ components:
           description: Este campo de salida indica la descripción de la compra/transacción
           example: PASCO COMERCIAL SA
         additional:
+          maxLength: 1
           type: integer
           description: Este campo de salida indica quién realizó la compra/transacción
           format: int32
@@ -1115,6 +1119,8 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         selectedTransactionIds:
+          maxLength: 9999
+          minLength: 1
           maxItems: 2147483647
           minItems: 1
           type: array
@@ -1124,6 +1130,8 @@ components:
             - 2
             - 3
           items:
+            maxLength: 9999
+            minLength: 1
             type: integer
             description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
             format: int32
@@ -1131,6 +1139,8 @@ components:
       type: object
       properties:
         returnCode:
+          maxLength: 2
+          minLength: 1
           type: integer
           description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema
           format: int32
@@ -1194,15 +1204,19 @@ components:
       type: object
       properties:
         id:
+          maxLength: 4
+          minLength: 1
           type: integer
           description: Este campo de salida indica el id del plan
           format: int32
           example: 1
         enabled:
+          maxLength: 1
           type: string
           description: Este campo indica si el plan se encuentra habilitado o no
           example: S
         quantityInstallments:
+          maxLength: 2
           type: integer
           description: Este campo de salida indica la cantidad de cuotas del plan
           format: int32
@@ -1238,18 +1252,22 @@ components:
           format: decimal
           example: 0,00%
         amortizationSystemId:
+          maxLength: 1
           type: string
           description: Este campo de salida muestra el identificador del sistema de amortización
           example: F
         amortizationSystemDescription:
+          maxLength: 50
           type: string
           description: Este campo de salida muestra la descripción del sistema de amortización
           example: FRANCES
         rateTypeId:
+          maxLength: 1
           type: string
           description: Este campo de salida muestra el identificador del tipo de tasa
           example: F
         rateTypeDescription:
+          maxLength: 50
           type: string
           description: Este campo de salida muestra la descripción del tipo de tasa
           example: FIJA
@@ -1263,6 +1281,7 @@ components:
           items:
             $ref: '#/components/schemas/AvailableInstallmentPlan'
         iva:
+          maxLength: 6
           type: string
           description: Este campo de salida indica la alícuota aplicable referente al impuesto al valor agregado.
           example: 21.00%
@@ -1295,16 +1314,19 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         installmentPlanId:
+          maxLength: 2
           type: integer
           description: Este campo de entrada indica el id del plan seleccionado
           format: int32
           example: 10
         cvv:
+          maxLength: 32
           pattern: '[0-9A-F]{32}$'
           type: string
           description: Este campo de entrada indica el cvc encriptado de la tarjeta
           example: CACA4EA8DA0E665E6CA15F644A5072D6
         expirationDate:
+          maxLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo contiene el dato Vencimiento de Tarjeta encriptado
@@ -1313,6 +1335,7 @@ components:
       type: object
       properties:
         authorizationCode:
+          maxLength: 8
           type: string
           description: Este campo de salida informa el código de autorización del plan de pago
           example: '636935'
@@ -1358,6 +1381,7 @@ components:
             99: TODOS LOS DESTINOS
           example: RD
         estado:
+          maxLength: 1
           type: integer
           description: Este campo de entrada permite ingresar el estado de de los planes realizados que se desea consultar
           format: int32
@@ -1593,16 +1617,19 @@ components:
           format: int32
           example: 0
         installmentPlanId:
+          maxLength: 2
           type: integer
           description: Este campo de entrada indica el id del plan seleccionado
           format: int32
           example: 12
         cvv:
+          maxLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo de entrada indica el cvc encriptado de la tarjeta
           example: DBF23F1BDA098BBBE00DAF2035552B73
         expirationDate:
+          maxLength: 32
           pattern: '[0-9A-F]{32}'
           type: string
           description: Este campo contiene el dato Vencimiento de Tarjeta encriptado
@@ -1618,6 +1645,7 @@ components:
       type: object
       properties:
         authorizationCode:
+          maxLength: 6
           type: string
           description: Código de autorización
           example: '636901'
@@ -1650,50 +1678,62 @@ components:
       type: object
       properties:
         fechaUltimaCtaCorriente:
+          maxLength: 8
           type: string
           description: Fecha de ultimo cierre de cuenta corriente
           example: '30122023'
         fechaUltimoPagoMin:
+          maxLength: 8
           type: string
           description: Fecha de Ultimo Vencimiento de Pago Mínimo
           example: '24112023'
         fechaProximaCtaCorriente:
+          maxLength: 8
           type: string
           description: Fecha próximo cierre de cuenta corriente
           example: '29012024'
         saldoAnteriorPesos:
+          maxLength: 17
           type: string
           description: Último Saldo Liquidado en Pesos
           example: '+0000000088648630'
         saldoAnteriorDolares:
+          maxLength: 17
           type: string
           description: Último saldo liquidado Dólares
           example: '+0000000000000000'
         ajusteSaldoAntPesos:
+          maxLength: 17
           type: string
           description: Ajuste Ultimo Saldo Pesos
           example: '+0000000000000000'
         ajustePagoMinPesos:
+          maxLength: 17
           type: string
           description: Ajuste Pago Mínimo en Pesos
           example: '+0000000000000000'
         ajusteSaldoAntDolares:
+          maxLength: 17
           type: string
           description: Ajuste Ultimo Saldo Dólares
           example: '+0000000000000000'
         ajustePagoMinDolares:
+          maxLength: 17
           type: string
           description: Ajuste Pago Mínimo en Dólares
           example: '+0000000000000000'
         pagosPesos:
+          maxLength: 17
           type: string
           description: Pagos Realizados Pesos
           example: '-0000000056000000'
         pagosDolares:
+          maxLength: 17
           type: string
           description: Pagos Realizados Dólares
           example: '+0000000000000000'
         pagoMinimo:
+          maxLength: 17
           type: string
           description: Pago mínimo
           example: '+0000000040740000'
@@ -1710,18 +1750,22 @@ components:
           format: decimal
           example: 96.41
         saldoConsMonedaLocal:
+          maxLength: 17
           type: string
           description: Saldo consolidado en moneda local (saldo pesificado)
           example: '+0000000032648630'
         saldoConsMonedaDolar:
+          maxLength: 17
           type: string
           description: Saldo consolidado en moneda dólar (saldo dolarizado)
           example: '+0000000000337940'
         topePagoMinMonedaLoc:
+          maxLength: 17
           type: string
           description: Tope Pago mínimo moneda local
           example: '+0000000000100000'
         topePagoMinMonedaDolar:
+          maxLength: 17
           type: string
           description: Tope pago mínimo moneda dólar
           example: '+0000000000001040'

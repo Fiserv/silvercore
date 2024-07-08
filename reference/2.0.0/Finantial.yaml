@@ -217,10 +217,9 @@ paths:
       tags:
         - Last Statements Transactions
       summary: |-
-        Proporciona datos resumidos acerca del estado de cuenta del mes en curso.
-        Permite obtener información consolidada de pagos (ARS/USD), totales y mínimos; cierres actuales, anteriores y futuros. 
-        Además posibilita generar el talón de pago con código de barras para la presentación en entes recaudadores.
-        En combinación con datos de lastStatementData permite construir de cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación.
+        Permite obtener los movimientos liquidados en el último cierre de cuenta y que se ingresan en el resumen, es decir con esta consulta el emisor podrá construir el ultimo resumen de cuenta generado para la tarjeta/cuenta que se consulta.
+        Comprende las operaciones, pagos, ajustes, promociones y cualquier operación que se impacta en el último resumen de cuenta del socio.
+        En combinación con lastStatementData, el banco puede construir el soporte mensual como imagen de resumen.
       operationId: getLastStatementTransactions
       parameters:
         - name: Authorization
@@ -321,9 +320,10 @@ paths:
       tags:
         - Last Statement Data
       summary: |-
-        Permite obtener los movimientos liquidados en el último cierre de cuenta y que se ingresan en el resumen, es decir con esta consulta el emisor podrá construir el ultimo resumen de cuenta generado para la tarjeta/cuenta que se consulta.
-        Comprende las operaciones, pagos, ajustes, promociones y cualquier operación que se impacta en el último resumen de cuenta del socio.
-        En combinación con lastStatementTransactions, el banco puede construir el soporte mensual como imagen de resumen.
+        Proporciona datos resumidos acerca del estado de cuenta del mes en curso.
+        Permite obtener información consolidada de pagos (ARS/USD), totales y mínimos; cierres actuales, anteriores y futuros.
+        Además, posibilita generar el talón de pago con código de barras para la presentación en entes recaudadores.
+        En combinación con lastStatementTransactions permite construir la cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación.
       operationId: getBalances
       parameters:
         - name: Authorization
@@ -566,6 +566,19 @@ components:
           description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta. Nro. DE ORDEN
           format: int32
           example: 0
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     Transaction:
       type: object
       properties:
@@ -683,19 +696,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Transaction'
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     PendingTransactionsRequest:
       type: object
       properties:
@@ -1479,6 +1479,7 @@ components:
           format: decimal
           example: 0.001
         cardType:
+          maxLength: 2
           type: string
           description: Identifica tipo de tarjeta - Para Mastercard se utiliza MC
           example: MC
