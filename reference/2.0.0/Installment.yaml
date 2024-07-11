@@ -11,7 +11,7 @@ paths:
     post:
       tags:
         - Statement Payment
-      summary: Esta API permite a la entidad enviar Pagos/Ajustes en Línea.
+      summary: "El presente servicio ofrece la posibilidad de enviar pagos de resumen con la aplicación correspondiente de liberación de disponible en línea (real time), actúa como cualquier pago de resumen. \r\nAsimismo, se incorpora la posibilidad de identificar otros dos movimientos “ajuste” ya sea Crédito o Débito para utilizarse a discreción por el emisor en caso de requerirse, también con Liberación o Bloqueo del disponible en línea. \r\nLos movimientos aplican a cualquier tipo de producto emitido. \r\nLos pagos admiten la moneda del país del emisor (ARS o URY) y dólares con o sin marca para la devolución de impuestos. \r\nLos ajustes expuestos en esta API se administran como netos a aplicar, no generaran cargos o impuestos asociados a moneda (excluyente para Argentina) "
       operationId: payment
       parameters:
         - name: Authorization
@@ -1125,10 +1125,7 @@ components:
           minItems: 1
           type: array
           description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
-          example:
-            - 1
-            - 2
-            - 3
+          example: 1,2,3
           items:
             maxLength: 9999
             minLength: 1
@@ -1482,18 +1479,24 @@ components:
           format: int32
           example: 32
         financeTotalAmount:
+          maxLength: 13
+          minLength: 1
           pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: 'Monto a financiar 9999999999999.999 Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
           format: decimal
           example: '6330.001'
         amountARS:
+          maxLength: 13
+          minLength: 1
           pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
           format: decimal
           example: '150000.001'
         amountUSD:
+          maxLength: 13
+          minLength: 1
           pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
