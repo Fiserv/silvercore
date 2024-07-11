@@ -11,10 +11,7 @@ paths:
     post:
       tags:
         - Transactions
-      summary: |-
-        Devuelve el listado de todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso. 
-        Permite obtener los movimientos de la cuenta/tarjeta durante el periodo pagos, Compras, Devoluciones, Ajustes (por ejemplo de campañas / descuentos) 
-        Para esa consulta se administrarán, fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta.
+      summary: "Devuelve el listado de todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso.\r\nPermite obtener los movimientos de la cuenta/tarjeta durante el periodo pagos, compras, devoluciones, ajustes (por ejemplo, de campañas/descuentos)\r\nPara esta consulta se administrarán fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta."
       operationId: transactions
       parameters:
         - name: Authorization
@@ -114,9 +111,7 @@ paths:
     post:
       tags:
         - Pending Transactions
-      summary: |-
-        Informa un listado detallado con todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso que aún no han sido presentadas por el comercio
-        Para esa consulta se administrarán, fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta.
+      summary: "Informa un listado detallado con todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso que aún no han sido presentadas por el comercio.\r\nPara esta consulta se administrarán fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta."
       operationId: getPendingTransactions
       parameters:
         - name: Authorization

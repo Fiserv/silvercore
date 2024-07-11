@@ -502,7 +502,7 @@ paths:
     post:
       tags:
         - Card Holders
-      summary: "La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cuál de ellos se solicitará la acción de HABILITAR o ACTIVAR / BLOQUEAR / DENUNCIAR / REIMPRIMIR\r\nPuede utilizarse como complemento como prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado junto con mas datos de los clientes listados. \r\n"
+      summary: La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cuál de ellos se solicitará la acción de ACTIVAR / BLOQUEAR / DENUNCIAR / REIMPRIMIR. Puede utilizarse como complemento de prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el PAN enmascarado junto con más datos de los clientes listados.
       operationId: getConsultaMiembros
       parameters:
         - name: Authorization
@@ -760,6 +760,19 @@ components:
           items:
             $ref: '#/components/schemas/Country'
       description: Estructura de campos que responde a la API TripLog
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     Account:
       type: object
       properties:
@@ -775,19 +788,6 @@ components:
           description: Este campo de salida, proporciona los datos de los registros de viajes
           items:
             $ref: '#/components/schemas/Country'
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     TripLogRequest:
       type: object
       properties:
@@ -887,10 +887,14 @@ components:
       type: object
       properties:
         returnCode:
+          maxLength: 1
+          minLength: 1
           type: string
           description: Este campo de salida proporciona el código de retorno / rechazo que devuelve el sistema.
           example: '0'
         returnCodeDescription:
+          maxLength: 25
+          minLength: 25
           type: string
           description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
           example: NOVEDAD CARGADA CON ÉXITO
