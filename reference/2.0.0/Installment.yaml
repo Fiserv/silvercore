@@ -949,29 +949,50 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         operId:
+          maxLength: 8
+          minLength: 1
           pattern: '[0-9]{1,8}'
           type: string
           description: Indica el id de la compra/transacción.
           example: '74'
         operAmount:
+          maxLength: 13
+          minLength: 1
           pattern: ^[0-9]{1,13}([.][0-9]{1,2})?$
           type: string
           description: Valor de la operación pactada por el cliente. Importe del Pago/Ajuste.
           format: decimal
           example: '100.5'
         operCurrency:
+          maxLength: 3
+          minLength: 2
           type: string
           description: 'Moneda en que se realiza la operación. Ej: ARS=32, UYU=858, USD=840'
           example: '840'
         operType:
+          maxLength: 1
+          minLength: 1
           pattern: 0|1|2
           type: string
           description: 'Valor numérico de un digito que representa el tipo de movimiento. 0: ajuste débito, 1: ajuste crédito, 2: Pago'
           example: '2'
         flagDollar:
+          maxLength: 1
+          minLength: 1
           type: string
           description: 'El campo indica el tipo de pago en dolares, D: dólar billete (devuelve impuesto país), N: pago en dólares con pesos (no devuelve impuesto país)'
+          nullable: true
           example: D
+    SummaryPaymentResponse:
+      type: object
+      properties:
+        codigoAutorizacion:
+          type: string
+          example: '637089'
+        idPago:
+          type: string
+          example: '00000074'
+      description: Estructura de campos que responde la API Pago Resumen
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -985,16 +1006,6 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
-    SummaryPaymentResponse:
-      type: object
-      properties:
-        codigoAutorizacion:
-          type: string
-          example: '637089'
-        idPago:
-          type: string
-          example: '00000074'
-      description: Estructura de campos que responde la API Pago Resumen
     TransactionsRequest:
       type: object
       properties:
@@ -1125,7 +1136,10 @@ components:
           minItems: 1
           type: array
           description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
-          example: 1,2,3
+          example:
+            - 1
+            - 2
+            - 3
           items:
             maxLength: 9999
             minLength: 1
@@ -1177,21 +1191,21 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
         amountPesos:
-          maxLength: 17
+          maxLength: 13
           pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda local a cuotificar. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: decimal
           example: '1500.5'
         amountUSD:
-          maxLength: 17
+          maxLength: 13
           pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar. (1 – 13 parte entera, 0 – 3 parte decimal)
           format: decimal
           example: '30000.05'
         totalAmount:
-          maxLength: 17
+          maxLength: 13
           pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
           type: string
           description: Este campo de entrada permite ingresar el monto total a cuotificar expresado en pesos. (1 – 13 parte entera, 0 – 3 parte decimal)
