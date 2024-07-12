@@ -11,7 +11,7 @@ paths:
     post:
       tags:
         - Transactions
-      summary: "Devuelve el listado de todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso.\r\nPermite obtener los movimientos de la cuenta/tarjeta durante el periodo pagos, compras, devoluciones, ajustes (por ejemplo, de campañas/descuentos)\r\nPara esta consulta se administrarán fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta."
+      summary: "Devuelve el listado de todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso.\r\nPermite obtener los movimientos de la cuenta/tarjeta durante el periodo pagos, compras, devoluciones, ajustes (por ejemplo, de campañas/descuentos).\r\nPara esta consulta se administrarán fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta."
       operationId: transactions
       parameters:
         - name: Authorization
