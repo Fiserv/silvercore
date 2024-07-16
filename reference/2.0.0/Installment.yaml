@@ -983,16 +983,6 @@ components:
           description: 'El campo indica el tipo de pago en dolares, D: dólar billete (devuelve impuesto país), N: pago en dólares con pesos (no devuelve impuesto país)'
           nullable: true
           example: D
-    SummaryPaymentResponse:
-      type: object
-      properties:
-        codigoAutorizacion:
-          type: string
-          example: '637089'
-        idPago:
-          type: string
-          example: '00000074'
-      description: Estructura de campos que responde la API Pago Resumen
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -1006,6 +996,20 @@ components:
       properties:
         errorResponse:
           $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    SummaryPaymentResponse:
+      type: object
+      properties:
+        codigoAutorizacion:
+          maxLength: 8
+          minLength: 1
+          type: string
+          example: '637089'
+        idPago:
+          maxLength: 8
+          minLength: 1
+          type: string
+          example: '00000074'
+      description: Estructura de campos que responde la API Pago Resumen
     TransactionsRequest:
       type: object
       properties:

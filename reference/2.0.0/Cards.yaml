@@ -41,7 +41,7 @@ paths:
     put:
       tags:
         - Pin Block
-      summary: 'Esta API permite la posibilidad de gestión de PIN para ATM. El impacto de cambio de PIN/OFFSET NO es online. '
+      summary: "Esta Api permite la Gestión del PIN para extracciones en ATM u otras operaciones según mercado. El valor de PIN que se envía sobreescribe el previo existente y tiene impacto Batch. \r\nLos posibles mensajes de error de esta Api se deben a los siguientes casos: </br>- 11 Rutina - Error Gestión de PIN: Refiere a errores de ENCRIPCION Pin Pinblock – Pinblock generado no valido.</br>- Tarjeta Bloqueada: 3 Intentos fallidos. Es una respuesta acorde a una tarjeta que intento generar PIN sin éxito en cualquier canal (intentó por IVR/ATM y se encuentra bloqueado por seguridad)</br>- Pin ya generado para esta tarjeta. Tarjetas SOLAPADAS (esto es cuando hay dos tarjetas conviviendo)</br>- Cambio denegado – Igual al punto previo (Pin igual al anterior / compara OFFSET y declina)</br>- Entidad no permite cambio de PIN (configuración del emisor)"
       operationId: setPinBlock
       parameters:
         - name: Authorization
@@ -134,7 +134,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
-      x-proxy-name: PIN block
+      x-proxy-name: PIN
       x-group-name: Card
       x-child-product-name: Cards
   /cards/virtual:
@@ -241,7 +241,7 @@ paths:
     post:
       tags:
         - Replacement Card
-      summary: "Ofrece la posibilidad de generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F). \r\nGenera una nueva tarjeta que la reemplazará en forma solapada, la cual solo desactivará la anterior al momento que finalice el solapamiento determinado por el emisor, el cliente reciba este reemplazo, active o utilice. <br><table BORDER style=\"border-collapse: collapse; text-align: center;\"><tr><th BORDER colspan=\"2\">Sí reissueCode = a 1 - Descripción de valor 1: Modificación de Límite de compra (Letras)</th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null</td></tr><tr><td BORDER><b>creditLimitChar</b></td><td BORDER><b>Debe corresponder a los valores permitidos</b></td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null</td></tr></table><br><br><br><table BORDER style=\"border-collapse: collapse; text-align: center;\"><tr><th BORDER colspan=\"2\">Sí reissueCode= a 2 –Descripción de valor 2: Modificación deDatos del socio Nombre y Apellido / Full Name</th></tr><tr><td BORDER><b>fullName</b></td><td BORDER><b>Requerido. Debe incluir valor.</b></td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Debe ser vacío o null</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null</td></tr></table><br><br><br><table BORDER style=\"border-collapse: collapse; text-align: center;\"><tr><th BORDER colspan=\"2\">Sí reissueCode= a 3–Descripción de valor 3: Modificación deDatos varios: Del socio Nombre y Apellido / Full Name + Limite de compra</th></tr><tr><td BORDER><b>fullName</b></td><td BORDER><b>Requerido. Debe incluir valor.</b></td></tr><tr><td BORDER><b>creditLimitChar</b></td><td BORDER><b>Requerido. Debe incluir valor.</b></td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null</td></tr></table><br><br><br><table BORDER style=\"border-collapse: collapse; text-align: center;\"><tr><th BORDER colspan=\"2\">Sí reissueCode= a 4 –Descripción de valor 4: Cambio de Grupo de Afinidad</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER><b>affinityGroupdescription</b></td><td BORDER><b>Requerido. Debe incluir valor</b></td></tr></table><br><br><br><table BORDER style=\"border-collapse: collapse; text-align: center;\"><tr><th BORDER colspan=\"2\">Sí reissueCode= a 6 ó 10–Descripción de valores: 6 para destrucción o daño / 10 equivale a OTROS y no requieren otros campos</th></tr><tr><td BORDER>No se realiza ninguna validación</td></tr></table>"
+      summary: "Ofrece la posibilidad de generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F). \r\nGenera una nueva tarjeta que la reemplazará en forma solapada, la cual solo desactivará la anterior al momento que finalice el solapamiento determinado por el emisor, el cliente reciba este reemplazo, active o utilice. </br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode = a 1 - Descripción de valor 1: Modificación de Límite de compra (Letras)</th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Debe corresponder a los valores permitidos</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 2 –Descripción de valor 2: Modificación deDatos del socio Nombre y        Apellido / Full Name</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Debe ser vacío o null</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 3–Descripción de valor 3: Modificación deDatos varios: Del socio        Nombre y Apellido / Full Name + Limite de compra</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 4 –Descripción de valor 4: Cambio de Grupo de Afinidad</th></tr><tr><td BORDER>fullName</td><td BORDER>Debe ser vacío o null.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Debe ser vacío o null.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Requerido. Debe incluir valor.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 6 ó 10–Descripción de valores: 6 para destrucción o daño / 10        equivale a OTROS y no requieren otros campos</th></tr><tr><td BORDER>No se realiza ninguna validación</td></tr></table>"
       operationId: setReplacement
       parameters:
         - name: Authorization
@@ -641,7 +641,7 @@ paths:
     post:
       tags:
         - Instant Issuance
-      summary: "Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital. \r\nTambién proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia) \r\n*Posee campos referentes a la administración para la emisión virtual (Tipo de Emisión). </br></br>Según los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" es el alta que se generara:</br>- Caso 1 (Alta Titular c/ GAFF): La entidad envía solo los campos \"affinityGroupCheckDigit\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" en la request.</br>- Caso 2 (Alta Titular SIN GAFF): La entidad NO envía los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" en la request.</br>- Caso 3 (Alta Adicional c/ GAFF): La entidad envía los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" en la request.</br>- Caso 4 (Alta Adicional SIN GAFF): La entidad envía solo los campos \"accountNumber\", \"additional\" y \"checkDigit\" en la request. </br></br><table BORDER style=\"border-collapse: collapse; text-align: center;\"><tr><th BORDER>Operación</th><th BORDER>accountNumber</th><th BORDER>additional</th><th BORDER>checkDigit</th><th BORDER>affinityGroupCode</th><th BORDER>affinityGroupCheckDigit</th><th BORDER>affinityGroupdescription</th></tr><tr><td BORDER>Alta Tit c/ GAFF</td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td></tr><tr><td BORDER>Alta Tit SIN GAFF</td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER></td></tr><tr><td BORDER>Alta Adic. c/ GAFF</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td></tr><tr><td BORDER>Alta Adic. SIN GAFFF</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER></td><td BORDER></td><td BORDER></td></tr></table>"
+      summary: "Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital. \r\nTambién proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia) \r\n*Posee campos referentes a la administración para la emisión virtual (Tipo de Emisión). </br></br>Según los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" es el alta que se generara:</br><table BORDER style='border-collapse: collapse; text-align: center;'><trth BORDER> Operación </thth BORDER>| accountNumber |</thth BORDER> additional |</thth BORDER> checkDigit |</thth BORDER> affinityGroupCode |</thth BORDER> affinityGroupCheckDigit |</thth BORDER> affinityGroupdescription |</th></tr><trtd BORDER> Alta Tit c/ GAFF </tdtd BORDER></tdtd BORDER></tdtd BORDER></tdtd BORDER>X</tdtd BORDER>X</tdtd BORDER>X</td></tr><trtd BORDER> Alta Tit SIN GAFF </tdtd BORDER></tdtd BORDER></tdtd BORDER></tdtd BORDER></tdtd BORDER></tdtd BORDER></td></tr><trtd BORDER> Alta Adic. c/ GAFF </tdtd BORDER>X</tdtd BORDER>X</tdtd BORDER>X</tdtd BORDER>X</tdtd BORDER>X</tdtd BORDER>X</td></tr><trtd BORDER> Alta Adic. SIN GAFFF </tdtd BORDER>X</tdtd BORDER>X</tdtd BORDER>X</tdtd BORDER></tdtd BORDER></tdtd BORDER></td></tr></table>"
       operationId: postInstantIssuanceService
       parameters:
         - name: Authorization
@@ -1280,26 +1280,49 @@ components:
           $ref: '#/components/schemas/PinData'
         organizationNumber:
           type: string
+          description: Organización.
+          example: '999'
         logo:
           type: string
+          description: Número de identificación del logotipo
+          example: '999'
         channelIndicator:
+          maxLength: 1
+          minLength: 1
           type: string
+          description: "Código que indica la fuente a efectos de reporte.\r\n\r\nValores:\r\n\r\nA = cajero automático;\r\nI = Respuesta de voz interactiva;\r\nW = WEB."
+          example: W
         keyAssociation:
+          maxLength: 3
+          minLength: 1
           type: string
+          description: Asociación clave. "I" + "la asociación de clave definida para el cliente durante la implementación en el campo".
+          example: IYY
     PinData:
       required:
         - requestedBlockNumber
       type: object
       properties:
         requestedBlockNumber:
+          maxLength: 16
+          minLength: 16
           pattern: ^[0-9A-F]{16}
           type: string
           description: Este campo de entrada permite ingresar el nuevo PIN
           example: C3D4E5F6G7H8I9J1
         currentBlockNumber:
+          maxLength: 16
+          minLength: 16
           type: string
+          description: Este campo de entrada permite ingresar el PIN actual
+          example: C3D4E5F6G7H8I9J1
         offsetNumber:
-          type: string
+          maxLength: 4
+          minLength: 1
+          type: integer
+          description: PIN offset
+          format: int32
+          example: 9999
     ErrorFiserVDetailsResponse:
       type: object
       properties:
@@ -1317,18 +1340,23 @@ components:
       type: object
       properties:
         amount:
+          maxLength: 9
           pattern: '[0-9]{0,999999999}'
           type: integer
           description: Monto de la tarifa calculada
           format: int32
           example: 35
         waiveReason:
+          maxLength: 1
+          minLength: 1
           pattern: '[0-9]{1}'
           type: integer
           description: Motivo de la extension de tarifas
           format: int32
           example: 1
         responseCode:
+          maxLength: 2
+          minLength: 1
           pattern: '[0-9]{2}'
           type: integer
           description: Código de respuesta de tarifa
