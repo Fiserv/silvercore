@@ -241,7 +241,7 @@ paths:
     post:
       tags:
         - Replacement Card
-      summary: "Ofrece la posibilidad de generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F). \r\nGenera una nueva tarjeta que la reemplazará en forma solapada, la cual solo desactivará la anterior al momento que finalice el solapamiento determinado por el emisor, el cliente reciba este reemplazo, active o utilice. </br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode = a 1 - Descripción de valor 1: Modificación de Límite de compra (Letras)    </th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Debe corresponder a los valores permitidos.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 2 – Descripción de valor 2: Modificación deDatos del socio Nombre y        Apellido / Full Name</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 3 – Descripción de valor 3: Modificación deDatos varios: Del socio Nombre        y Apellido / Full Name + Limite de compra</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 4 – Descripción de valor 4: Cambio de Grupo de Afinidad</th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Requerido. Debe incluir valor.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 6 ó 10 – Descripción de valores: 6 para destrucción o daño / 10 equivale        a OTROS y no requieren otros campos</th></tr><tr><td BORDER>No se realiza ninguna validación.</td></tr></table>"
+      summary: "Ofrece la posibilidad de generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F). \r\nGenera una nueva tarjeta que la reemplazará en forma solapada, la cual solo desactivará la anterior al momento que finalice el solapamiento determinado por el emisor, el cliente reciba este reemplazo, active o utilice. </br>Según el valor que toma reissueCode, pueden darse los siguientes casos: </br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode = a 1 - Descripción de valor 1: Modificación de Límite de compra (Letras)    </th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Debe corresponder a los valores permitidos.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 2 – Descripción de valor 2: Modificación deDatos del socio Nombre y        Apellido / Full Name</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 3 – Descripción de valor 3: Modificación deDatos varios: Del socio Nombre        y Apellido / Full Name + Limite de compra</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 4 – Descripción de valor 4: Cambio de Grupo de Afinidad</th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Requerido. Debe incluir valor.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 6 ó 10 – Descripción de valores: 6 para destrucción o daño / 10 equivale        a OTROS y no requieren otros campos</th></tr><tr><td BORDER>No se realiza ninguna validación.</td></tr></table>"
       operationId: setReplacement
       parameters:
         - name: Authorization
@@ -641,7 +641,7 @@ paths:
     post:
       tags:
         - Instant Issuance
-      summary: "Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital. \r\nTambién proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia) \r\n*Posee campos referentes a la administración para la emisión virtual (Tipo de Emisión). </br></br>Según los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" es el alta que se generara: </br><table BORDER style=\"border-collapse: collapse; text-align: center;\"><tr><th BORDER> Operación </th><th BORDER> | accountNumber | </th><th BORDER> additional | </th><th BORDER> checkDigit | </th><th BORDER> affinityGroupCode | </th><th BORDER> affinityGroupCheckDigit | </th><th BORDER> affinityGroupdescription | </th></tr><tr><td BORDER>Alta Tit c/ GAFF</td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td></tr><tr><td BORDER>Alta Tit SIN GAFF</td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER></td><td BORDER></td></tr><tr><td BORDER>Alta Adic. c/ GAFF</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td></tr><tr><td BORDER>Alta Adic. SIN GAFFF</td><td BORDER>X</td><td BORDER>X</td><td BORDER>X</td><td BORDER></td><td BORDER></td><td BORDER></td></tr></table>"
+      summary: "Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital. \r\nTambién proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia) \r\n*Posee campos referentes a la administración para la emisión virtual (Tipo de Emisión). </br></br>Según los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" es el alta que se generara: </br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER></th><th BORDER>Alta Tit c/ GAFF | </th><th BORDER>Alta Tit SIN GAFF</th></tr><tr><td BORDER> accountNumber </td><td></td><td></td></tr><tr><td BORDER> additional </td><td></td><td></td></tr><tr><td BORDER> checkDigit </td><td></td><td></td></tr><tr><td BORDER> affinityGroupCode </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupCheckDigit </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupdescription </td><td>X</td><td></td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER></th><th BORDER>Alta Adic. c/ GAFF | </th><th BORDER>Alta Adic. SIN GAFFF</th></tr><tr><td BORDER> accountNumber </td><td>X</td><td>X</td></tr><tr><td BORDER> additional </td><td>X</td><td>X</td></tr><tr><td BORDER> checkDigit </td><td>X</td><td>X</td></tr><tr><td BORDER> affinityGroupCode </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupCheckDigit </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupdescription </td><td>X</td><td></td></tr></table>"
       operationId: postInstantIssuanceService
       parameters:
         - name: Authorization
@@ -1331,19 +1331,6 @@ components:
           description: PIN offset
           format: int32
           example: 9999
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     FeePinBlockData:
       type: object
       properties:
@@ -1375,6 +1362,19 @@ components:
       properties:
         fee:
           $ref: '#/components/schemas/FeePinBlockData'
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     VirtualCardRequest:
       required:
         - bankBranch
