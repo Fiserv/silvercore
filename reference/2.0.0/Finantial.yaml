@@ -1,0 +1,1505 @@
+openapi: 3.0.1
+info:
+  title: Silvercore™ Financial Information Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
+servers:
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
+paths:
+  /financialInformation/transactions:
+    post:
+      tags:
+        - Transactions
+      summary: "Devuelve el listado de todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso.\r\nPermite obtener los movimientos de la cuenta/tarjeta durante el periodo pagos, compras, devoluciones, ajustes (por ejemplo, de campañas/descuentos).\r\nPara esta consulta se administrarán fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta."
+      operationId: transactions
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Transactions
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/pendingTransactions:
+    post:
+      tags:
+        - Pending Transactions
+      summary: "Informa un listado detallado con todas las operaciones que haya efectuado el titular de la cuenta durante el período en curso que aún no han sido presentadas por el comercio.\r\nPara esta consulta se administrarán fragmentaciones, vectores y paginados de acuerdo a la cantidad de registros que posea la cuenta/tarjeta."
+      operationId: getPendingTransactions
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PendingTransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingTransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Pending Transactions
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/lastStatementTransactions:
+    post:
+      tags:
+        - Last Statements Transactions
+      summary: |-
+        Permite obtener los movimientos liquidados en el último cierre de cuenta y que se ingresan en el resumen, es decir con esta consulta el emisor podrá construir el ultimo resumen de cuenta generado para la tarjeta/cuenta que se consulta.
+        Comprende las operaciones, pagos, ajustes, promociones y cualquier operación que se impacta en el último resumen de cuenta del socio.
+        En combinación con lastStatementData, el banco puede construir el soporte mensual como imagen de resumen.
+      operationId: getLastStatementTransactions
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LastStatementTransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastStatementTransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Last Statement Transactions
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/lastStatementData:
+    post:
+      tags:
+        - Last Statement Data
+      summary: |-
+        Proporciona datos resumidos acerca del estado de cuenta del mes en curso.
+        Permite obtener información consolidada de pagos (ARS/USD), totales y mínimos; cierres actuales, anteriores y futuros.
+        Además, posibilita generar el talón de pago con código de barras para la presentación en entes recaudadores.
+        En combinación con lastStatementTransactions permite construir la cuenta para el cliente con talón de pago, código de barras para lectura en agentes de recaudación.
+      operationId: getBalances
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LastStatementDataRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastStatementDataResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Last Statement Data
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+  /financialInformation/accountFinancialData:
+    post:
+      tags:
+        - Account Financial Data
+      summary: Permite obtener el resumen de la información financiera de la tarjeta/cuenta-autorizado por la que se consulta, consolida Limites y Saldos, Disponibles, Información de la Cuenta Corriente / Cierres y Vencimientos, así como tasas.
+      operationId: getBalances_1
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialDataRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialDataResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Account Financial Data
+      x-group-name: Financial Information
+      x-child-product-name: Transactions
+components:
+  schemas:
+    ErrorDetailsResponse:
+      type: object
+      properties:
+        dateError:
+          type: string
+          format: date-time
+        message:
+          type: string
+        detail:
+          type: string
+    TransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        sequenceI:
+          maxLength: 4
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
+          example: '5689'
+        orderI:
+          maxLength: 9
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta. Nro. DE ORDEN
+          format: int32
+          example: 0
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    Transaction:
+      type: object
+      properties:
+        operDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Identifica la fecha en que se realiza la compra u operación.
+          format: int32
+          example: 20220515
+        postingDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Determina la fecha en que el comercio realiza la presentacion de la transaccion.
+          format: int32
+          example: 20220517
+        merchantName:
+          maxLength: 30
+          type: string
+          description: Nombre del comercio en que realiza la compra
+          example: ARREDO
+        merchantID:
+          maxLength: 8
+          type: integer
+          description: Numero que identiifca al comercio donde se realiza la operación.
+          format: int32
+          example: 24049130
+        operType:
+          maxLength: 15
+          type: string
+          description: Identifica el tipo de operación (Compra / Debito -  Débito Automático - Pago - Reverso Credito ) (Anulacion/Devolución)
+          example: DEBITO
+        operCurrency:
+          maxLength: 20
+          minLength: 20
+          type: string
+          description: Este campo indica la moneda en que se realiza la operación.
+          example: PESO ARGENTINO
+        operAmountSign:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Identifica el tipo de operación credito o debito según sea el signo.
+          example: +
+        operAmount:
+          maxLength: 9
+          type: number
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.(1 – 7 parte entera, 0 – 2 parte decimal)
+          format: float
+          example: 1251.11
+        totalInstallments:
+          maxLength: 2
+          type: integer
+          description: Muestra el plan de cuotas total
+          format: int32
+          example: 12
+        currentInstallment:
+          maxLength: 2
+          type: integer
+          description: Identifica la cuota que se liquida en el periodo.
+          format: int32
+          example: 11
+        totalInstallmentAmountSign:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Signo del total del importe de la operación ("+" o "-")
+          example: +
+        totalInstallmentAmount:
+          maxLength: 15
+          type: number
+          description: Envía el monto total de la compra en cuotas. (1 – 13 parte entera, 0 – 2 parte decimal)
+          format: float
+          example: 15013.34
+        remainingInstallments:
+          maxLength: 2
+          type: integer
+          description: Identifica la cantidad de cuotas pendientes de pago del total del plan
+          format: int32
+          example: 1
+        remainingInstallmentsAmountSign:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Signo de las cuotas pendientes de la operación ("+" o "-")
+          example: +
+        remainingInstallmentsAmount:
+          maxLength: 15
+          type: number
+          description: Envía el monto total de la compra en cuotas. (1 – 13 parte entera, 0 – 2 parte decimal)
+          format: float
+          example: 1251.11
+    TransactionsResponse:
+      type: object
+      properties:
+        sequenceO:
+          maxLength: 26
+          type: string
+          description: 'Campos ECO: Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.'
+          example: '68'
+        fragmentMark:
+          maxLength: 1
+          type: integer
+          description: 'Indicador numérico para determinar cuando existen más registros a mostrar - Puede adoptar dos valores: 0 = Fin de los datos, 1 = Hay más datos'
+          format: int32
+          example: 0
+        orderO:
+          maxLength: 9
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta. Nro. DE ORDEN
+          format: int32
+          example: 0
+        vectorOperacionesMes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    PendingTransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        dateI:
+          maxLength: 8
+          minLength: 8
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
+          example: '20240313'
+        releaseTime:
+          maxLength: 8
+          minLength: 8
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
+          example: '17282015'
+        reqCodeI:
+          maxLength: 1
+          minLength: 1
+          pattern: '[CEIP]'
+          type: string
+          description: 'Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta C=Comercio  E=Entidad I=Miembro ICA P= Pais '
+          example: C
+        reqNumberI:
+          maxLength: 9
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
+          format: int32
+          example: 0
+      description: Estructura de campos para la solicitud de la API PendingTransactions
+    PendingTransaction:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
+        authDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo de salida identifica el día en que se realiza la operación / autorización.
+          format: int32
+          example: 20230223
+        authorizationCode:
+          maxLength: 8
+          minLength: 8
+          type: string
+          description: Este campo de salida informa el codigo de autorización que brinda el sistema para la transacción realizada y se conforma de 6 digitos numericos.
+          example: '132944'
+        description:
+          maxLength: 30
+          type: string
+          description: Nombre del comercio en que realiza la compra o descripcion del movimiento cuando se trata de Campañas de descuentos, Ajustes, y otras acciones.
+          example: COMPRA EN COMERCIO LOCAL
+        currency:
+          maxLength: 20
+          type: string
+          description: Este campo indica la moneda en que se realiza la operación.
+          example: PESO ARGENTINO
+        operAmountSign:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Identifica el tipo de operación credito o debito según sea el signo.
+          example: +
+        operAmount:
+          maxLength: 15
+          type: number
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.(1 – 13 parte entera, 0 – 2 parte decimal)
+          format: double
+          example: 8317.35
+        totalInstallments:
+          maxLength: 2
+          type: integer
+          description: Muestra el plan de cuotas total
+          format: int32
+          example: 1
+        merchantID:
+          maxLength: 8
+          type: integer
+          description: Numero que identiifca al comercio donde se realiza la operación.
+          format: int32
+          example: 0
+      description: Muestra un listado de las transacciones / operaciones pendientes
+    PendingTransactionsResponse:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 0
+        fragmentMark:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Indicador numérico para determinar cuando existen más registros a mostrar - Puede adoptar dos valores: 0 = Fin de los datos, 1 = Hay más datos'
+          format: int32
+          example: 0
+        dateO:
+          maxLength: 8
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+          format: int32
+          example: 0
+        releaseTime:
+          maxLength: 8
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+          example: '00000000'
+        reqCodeO:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta. C=Comercio  E=Entidad I=Miembro ICA P= Pais
+          example: '0'
+        reqNumberO:
+          maxLength: 9
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+          format: int32
+          example: 0
+        pendingTransactions:
+          type: array
+          description: Muestra un listado de las transacciones / operaciones pendientes
+          items:
+            $ref: '#/components/schemas/PendingTransaction'
+      description: Estructura de campos que responde a la API PendingTransactions
+    LastStatementTransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        sequenceI:
+          maxLength: 9
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se ingresan los datos que se obtienen en la primera llamada cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta
+          format: int32
+          example: 1
+      description: Estructura de campos para la solicitud de la API LastStatementTransactions
+    LastStatementTransaction:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Este campo de salida, complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"  Valores posibles: 1 a 9. En caso de ser socio titular se informará cero'
+          format: int32
+          example: 0
+        country:
+          maxLength: 40
+          type: string
+          description: Este campo informa el pais donde fue realizada la operación original
+          example: REPUBLICA ARGENTINA
+        debitMark:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Marca que identifica operaciones de Debitos Automaticos, permitiendo la segmentación al mostrar el resumen (Operaciones Contado / Operaciones Cuotas / Operaciones DA)
+          example: '0'
+        description:
+          maxLength: 27
+          type: string
+          description: Nombre del comercio en que realiza la compra o descripcion del movimiento cuando se trata de Campañas de descuentos, Ajustes, y otras acciones.
+          example: SU PAGO U$S
+        installmentNumber:
+          maxLength: 5
+          type: string
+          description: Informa la cuota que se cursa en el resumen, cuota XX de un total del plan de YY cuotas
+        merchantID:
+          maxLength: 8
+          type: integer
+          description: Numero que identiifca al comercio donde se realiza la operación.
+          format: int64
+          example: 0
+        operAmountSign:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Identifica el tipo de operación credito o debito según sea el signo.
+          example: +
+        operCurrency:
+          maxLength: 20
+          type: string
+          description: Este campo indica la moneda en que se realiza la operación.
+          example: DOLAR ESTADOUNIDENSE
+        operationDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo indica la fecha en que se realiza la operación.
+          format: int64
+          example: 20230206
+        operType:
+          maxLength: 15
+          type: string
+          description: Identifica el tipo de operación (Compra / Debito -  Débito Automático - Pago - Reverso Credito ) (Anulacion/Devolución)
+          example: PAGOS
+        operAmount:
+          maxLength: 13
+          type: number
+          description: Valor de la operación pactada por el cliente en el establecimiento. Si fuere en cuotas se muestra el total de la compra en cuotas.(1 – 11 parte entera, 0 – 2 parte decimal)
+          format: double
+          example: 56.59
+        postingDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Determina la fecha en que el comercio realiza la presentacion de la transaccion.
+          format: int64
+          example: 20230206
+      description: Este campo muestra el listado de operaciones / transacciones incluidas en el último resumen del socio
+    LastStatementTransactionsResponse:
+      type: object
+      properties:
+        cierreCtaCteActual:
+          maxLength: 8
+          type: integer
+          description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int64
+          example: 20230330
+        sequenceO:
+          maxLength: 4
+          type: integer
+          description: Campos ECO - Clave para la fragmentación de la consulta. Se devuelven estos valores cuando se indica que la respuesta debió fragmentarse; y se toman como inicio de la siguiente consulta.
+          format: int64
+          example: 68
+        transactions:
+          type: array
+          description: Este campo muestra el listado de operaciones / transacciones incluidas en el último resumen del socio
+          items:
+            $ref: '#/components/schemas/LastStatementTransaction'
+      description: Estructura de campos que responde a la API LastStatementTransactions
+    LastStatementDataRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: ^[0-9A-F]{64}
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+      description: Estructura de campos para la solicitud de la API LastStatementData
+    LastStatementDataResponse:
+      type: object
+      properties:
+        cierreCtaCteAnterior:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo indica la fecha anterior o ultima fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+          example: 20230126
+        previusPaymentDueDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de  Vencimiento de Resumen anterior.
+          format: int32
+          example: 20230206
+        cierreCtaCteActual:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+          example: 20230302
+        paymentDueDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de  Vencimiento Actual de Resumen
+          format: int32
+          example: 20230310
+        proximoCierreCtaCte:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo proporciona la fecha de proximo cierre de cuenta.
+          format: int32
+          example: 20230330
+        nextPaymentDueDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
+          format: int32
+          example: 20230410
+        cardType:
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: Identifica tipo de tarjeta - Para Mastercard se utiliza MC
+          example: GC
+        grupoctacte:
+          maxLength: 2
+          minLength: 2
+          type: integer
+          description: Este campo de salida, permite ingresar el dato correspondiente al Grupo de cuenta corriente al que pertenecen las cuentas listadas del tarjetahabiente. Valores posibles  11 12 13 14  (que configuran las fechas correspondientes a movimientos y cálculos en  cierres y vencimientos)
+          format: int32
+          example: 12
+        currentBalanceSignLOC:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo identifica el signo corespondiente al saldo actual en moneda local.
+          example: +
+        currentBalanceLOC:
+          maxLength: 15
+          type: number
+          description: Este campo detalla el saldo actual en moneda local. (1 – 13 parte entera, 2 parte decimal)
+          format: decimal
+          example: 20667.55
+        currentBalanceSignUSD:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo identifica el signo corespondiente al saldo actual en moneda extranjera.
+          example: +
+        currentBalanceUSD:
+          maxLength: 15
+          type: number
+          description: Este campo detalla el saldo actual en moneda extranjera. (1 – 13 parte entera, 2 parte decimal)
+          format: decimal
+          example: 74.94
+        minPaySign:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo informa el signo para el pago minimo.
+          example: +
+        minimumPay:
+          maxLength: 15
+          type: number
+          description: Este campo de salida, proporciona la información correspondiente importe de Pago Mínimo. (1 – 13 parte entera, 2 parte decimal)
+          format: decimal
+          example: 12890.01
+        minPayDueDate:
+          maxLength: 8
+          minLength: 8
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de vencimiento de Pago Mínimo
+          example: '20230310'
+        fullName:
+          maxLength: 26
+          type: string
+          description: Nombre y Apellido de la persona, a la cual se le emitirá la tarjeta de crédito. Nombre y Apellido del Socio
+          example: ESAYAN, JUAN CARLOS
+        bankBarCode:
+          maxLength: 3
+          type: integer
+          description: Códigode entidad que se identifica en el códigode barra
+          format: int32
+          example: 27
+        branchBarCode:
+          maxLength: 3
+          type: integer
+          description: Permite ingresar el dato correspondiente al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta y que se identifica en el códigode barra
+          format: int32
+          example: 1
+        ProductBarCode:
+          maxLength: 1
+          type: integer
+          description: Informa el código que identifica al producto (Gold / Inter / Platinum)
+          format: int32
+        DVbankBarCode:
+          maxLength: 3
+          type: integer
+          description: Informa el dígito Verificador de la Entidad/Sucursal, el mismo se conforma de un digito numérico.
+          format: int32
+          example: 8
+        L137CodProd:
+          maxLength: 3
+          type: integer
+          description: Talón de Pago proporciona el digito verificador de la cuenta.
+          format: int32
+          example: 71
+        L137EntUnif:
+          maxLength: 3
+          type: integer
+          description: Talón de Pago proporciona el dato número de entidad
+          format: int32
+          example: 27
+        L137NroSocio:
+          maxLength: 9
+          type: integer
+          description: Talón de Pago proporciona el número de cuenta del socio
+          format: int32
+          example: 999930605
+        L137TipoMoneda:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica la moneda; valores posibles: 0=Pesos 1=Dólar'
+          format: int32
+          example: 0
+        L137SignoPMin:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Talón de Pago identifica el signo del pago total. Valores posibles: 0=Positivo 1=Negativo'
+          format: int32
+          example: 0
+        L137PagoMin:
+          maxLength: 9
+          type: integer
+          description: Talón de Pago informa el pago mínimo
+          format: int32
+          example: 12890
+        L137SignoSTot:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Talón de Pago identifica el signo del pago total. Valores posibles: 0=Positivo 1=Negativo'
+          format: int32
+          example: 0
+        L137SaldoTotal:
+          maxLength: 9
+          type: integer
+          description: Talón de Pago informa el saldo total o actual
+          format: int32
+          example: 20667
+        L137DigVer:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Talón de Pago proporciona el digito verificador de la línea
+          format: int32
+          example: 4
+        L105CodProd:
+          maxLength: 3
+          type: integer
+          description: Talón de Pago proporciona el digito verificador de la cuenta.
+          format: int32
+          example: 71
+        L105EntUnif:
+          maxLength: 3
+          type: integer
+          description: Talón de Pago proporciona el dato número de entidad
+          format: int32
+          example: 27
+        L105NroSocio:
+          maxLength: 9
+          type: integer
+          description: Talón de Pago proporciona el número de cuenta del socio
+          format: int32
+          example: 999930605
+        L105TipoMoneda:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica la moneda; valores posibles: 0=Pesos 1=Dólar'
+          format: int32
+          example: 1
+        L105SignoSTot:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Talón de Pago proporciona el signo del Saldo Total del resumen. Valores posibles: 0=Positivo 1=Negativo'
+          format: int32
+          example: 0
+        L105SaldoTotal:
+          maxLength: 9
+          type: integer
+          description: Talón de Pago proporciona el Saldo Total del resumen
+          format: int32
+          example: 74
+        L105DigVer:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Talón de Pago proporciona el digito verificador de la línea
+          format: int32
+          example: 2
+        L112Relleno:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Valor fijo "espacio"
+          format: int32
+          example: 0
+        L112TipoMoneda:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica la moneda; valores posibles: 0=Pesos 1=Dólar'
+          format: int32
+          example: 0
+        L112Cuenta:
+          maxLength: 7
+          type: integer
+          description: Talón de Pago proporciona el número de cuenta del socio
+          format: int32
+          example: 9999306
+        L112additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO" Valores posibles: 1 a 9. En caso de ser socio titular se informará cero'
+          format: int32
+          example: 0
+        L112DVSocio:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Talón de Pago proporciona el digito verificador de la cuenta.
+          format: int32
+          example: 5
+        L112DVEan13:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: |-
+            Talón de Pago proporciona el digito verificador de la línea (COD DE BARRAS)
+            Datos para imprimir Talón de Pago
+            L87 - LINEA PARA CODIGO EAN13 EN U$S
+            L112 - LINEA PARA CODIGO EAN13 EN $
+            L105 - LINEA PARA TALON EN U$S - CODIGO INTERLEAVE 2 DE 5
+            L137 - LINEA PARA TALON EN $ - CODIGO INTERLEAVE 2 DE 5
+          format: int32
+          example: 6
+        L87Relleno:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Valor fijo "espacio"
+          format: int32
+          example: 0
+        L87TipoMoneda:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica la moneda; valores posibles: 0=Pesos 1=Dólar'
+          format: int32
+          example: 0
+        L87Cuenta:
+          maxLength: 9
+          type: integer
+          description: Talón de Pago proporciona el número de cuenta del socio
+          format: int32
+          example: 9999306
+        L87additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Complementa al dato cuenta para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO" Valores posibles: 1 a 9. En caso de ser socio titular se informará cero'
+          format: int32
+          example: 0
+        L87DVSocio:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Talón de Pago proporciona el digito verificador de la cuenta.
+          format: int32
+          example: 5
+        L87DVEan13:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: |-
+            Talón de Pago proporciona el digito verificador de la línea (COD DE BARRAS)
+            Datos para imprimir Talón de Pago
+            L87 - LINEA PARA CODIGO EAN13 EN U$S
+            L112 - LINEA PARA CODIGO EAN13 EN $
+            L105 - LINEA PARA TALON EN U$S - CODIGO INTERLEAVE 2 DE 5
+            L137 - LINEA PARA TALON EN $ - CODIGO INTERLEAVE 2 DE 5
+          format: int32
+          example: 6
+      description: Estructura de campos que responde la API LastStatementData
+    FinancialDataRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: ^[0-9A-F]{64}
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+      description: Estructura de campos para la solicitud de la API AccountFinData
+    FinancialDataResponse:
+      type: object
+      properties:
+        availReturnCodeDescr:
+          maxLength: 30
+          type: string
+          description: Descripción del codigo de respuesta para el retorno de consulta de disponibles.
+        creditLimit:
+          maxLength: 9
+          type: number
+          description: Este campo de salida informa el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 1995000.01
+        installmentsLimit:
+          maxLength: 9
+          type: number
+          description: Este campo de salida informa el limite total para realizar operaciones en cuotas. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
+        cashAdvanceLimit:
+          maxLength: 9
+          type: number
+          description: Este campo de salida informa el limite asignado para realizar adelantos. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
+        availCreditLimit:
+          maxLength: 9
+          type: number
+          description: Este campo de salida informa el disponible para realizar operaciones de contado. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 1964456.5
+        availInstallmentAmount:
+          maxLength: 9
+          type: number
+          description: Este campo de salida informa el disponible para realizar operaciones en cuotas. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
+        availCashAdvance:
+          maxLength: 9
+          type: number
+          description: Este campo de salida informa el disponible para realizar adelantos en efectivo. (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 0.01
+        grupoctacte:
+          maxLength: 2
+          type: integer
+          description: Este campo de salida, permite ingresar el dato correspondiente al Grupo de cuenta corriente al que pertenecen las cuentas listadas del tarjetahabiente. Valores posibles  11 12 13 14  (que configuran las fechas correspondientes a movimientos y cálculos en  cierres y vencimientos)
+          format: int32
+          example: 12
+        cierreCtaCteAnterior:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo indica la fecha anterior o ultima fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+          example: 20230126
+        previusPaymentDueDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de  Vencimiento de Resumen anterior.
+          format: int32
+          example: 20230206
+        cierreCtaCteActual:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo indica la fecha de cierre de cuenta corriente para la cuenta/tarjeta que se consulta.
+          format: int32
+          example: 20230302
+        paymentDueDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
+          format: int32
+          example: 20230310
+        proximoCierreCtaCte:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo proporciona la fecha de proximo cierre de cuenta.
+          format: int32
+          example: 20230330
+        nextPaymentDueDate:
+          maxLength: 8
+          minLength: 8
+          type: integer
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de Proximo Vencimiento
+          format: int32
+          example: 20230410
+        dailyFinRateLOC:
+          maxLength: 13
+          type: number
+          description: Este campo informa la tasa  diaria de financiaciónpara moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.122
+        dailyFinRateDOL:
+          maxLength: 13
+          type: number
+          description: Este campo informa la tasa  diaria de financiaciónpara  moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
+        dailyCompensatoryRateLOC:
+          maxLength: 13
+          type: number
+          description: Este campo informa la tasa de intereses compensatorios para moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
+        dailyCompensatoryRateUSD:
+          maxLength: 13
+          type: number
+          description: Este campo informa la tasa de intereses compensatorios para moneda extranjera. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
+        dailyPunitiveRateLOC:
+          maxLength: 13
+          type: number
+          description: Este campo devuelve la tasa diaria correspondiente a punitorios en moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.061
+        dailyPunitiveRateDOL:
+          maxLength: 13
+          type: number
+          description: Este campo devuelve la tasa diaria correspondiente a punitorios en dólares. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
+        cardType:
+          maxLength: 2
+          type: string
+          description: Identifica tipo de tarjeta - Para Mastercard se utiliza MC
+          example: MC
+        TEMLoc:
+          maxLength: 13
+          type: number
+          description: Este campo informa la Tasa efectiva mensual en moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 3.606
+        TEMDol:
+          maxLength: 13
+          type: number
+          description: Este campo informa la Tasa Efectiva Mensual en moneda extranjera. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
+        TNALoc:
+          maxLength: 13
+          type: number
+          description: Este campo informa la tasa nominal anual para moneda local. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 44.604
+        TNADol:
+          maxLength: 13
+          type: number
+          description: Este campo informa la tasa nominal anual para moneda extranjera. (1 – 10 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0.001
+      description: Estructura de campos que responde la API AccountFinData

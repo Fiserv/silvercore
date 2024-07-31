@@ -1,0 +1,1792 @@
+openapi: 3.0.1
+info:
+  title: Silvercore™ Financial Installment Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
+servers:
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
+paths:
+  /transactions/statementPayment:
+    post:
+      tags:
+        - Statement Payment
+      summary: "El presente servicio ofrece la posibilidad de enviar pagos de resumen con la aplicación correspondiente de liberación de disponible en línea (real time), actúa como cualquier pago de resumen. \r\nAsimismo, se incorpora la posibilidad de identificar otros dos movimientos “ajuste” ya sea Crédito o Débito para utilizarse a discreción por el emisor en caso de requerirse, también con Liberación o Bloqueo del disponible en línea. \r\nLos movimientos aplican a cualquier tipo de producto emitido. \r\nLos pagos admiten la moneda del país del emisor (ARS o URY) y dólares con o sin marca para la devolución de impuestos. \r\nLos ajustes expuestos en esta API se administran como netos a aplicar, no generaran cargos o impuestos asociados a moneda (excluyente para Argentina) "
+      operationId: payment
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryPaymentRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummaryPaymentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Payment
+      x-group-name: Statement Payment
+      x-child-product-name: Transactions
+  /purchaseInstallmentConversion/transactions:
+    post:
+      tags:
+        - Purchases
+      summary: La consulta proporciona el listado de hasta 100 consumos en condiciones de ser cuotificados, de acuerdo a la configuración de la línea de préstamo generada por el emisor.
+      operationId: getTransactions
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Transactions
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Transactions
+  /purchaseInstallmentConversion/selectedTransactions:
+    post:
+      tags:
+        - Purchases Selection
+      summary: Genera la lista de consumos seleccionados por el cliente para ser cuotificados. Con esta información, el sistema totaliza, calcula y  devuelve las simulaciones de los posibles planes.
+      operationId: saveSelectedTransactions
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectedTransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectedTransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Selected Transactions
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Transactions
+  /purchaseInstallmentConversion/plans:
+    post:
+      tags:
+        - Plans
+      summary: Retorna la simulación de planes de acuerdo a la configuración. La consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de prestamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o Conversion Contado a Cuotas.
+      operationId: getPlans
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailableInstallmentPlansRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableInstallmentPlansResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Plans
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Transactions
+  /purchaseInstallmentConversion/installmentConversion:
+    post:
+      tags:
+        - Installment Conversion
+      summary: "Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos. \r\nNota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación."
+      operationId: installmentConversion
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstallmentConversionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallmentConversionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Installment Conversion
+      x-group-name: Purchase Installment Conversion
+      x-child-product-name: Transactions
+  /installmentConversionHistory/transactionConversion:
+    post:
+      tags:
+        - Transaction Conversion
+      summary: La consulta permite listar todos los planes de Cuotificación de consumos y saldos, vigentes y no vigentes realizadas por el cliente.
+      operationId: getCurrentTransactionConversions
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryInstallmentsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryInstallmentsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Response 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Response 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Transaction Conversion
+      x-group-name: Installment Conversion History
+      x-child-product-name: Transactions
+  /balanceInstallmentConversion/plans:
+    post:
+      tags:
+        - Plans
+      summary: Retorna la simulación de planes de acuerdo a la configuración. La consulta lista los distintos planes de cuotas, con tasas, intereses y montos finales de acuerdo a las líneas de préstamos que se otorgan para que el cliente seleccione a conveniencia y pueda solicitar la gestión de Cuotificación o  Refinanciación de Saldo.
+      operationId: getPlans_1
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/BalanceInstallmentPlansRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceInstallmentPlansResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Plans
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Transactions
+  /balanceInstallmentConversion/installmentConversion:
+    post:
+      tags:
+        - Installment Conversion
+      summary: "Confirmación y movimiento de conversión, ejecutando una transacción financiera con las validaciones y generando la correspondiente  autorización. Muestra además los datos del plan estipulado, cuotas, intereses y montos. \r\nNota: Se recomienda Confirmación / Validaciones / Desafío para la aplicación de la cuotificación."
+      operationId: getAlta
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AltaCuotificacionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AltaCuotificacionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Installment Conversion
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Transactions
+  /balanceInstallmentConversion/balance:
+    post:
+      tags:
+        - Balance
+      summary: La consulta inicial devuelve información de Saldos, Pagos mínimos y Pagos realizados; así como Ajustes en moneda $ y U$D  junto con el Saldo Consolidado, correspondiente al que el cliente podrá convertir total o parcialmente a un plan de cuotas y liberar disponible al momento. Este monto se calcula en base a los parámetros que el emisor configure previamente en la aplicación de préstamos.
+      operationId: getBalance
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/BalanceInstallmentConversionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceInstallmentConversionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Balance
+      x-group-name: Balance Installment Conversion
+      x-child-product-name: Transactions
+components:
+  schemas:
+    ErrorDetailsResponse:
+      type: object
+      properties:
+        dateError:
+          type: string
+          format: date-time
+        message:
+          type: string
+        detail:
+          type: string
+    SummaryPaymentRequest:
+      required:
+        - operAmount
+        - operCurrency
+        - operId
+        - operType
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        operId:
+          maxLength: 8
+          minLength: 1
+          pattern: '[0-9]{1,8}'
+          type: string
+          description: Indica el id de la compra/transacción.
+          example: '74'
+        operAmount:
+          maxLength: 13
+          minLength: 1
+          pattern: ^[0-9]{1,13}([.][0-9]{1,2})?$
+          type: string
+          description: Valor de la operación pactada por el cliente. Importe del Pago/Ajuste.
+          format: decimal
+          example: '100.5'
+        operCurrency:
+          maxLength: 3
+          minLength: 2
+          type: string
+          description: 'Moneda en que se realiza la operación. Ej: ARS=32, UYU=858, USD=840'
+          example: '840'
+        operType:
+          maxLength: 1
+          minLength: 1
+          pattern: 0|1|2
+          type: string
+          description: 'Valor numérico de un digito que representa el tipo de movimiento. 0: ajuste débito, 1: ajuste crédito, 2: Pago'
+          example: '2'
+        flagDollar:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: 'El campo indica el tipo de pago en dolares, D: dólar billete (devuelve impuesto país), N: pago en dólares con pesos (no devuelve impuesto país)'
+          nullable: true
+          example: D
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    SummaryPaymentResponse:
+      type: object
+      properties:
+        codigoAutorizacion:
+          maxLength: 8
+          minLength: 1
+          type: string
+          example: '637089'
+        idPago:
+          maxLength: 8
+          minLength: 1
+          type: string
+          example: '00000074'
+      description: Estructura de campos que responde la API Pago Resumen
+    TransactionsRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        lastTransactionId:
+          maxLength: 4
+          minLength: 1
+          type: integer
+          description: Este campo de entrada identifica el id de la última compra/transacción devuelta en una llamada anterior
+          format: int32
+          example: 2
+    Transaction:
+      required:
+        - additional
+        - currencyCode
+        - date
+        - description
+        - id
+        - transactionAmount
+      type: object
+      properties:
+        id:
+          maxLength: 4
+          minLength: 1
+          type: integer
+          description: Este campo de salida indica el id de la compra/transacción
+          format: int32
+          example: 1
+        date:
+          maxLength: 10
+          type: string
+          description: Este campo de salida indica la fecha de la compra/transacción
+          format: date
+          example: '2004-03-23'
+        description:
+          maxLength: 22
+          minLength: 0
+          type: string
+          description: Este campo de salida indica la descripción de la compra/transacción
+          example: PASCO COMERCIAL SA
+        additional:
+          maxLength: 1
+          type: integer
+          description: Este campo de salida indica quién realizó la compra/transacción
+          format: int32
+          example: 0
+        currencyCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Este campo de salida indica la moneda en la que se realizó la compra/transacción
+          example: ARS
+        transactionAmount:
+          maxLength: 15
+          type: string
+          description: Este campo de salida indica el importe de la compra/transacción. (signo (+), 1 – 13 parte entera, 2 parte decimal)
+          format: decimal
+          example: '+8916.54'
+      description: Este campo de salida muestra un listado con todas las compras/transacciones cuotificables
+    TransactionsResponse:
+      required:
+        - exchangeRateUSD_PES
+        - more
+      type: object
+      properties:
+        transactions:
+          maxItems: 100
+          minItems: 0
+          type: array
+          description: Este campo de salida muestra un listado con todas las compras/transacciones cuotificables
+          items:
+            $ref: '#/components/schemas/Transaction'
+        exchangeRateUSD_PES:
+          maxLength: 8
+          type: number
+          description: Este campo de salida indica la cotización USD-PES. (1 – 6 parte entera, 2 parte decimal)
+          format: decimal
+          example: 96.41
+        more:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo de salida indica si existe más compras/transacciones cuotificables por consultar
+          example: 'N'
+    SelectedTransactionsRequest:
+      required:
+        - selectedTransactionIds
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        selectedTransactionIds:
+          maxLength: 9999
+          minLength: 1
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
+          example:
+            - 1
+            - 2
+            - 3
+          items:
+            maxLength: 9999
+            minLength: 1
+            type: integer
+            description: Este campo de entrada permite ingresar los ids de los consumos seleccionados para el proceso de cuotificación de consumos
+            format: int32
+    SelectedTransactionsResponse:
+      type: object
+      properties:
+        returnCode:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema
+          format: int32
+          example: 0
+        returnCodeDescription:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema
+          example: TRANSACCIÓN PROCESADA
+    AvailableInstallmentPlansRequest:
+      required:
+        - amountPesos
+        - amountUSD
+        - totalAmount
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        amountPesos:
+          maxLength: 13
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda local a cuotificar. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: decimal
+          example: '1500.5'
+        amountUSD:
+          maxLength: 13
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: Este campo de entrada permite ingresar el importe de los consumos/transacciones en moneda dólar a cuotificar. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: decimal
+          example: '30000.05'
+        totalAmount:
+          maxLength: 13
+          pattern: ^(-)?[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: Este campo de entrada permite ingresar el monto total a cuotificar expresado en pesos. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: decimal
+          example: '1500.5'
+    AvailableInstallmentPlan:
+      type: object
+      properties:
+        id:
+          maxLength: 4
+          minLength: 1
+          type: integer
+          description: Este campo de salida indica el id del plan
+          format: int32
+          example: 1
+        enabled:
+          maxLength: 1
+          type: string
+          description: Este campo indica si el plan se encuentra habilitado o no
+          example: S
+        quantityInstallments:
+          maxLength: 2
+          type: integer
+          description: Este campo de salida indica la cantidad de cuotas del plan
+          format: int32
+          example: 2
+        installmentAmount:
+          maxLength: 17
+          type: number
+          description: Este campo de salida indica el importe de la cuota. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: double
+          example: 50000.01
+        tna:
+          maxLength: 7
+          type: number
+          description: Este campo de salida indica la tasa nominal anual del plan. (1 – 3 parte entera, 3 parte decimal)
+          format: double
+          example: 0.01
+        lifeAssurance:
+          maxLength: 17
+          type: number
+          description: Este campo de salida indica el importe del seguro de vida. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: double
+          example: 0.01
+        grantFee:
+          maxLength: 17
+          type: number
+          description: Este campo de salida indica el importe del cargo por otorgamiento. (1 – 13 parte entera, 0 – 3 parte decimal)
+          format: double
+          example: 0.01
+        cft:
+          maxLength: 7
+          type: string
+          description: Este campo de salida indica el costo financiero total del plan. (1 – 3 parte entera, 3 parte decimal)
+          format: decimal
+          example: 0,00%
+        amortizationSystemId:
+          maxLength: 1
+          type: string
+          description: Este campo de salida muestra el identificador del sistema de amortización
+          example: F
+        amortizationSystemDescription:
+          maxLength: 50
+          type: string
+          description: Este campo de salida muestra la descripción del sistema de amortización
+          example: FRANCES
+        rateTypeId:
+          maxLength: 1
+          type: string
+          description: Este campo de salida muestra el identificador del tipo de tasa
+          example: F
+        rateTypeDescription:
+          maxLength: 50
+          type: string
+          description: Este campo de salida muestra la descripción del tipo de tasa
+          example: FIJA
+      description: Este campo de salida muestra el listado de planes de pago disponibles
+    AvailableInstallmentPlansResponse:
+      type: object
+      properties:
+        availableInstallmentPlans:
+          type: array
+          description: Este campo de salida muestra el listado de planes de pago disponibles
+          items:
+            $ref: '#/components/schemas/AvailableInstallmentPlan'
+        iva:
+          maxLength: 6
+          type: string
+          description: Este campo de salida indica la alícuota aplicable referente al impuesto al valor agregado.
+          example: 21.00%
+    InstallmentConversionRequest:
+      required:
+        - cvv
+        - expirationDate
+        - installmentPlanId
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        installmentPlanId:
+          maxLength: 2
+          type: integer
+          description: Este campo de entrada indica el id del plan seleccionado
+          format: int32
+          example: 10
+        cvv:
+          maxLength: 32
+          pattern: '[0-9A-F]{32}$'
+          type: string
+          description: Este campo de entrada indica el cvc encriptado de la tarjeta
+          example: CACA4EA8DA0E665E6CA15F644A5072D6
+        expirationDate:
+          maxLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo contiene el dato Vencimiento de Tarjeta encriptado
+          example: CFB385D755623C2171D06684D4ABE303
+    InstallmentConversionResponse:
+      type: object
+      properties:
+        authorizationCode:
+          maxLength: 8
+          type: string
+          description: Este campo de salida informa el código de autorización del plan de pago
+          example: '636935'
+    QueryInstallmentsRequest:
+      required:
+        - destino
+        - estado
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        destino:
+          maxLength: 2
+          minLength: 2
+          pattern: 99|RS|PP|CR|PC|RD
+          type: string
+          description: |-
+            Este campo de entrada permite ingresar el destino de los planes realizados que se desea consultar.
+            PC: PRESTAMO DE CONSUMO.
+            CR: PAGO DE RESUMEN EN CUOTAS.
+            PP: PRESTAMO PERSONAL.
+            RD: REFINANCIACION DE DEUDAS.
+            RS: REFINANCIACION DE SALDOS.
+            99: TODOS LOS DESTINOS
+          example: RD
+        estado:
+          maxLength: 1
+          type: integer
+          description: Este campo de entrada permite ingresar el estado de de los planes realizados que se desea consultar
+          format: int32
+          example: 1
+    Installment:
+      type: object
+      properties:
+        operationDate:
+          maxLength: 10
+          minLength: 10
+          type: string
+          description: Este campo de salida indica la fecha de la operación
+          format: date
+          example: '2023-07-01'
+        authorizationCode:
+          maxLength: 8
+          type: string
+          description: Este campo de salida informa el código de autorización del plan de pago
+          example: '41030'
+        installmentsQuantity:
+          maxLength: 2
+          type: integer
+          description: Este campo de salida indica la cantidad de cuotas del plan
+          format: int32
+          example: 6
+        currentInstallment:
+          maxLength: 3
+          type: integer
+          description: Este campo de salida indica la cuota vigente del plan
+          format: int32
+          example: 0
+        currencyCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Este campo de salida indica el código de moneda del plan
+          example: ARS
+        amount:
+          maxLength: 8
+          type: number
+          description: Este campo de salida indica el importe de la cuota. (1 – 5 parte entera, 0 – 3 parte decimal)
+          format: float
+          example: 1000.01
+        rate:
+          maxLength: 8
+          type: number
+          description: Este campo de salida indica la tasa del plan (1 – 5 parte entera, 0 – 3 parte decimal)
+          format: float
+          example: 23
+        idPlan:
+          maxLength: 2
+          type: integer
+          description: Este campo de salida indica el id del plan
+          format: int32
+          example: 1
+        cft:
+          maxLength: 7
+          type: string
+          description: Este campo de salida indica el costo financiero total del plan. (1 – 3 parte entera, 3 parte decimal)
+          format: decimal
+          example: 31,00%
+      description: Este campo de salida muestra un listado de planes de pago
+    QueryInstallmentsResponse:
+      type: object
+      properties:
+        installmentPlans:
+          type: array
+          description: Este campo de salida muestra un listado de planes de pago
+          items:
+            $ref: '#/components/schemas/Installment'
+    BalanceInstallmentPlansRequest:
+      required:
+        - amountARS
+        - amountUSD
+        - cardLast4
+        - currencyPlan
+        - financeTotalAmount
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        currencyPlan:
+          maxLength: 2
+          type: integer
+          description: El tipo de moneda
+          format: int32
+          example: 32
+        financeTotalAmount:
+          maxLength: 13
+          minLength: 1
+          pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: 'Monto a financiar 9999999999999.999 Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
+          format: decimal
+          example: '6330.001'
+        amountARS:
+          maxLength: 13
+          minLength: 1
+          pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
+          format: decimal
+          example: '150000.001'
+        amountUSD:
+          maxLength: 13
+          minLength: 1
+          pattern: ^[0-9]{1,13}([.][0-9]{1,3})?$
+          type: string
+          description: 'Importe a Cuotificar. 9999999999999.999. Hasta 13 posiciones enteras. 3 decimales opcionales, con separador decimal. '
+          format: decimal
+          example: '10000.001'
+        cardLast4:
+          maxLength: 4
+          type: integer
+          description: Ultimos 4 digitos de la tarjeta.
+          format: int32
+          example: 1234
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+    BalanceInstallmentPlan:
+      type: object
+      properties:
+        enable:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Indicador si está habilitado el plan “S” o “N”
+          example: S
+        quantityInstallments:
+          maxLength: 2
+          type: integer
+          description: Cantidad de cuotas totales del plan
+          format: int32
+          example: 2
+        installment:
+          maxLength: 17
+          type: string
+          description: Valor de cada cuota
+          example: '+0000000000403900'
+        amortizationSystemId:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Código Amortización
+          example: F
+        amortizationSystemDescription:
+          maxLength: 10
+          type: string
+          description: Descripción amortización
+          example: FRANCES
+        rateTypeId:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Código de tasa
+          example: F
+        rateTypeDescription:
+          maxLength: 10
+          type: string
+          description: Descripción de la tasa
+          example: FIJA
+        grantFee:
+          maxLength: 17
+          type: string
+          description: Costo de Otorgamiento
+          example: '+0000000000000000'
+        lifeAssuranceAmount:
+          maxLength: 17
+          type: string
+          description: Impuesto seguro de vida
+          example: '+0000000000000000'
+        tna:
+          maxLength: 7
+          type: string
+          description: T.N.A (tasa nominal anual)
+          example: '+062000'
+        id:
+          maxLength: 2
+          type: integer
+          description: Número de plan
+          format: int32
+          example: 1
+        cfn:
+          maxLength: 7
+          type: string
+          description: Cft Costo financiero total. (1 – 4 parte entera, 1 – 2 parte decimal,signo (%))
+          format: decimal
+          example: 106,84%
+    BalanceInstallmentPlansResponse:
+      type: object
+      properties:
+        listaPlanesHabilitados:
+          $ref: '#/components/schemas/ListBalanceInstallmentPlans'
+      description: Estructura de campos que responde la API Balance Planes
+    ListBalanceInstallmentPlans:
+      type: object
+      properties:
+        planesHabilitadosOperacion:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceInstallmentPlan'
+      description: Estructura de campos que agrupa a los planes
+    AltaCuotificacionRequest:
+      required:
+        - cvv
+        - expirationDate
+        - installmentPlanId
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        installmentPlanId:
+          maxLength: 2
+          type: integer
+          description: Este campo de entrada indica el id del plan seleccionado
+          format: int32
+          example: 12
+        cvv:
+          maxLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo de entrada indica el cvc encriptado de la tarjeta
+          example: DBF23F1BDA098BBBE00DAF2035552B73
+        expirationDate:
+          maxLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: Este campo contiene el dato Vencimiento de Tarjeta encriptado
+          example: CFB385D755623C2171D06684D4ABE303
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+    AltaCuotificacionResponse:
+      type: object
+      properties:
+        authorizationCode:
+          maxLength: 6
+          type: string
+          description: Código de autorización
+          example: '636901'
+      description: Estructura de campos que responde la API Alta Cuotificacion
+    BalanceInstallmentConversionRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+    BalanceInstallmentConversionResponse:
+      type: object
+      properties:
+        fechaUltimaCtaCorriente:
+          maxLength: 8
+          type: string
+          description: Fecha de ultimo cierre de cuenta corriente
+          example: '30122023'
+        fechaUltimoPagoMin:
+          maxLength: 8
+          type: string
+          description: Fecha de Ultimo Vencimiento de Pago Mínimo
+          example: '24112023'
+        fechaProximaCtaCorriente:
+          maxLength: 8
+          type: string
+          description: Fecha próximo cierre de cuenta corriente
+          example: '29012024'
+        saldoAnteriorPesos:
+          maxLength: 17
+          type: string
+          description: Último Saldo Liquidado en Pesos
+          example: '+0000000088648630'
+        saldoAnteriorDolares:
+          maxLength: 17
+          type: string
+          description: Último saldo liquidado Dólares
+          example: '+0000000000000000'
+        ajusteSaldoAntPesos:
+          maxLength: 17
+          type: string
+          description: Ajuste Ultimo Saldo Pesos
+          example: '+0000000000000000'
+        ajustePagoMinPesos:
+          maxLength: 17
+          type: string
+          description: Ajuste Pago Mínimo en Pesos
+          example: '+0000000000000000'
+        ajusteSaldoAntDolares:
+          maxLength: 17
+          type: string
+          description: Ajuste Ultimo Saldo Dólares
+          example: '+0000000000000000'
+        ajustePagoMinDolares:
+          maxLength: 17
+          type: string
+          description: Ajuste Pago Mínimo en Dólares
+          example: '+0000000000000000'
+        pagosPesos:
+          maxLength: 17
+          type: string
+          description: Pagos Realizados Pesos
+          example: '-0000000056000000'
+        pagosDolares:
+          maxLength: 17
+          type: string
+          description: Pagos Realizados Dólares
+          example: '+0000000000000000'
+        pagoMinimo:
+          maxLength: 17
+          type: string
+          description: Pago mínimo
+          example: '+0000000040740000'
+        cotizacionDolarPeso:
+          maxLength: 9
+          type: number
+          description: Cotización dólar pesos (pesificado - de dólar a pesos). (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 96.41
+        cotizacionPesoDolar:
+          maxLength: 9
+          type: number
+          description: Cotización pesos dólar (para cotización en dólares). (1 – 7 parte entera, 2 parte decimal)
+          format: decimal
+          example: 96.41
+        saldoConsMonedaLocal:
+          maxLength: 17
+          type: string
+          description: Saldo consolidado en moneda local (saldo pesificado)
+          example: '+0000000032648630'
+        saldoConsMonedaDolar:
+          maxLength: 17
+          type: string
+          description: Saldo consolidado en moneda dólar (saldo dolarizado)
+          example: '+0000000000337940'
+        topePagoMinMonedaLoc:
+          maxLength: 17
+          type: string
+          description: Tope Pago mínimo moneda local
+          example: '+0000000000100000'
+        topePagoMinMonedaDolar:
+          maxLength: 17
+          type: string
+          description: Tope pago mínimo moneda dólar
+          example: '+0000000000001040'

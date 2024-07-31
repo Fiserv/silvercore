@@ -1,0 +1,2526 @@
+################################################################################
+# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates. 
+# Fiserv is a trademark of Fiserv, Inc., 
+# registered or used in the United States and foreign countries, 
+# and may or may not be registered in your country.  
+# All trademarks, service marks, 
+# and trade names referenced in this 
+# material are the property of their 
+# respective owners. This work, including its contents 
+# and programming, is confidential and its use 
+# is strictly limited. This work is furnished only 
+# for use by duly authorized licensees of Fiserv, Inc. 
+# or its affiliates, and their designated agents 
+# or employees responsible for installation or 
+# operation of the products. Any other use, 
+# duplication, or dissemination without the 
+# prior written consent of Fiserv, Inc. 
+# or its affiliates is strictly prohibited. 
+# Except as specified by the agreement under 
+# which the materials are furnished, Fiserv, Inc. 
+# and its affiliates do not accept any liabilities 
+# with respect to the information contained herein 
+# and are not responsible for any direct, indirect, 
+# special, consequential or exemplary damages 
+# resulting from the use of this information. 
+# No warranties, either express or implied, 
+# are granted or extended by this work or 
+# the delivery of this work
+################################################################################
+
+openapi: 3.0.1
+info:
+  title: Silvercore™ Cards Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
+servers:
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
+paths:
+  /cards/v1/pin:
+    put:
+      tags:
+        - Pin Block
+      summary: "Esta Api permite la Gestión del PIN para extracciones en ATM u otras operaciones según mercado. El valor de PIN que se envía sobreescribe el previo existente y tiene impacto Batch. \r\nLos posibles mensajes de error de esta Api se deben a los siguientes casos: </br>- 11 Rutina - Error Gestión de PIN: Refiere a errores de ENCRIPCION Pin Pinblock – Pinblock generado no valido.</br>- Tarjeta Bloqueada: 3 Intentos fallidos. Es una respuesta acorde a una tarjeta que intento generar PIN sin éxito en cualquier canal (intentó por IVR/ATM y se encuentra bloqueado por seguridad)</br>- Pin ya generado para esta tarjeta. Tarjetas SOLAPADAS (esto es cuando hay dos tarjetas conviviendo)</br>- Cambio denegado – Igual al punto previo (Pin igual al anterior / compara OFFSET y declina)</br>- Entidad no permite cambio de PIN (configuración del emisor)"
+      operationId: setPinBlock
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PinBlockRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PinBlockResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: PIN
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/virtual:
+    post:
+      tags:
+        - Virtual Card
+      summary: "Ofrece al tarjetahabiente la posibilidad de solicitar la generación de la tarjeta en formato físico. \r\nLa solicitud indica el inicio del proceso de impresión/embozado/personalización de la tarjeta que se encuentra activa virtualmente en nuestro centro de embozado. No se genera bloqueo ni nuevo número de tarjeta. \r\nIngresa como novedad en el sistema de generación de plástico y flujo de envío a domicilio del cliente en sistema con permisionaria del emisor."
+      operationId: setActivarTarjeta
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualCardRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualCardResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      - code: 0
+                        description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Virtual Card
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/replacement:
+    post:
+      tags:
+        - Replacement Card
+      summary: "Ofrece la posibilidad de generar una novedad de Reimpresión/Reemplazo/Reposición de la tarjeta sin bloquear la actual. Además, se incluye la marca de Virtual (V) o Física (F). \r\nGenera una nueva tarjeta que la reemplazará en forma solapada, la cual solo desactivará la anterior al momento que finalice el solapamiento determinado por el emisor, el cliente reciba este reemplazo, active o utilice. </br></br>Según el valor que toma reissueCode, pueden darse los siguientes casos: </br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode = a 1 - Descripción de valor 1: Modificación de Límite de compra (Letras)    </th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Debe corresponder a los valores permitidos.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 2 – Descripción de valor 2: Modificación deDatos del socio Nombre y        Apellido / Full Name</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 3 – Descripción de valor 3: Modificación deDatos varios: Del socio Nombre        y Apellido / Full Name + Limite de compra</th></tr><tr><td BORDER>fullName</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Requerido. Debe incluir valor.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Puede ser vacío o null.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 4 – Descripción de valor 4: Cambio de Grupo de Afinidad</th></tr><tr><td BORDER>fullName</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>creditLimitChar</td><td BORDER>Puede ser vacío o null.</td></tr><tr><td BORDER>affinityGroupdescription</td><td BORDER>Requerido. Debe incluir valor.</td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER colspan='2'>Sí reissueCode= a 6 ó 10 – Descripción de valores: 6 para destrucción o daño / 10 equivale        a OTROS y no requieren otros campos</th></tr><tr><td BORDER>No se realiza ninguna validación.</td></tr></table>"
+      operationId: setReplacement
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplacementRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplacementResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      - code: 0
+                        description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Replacement
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/reissue:
+    post:
+      tags:
+        - Reissue Card
+      summary: "Ejecuta el pedido de REIMPRESION/REEMPLAZO con BLOQUEO; inhabilitando la tarjeta original que genera el movimiento y completando la acción con la REIMPRESION/REEMPLAZO de la tarjeta con una nueva numeración y envío al domicilio registrado en sistema o a uno nuevo detallado en el mensaje para el envío puntual/unitario de la nueva credencial.\r\n*Posee campos opcionales referentes a la administración para la emisión (Tipo de Emisión)"
+      operationId: setReimpresion
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReissueRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReissueResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Reissue
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/onOff:
+    post:
+      tags:
+        - On Off
+      summary: "Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. \r\nLa presente API ofrece al cliente tomar acción sobre la tarjeta; activar/pausar (ON/OFF) "
+      operationId: PauseOrActive
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnOffRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnOffResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: On Off
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/onOff/status:
+    post:
+      tags:
+        - On Off
+      summary: "Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar.  \r\nLa presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitirá habilitar al cliente para la acción a tomar (ON/OFF)"
+      operationId: getCardStatus
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnOffStatusRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnOffResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: On Off Status
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/instantIssuance:
+    post:
+      tags:
+        - Instant Issuance
+      summary: "Permite gestionar en forma instantánea el alta de una nueva Cuenta/Tarjeta o generar nuevos adicionales para una Cuenta existente, para ser utilizada en forma inmediata. Otorga en la respuesta todos los datos de la Tarjeta para ser visualizados en las diferentes UX apoyando las iniciativas de tarjetas en formato digital. \r\nTambién proporciona la opción de utilización de la salida de datos para la personalización para input a una embozadora certificada Contactless (Embozado a Distancia). \r\n*Posee campos referentes a la administración para la emisión virtual (Tipo de Emisión). </br></br>Según los campos \"accountNumber\", \"additional\", \"checkDigit\", \"affinityGroupCode\", \"affinityGroupCheckDigit\" y \"affinityGroupDescription\" es el alta que se generara: </br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER></th><th BORDER>Alta Tit c/ GAFF  |  </th><th BORDER>Alta Tit SIN GAFF</th></tr><tr><td BORDER> accountNumber </td><td></td><td></td></tr><tr><td BORDER> additional </td><td></td><td></td></tr><tr><td BORDER> checkDigit </td><td></td><td></td></tr><tr><td BORDER> affinityGroupCode </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupCheckDigit </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupdescription </td><td>X</td><td></td></tr></table></br><table BORDER style='border-collapse: collapse; text-align: center;'><tr><th BORDER></th><th BORDER>Alta Adic. c/ GAFF  |  </th><th BORDER>Alta Adic. SIN GAFFF</th></tr><tr><td BORDER> accountNumber </td><td>X</td><td>X</td></tr><tr><td BORDER> additional </td><td>X</td><td>X</td></tr><tr><td BORDER> checkDigit </td><td>X</td><td>X</td></tr><tr><td BORDER> affinityGroupCode </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupCheckDigit </td><td>X</td><td></td></tr><tr><td BORDER> affinityGroupdescription </td><td>X</td><td></td></tr></table>"
+      operationId: postInstantIssuanceService
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstantIssuanceRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstantIssuanceResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      - code: 0
+                        description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Instant Issuance
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/cvv:
+    post:
+      tags:
+        - CVV
+      summary: Posibilita la obtención del dato CVC2/CVV2 para la tarjeta seleccionada según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado), de manera que el emisor pueda mostrar los datos de la tarjeta para su utilización en cualquier UX, control u onboarding a diferentes billeteras.
+      operationId: getCvv
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CvvRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CvvResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: CVV
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/cardNumber:
+    post:
+      tags:
+        - Card Number
+      summary: La API informa los datos completos del producto seleccionado según método de consulta (Cuenta+Pan Enmascarado o bien PAN encriptado);  permitiendo conformar los datos de la tarjeta (PAN VTO Datos del cliente) para su utilización en cualquier UX, control/actualización de datos u onboarding a diferentes billeteras.
+      operationId: getCardNumber
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardNumberRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardNumberResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Card Number
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/blockRequest:
+    post:
+      tags:
+        - Block Card
+      summary: "Este servicio permite a las entidades ofrecer a los socios la posibilidad de denunciar sus tarjetas por Robo o extravío en forma inmediata online.  \r\nPermite además complementar la acción con la solicitud de No Reimpresión/Reimpresión o Reemplazo de la tarjeta con una nueva numeración.  \r\nLa reimpresión es enviada a la dirección del socio/tarjetahabiente que se encuentre en el sistema o a uno nuevo detallado en el mensaje para el envío puntual/unitario de la nueva credencial.  \r\n*Posee campos opcionales referentes a la administración para la emisión virtual (Tipo de Emisión)"
+      operationId: setBloqueo
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BloqueoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BloqueoResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Block
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/blockRequestFees:
+    post:
+      tags:
+        - Block Fees Card
+      summary: Permite obtener el costo de Denuncia/Bloqueo para la tarjeta que el cliente selecciona. El dato precio se encuentra seteado previamente por el emisor y puede variar entre productos de la misma institución financiera.
+      operationId: getCostoBloqueo
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlockRequestFeesRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlockRequestFeesResponseb'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Block Fees
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/activation:
+    post:
+      tags:
+        - Activation Card
+      summary: Brinda la posibilidad de solicitar en forma online la ACTIVACION para la tarjeta seleccionada (Prepagas, Crédito tanto para segmentos Individuo y Corporativo). El emisor puede instrumentar esta API con 1 o N tarjetas y combinar la acción con la previa consulta de las tarjetas que conforman la cuenta (Titular + Adicionales)
+      operationId: setActivarTarjeta_1
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Activation
+      x-group-name: Card
+      x-child-product-name: Cards
+components:
+  schemas:
+    ErrorDetailsResponse:
+      type: object
+      properties:
+        dateError:
+          type: string
+          format: date-time
+        message:
+          type: string
+        detail:
+          type: string
+    AccountRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Este campo de entrada proporciona el código de la entidad del tarjetahabiente.
+          format: int32
+          example: 0
+    PinBlockRequest:
+      required:
+        - pin
+      type: object
+      properties:
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        account:
+          $ref: '#/components/schemas/AccountRequest'
+        pin:
+          $ref: '#/components/schemas/PinData'
+        organizationNumber:
+          maxLength: 3
+          minLength: 1
+          type: string
+          description: Organización.
+          example: '999'
+        logo:
+          maxLength: 3
+          minLength: 1
+          type: string
+          description: Número de identificación del logotipo
+          example: '999'
+        channelIndicator:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: "Código que indica la fuente a efectos de reporte.\r\n\r\nValores:\r\n\r\nA = cajero automático;\r\nI = Respuesta de voz interactiva;\r\nW = WEB."
+          example: W
+        keyAssociation:
+          maxLength: 3
+          minLength: 1
+          type: string
+          description: Asociación clave. "I" + "la asociación de clave definida para el cliente durante la implementación en el campo".
+          example: IYY
+    PinData:
+      required:
+        - requestedBlockNumber
+      type: object
+      properties:
+        requestedBlockNumber:
+          maxLength: 16
+          minLength: 16
+          pattern: ^[0-9A-F]{16}
+          type: string
+          description: Este campo de entrada permite ingresar el nuevo PIN
+          example: C3D4E5F6G7H8I9J1
+        currentBlockNumber:
+          maxLength: 16
+          minLength: 16
+          type: string
+          description: Este campo de entrada permite ingresar el PIN actual
+          example: C3D4E5F6G7H8I9J1
+        offsetNumber:
+          maxLength: 4
+          minLength: 1
+          type: integer
+          description: PIN offset
+          format: int32
+          example: 9999
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    FeePinBlockData:
+      type: object
+      properties:
+        amount:
+          maxLength: 9
+          pattern: '[0-9]{0,999999999}'
+          type: integer
+          description: Monto de la tarifa calculada
+          format: int32
+          example: 35
+        waiveReason:
+          maxLength: 1
+          minLength: 1
+          pattern: '[0-9]{1}'
+          type: integer
+          description: Motivo de la extension de tarifas
+          format: int32
+          example: 1
+        responseCode:
+          maxLength: 2
+          minLength: 1
+          pattern: '[0-9]{2}'
+          type: integer
+          description: Código de respuesta de tarifa
+          format: int32
+          example: 23
+    PinBlockResponse:
+      type: object
+      properties:
+        fee:
+          $ref: '#/components/schemas/FeePinBlockData'
+    VirtualCardRequest:
+      required:
+        - bankBranch
+        - operationDate
+        - requestNumber
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        bankBranch:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: Corresponde al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta
+          format: int32
+          example: 562
+        operationDate:
+          maxLength: 6
+          minLength: 5
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación
+          example: '2023-08-24'
+        requestNumber:
+          maxLength: 6
+          minLength: 1
+          type: integer
+          description: Número de solicitud interno de la entidad emisora.
+          format: int32
+          example: 68
+        issuingType:
+          maxLength: 1
+          pattern: F|V|
+          type: string
+          description: Este campo permite ingresar el formato en que se emitira la tarjeta, puede tomar valores V para tarjetas emitidas solo en formato Virtual/Digital; F para tarjetas Físicas donde se generará el plástico para ser entregado o valor Vacio cuando no haya decisión al respecto.
+          example: F
+    VirtualCardResponse:
+      type: object
+      properties:
+        message:
+          maxLength: 200
+          type: string
+          example: NOVEDAD CARGADA CON EXITO
+      description: Estructura de campos que responde la API Virtual Card
+    ReplacementRequest:
+      required:
+        - branchNumber
+        - brandCode
+        - internalRequestNumber
+        - operationDate
+        - productCode
+        - reissueCode
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: ^[0-9A-F]{64}
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        operationDate:
+          maxLength: 10
+          minLength: 10
+          pattern: ^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación.
+          example: '2023-08-24'
+        internalRequestNumber:
+          maxLength: 6
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el número de solicitud interno de la entidad emisora.
+          format: int32
+          example: 900105
+        branchNumber:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta.
+          format: int32
+          example: 100
+        brandCode:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el código correspondiente a la marca/bandera de la tarjeta a la cual se solicita el alta instantánea. Ejemplo: Código 1: Mastercard '
+          format: int32
+          example: 1
+        productCode:
+          maxLength: 5
+          minLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el código correspondiente al tipo de producto de la marca/bandera. Ejemplo: 43: Mastercard Black </br>Algunos valores referenciales estándar.</br> 1: MasterCard Regional </br> 2: MasterCard Internacional </br> 3: Gold MasterCard </br> 5: MC Corporate Regional </br> 6: MC Corporate Internacional </br> 7: MC Executive Corporate </br> 8: Platinum MasterCard </br> 21: Tarjeta Prepaga </br> 22: MC Corporate Int Débitos </br> 23: MC Corporate Int Travel </br> 24: MC Corporate Int Purchase </br> 28: MC Corporate Int Combustible </br> 43: MasterCard Black </br> 124: Mastercard Black Corporativa '
+          format: int32
+          example: 3
+        fullName:
+          maxLength: 24
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite el ingreso del Apellido y Nombre de la persona.
+          example: Julian Martínez
+        creditLimitChar:
+          maxLength: 1
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar la letra correspondiente al límite de compra asignado al tarjetahabiente.
+          example: '6'
+        affinityGroupdescription:
+          maxLength: 17
+          minLength: 0
+          type: string
+          description: Esto campo de entrada, permite ingresar el dato correspondiente al nombre o descripción del grupo de afinidad.
+          example: APIS
+        reissueCode:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo y/o reimpresion.
+          format: int32
+          example: 1
+        issuingType:
+          maxLength: 1
+          pattern: 'F|V|| '
+          type: string
+          description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
+          example: F
+      description: Estructura de campos para la solicitud de la API Replacement Card
+    ReplacementResponse:
+      type: object
+      properties:
+        statusResponse:
+          maxLength: 200
+          type: string
+          example: Replacement OK
+      description: Estructura de campos que responde la API Replacement Card
+    HomeDeliveryCard:
+      type: object
+      properties:
+        addressStreetNumber:
+          maxLength: 30
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar la dirección donde se hará el envío.
+          example: Av. San Martín 1870
+        nroPiso:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el numero de piso donde se hará el envío.
+          format: int32
+          example: 2
+        dpto:
+          maxLength: 1
+          pattern: '[a-z,A-Z]{0,1}'
+          type: string
+          description: Este campo de entrada, permite ingresar el departamento donde se hará envío
+          example: A
+        codProv:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el codigo de provincia a donde se hará el envío.
+          format: int32
+          example: 2
+        city:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el nombre de la ciudad a donde se hará el envío.
+          example: Quilmes
+        postCode:
+          maxLength: 5
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el codigo postal de envío donde se hará el envío.
+          format: int32
+          example: 1881
+    ReissueRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: ^[0-9A-F]{64}
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        cardNumberM:
+          maxLength: 16
+          minLength: 16
+          pattern: ^[0-9]{4}[0]{8}[0-9]{4}
+          type: string
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
+          example: '1234000000001234'
+        comments:
+          maxLength: 120
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo y/o reimpresion.
+          example: Sin comentarios.
+        addressId:
+          maxLength: 1
+          pattern: C|N
+          type: string
+          description: Este campo de entrada, permite ingresar el Id de la dirección, C = dirección de la cuenta registrada en el sistema, N = dirección nueva que es proporcionada en la solicitud (No actualiza el domicilio del socio).
+          example: 'N'
+        issuingType:
+          maxLength: 1
+          pattern: 'F|V|| '
+          type: string
+          description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
+          example: F
+        homeDeliveryCard:
+          $ref: '#/components/schemas/HomeDeliveryCard'
+      description: Estructura de campos para la solicitud de la API Reissue Card
+    ReissueResponse:
+      type: object
+      properties:
+        blockNumber:
+          maxLength: 8
+          type: string
+          description: Este campo de salida indica el número de denuncia / bloqueo / reimpresión
+          example: A0000358
+        orderNumber:
+          maxLength: 4
+          type: integer
+          description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
+          format: int32
+          example: 1583
+        returnCodeDescription:
+          maxLength: 18
+          minLength: 18
+          type: string
+          description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
+          example: DENUNCIA EFECTUADA
+      description: Estructura de campos que responde la API Reissue Card
+    OnOffRequest:
+      required:
+        - action
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        action:
+          maxLength: 2
+          minLength: 2
+          pattern: ^(AC|BL)$
+          type: string
+          description: Este campo de entrada permite indicar la acción a realizar. AC para activación y BL para Inhabilitación
+          example: AC
+    OnOffResponse:
+      type: object
+      properties:
+        code:
+          maxLength: 5
+          type: string
+          description: Informa el código de retorno de la operación realizada.
+          example: '+2863'
+        message:
+          maxLength: 200
+          type: string
+          description: Informa el resultado de la operación solicitada.
+          example: Tarjeta inhabilitada
+      description: Estructura de campos que responde la API On Off
+    OnOffStatusRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+      description: Estructura de campos para la solicitud de la API On Off
+    InstantIssuanceRequest:
+      required:
+        - branchNumber
+        - brandCode
+        - dateOfBirth
+        - fullName
+        - gender
+        - idCode
+        - internalRequestNumber
+        - nationality
+        - number
+        - operationDate
+        - productCode
+      type: object
+      properties:
+        branchNumber:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta.
+          format: int32
+          example: 100
+        brandCode:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el código correspondiente a la marca/bandera de la tarjeta a la cual se solicita el alta instantánea. Ejemplo: Código 1: Mastercard '
+          format: int32
+          example: 1
+        productCode:
+          maxLength: 5
+          minLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el código correspondiente al tipo de producto de la marca/bandera. Ejemplo: 43: Mastercard Black </br>Algunos valores referenciales estándar.</br> 1: MasterCard Regional </br> 2: MasterCard Internacional </br> 3: Gold MasterCard </br> 5: MC Corporate Regional </br> 6: MC Corporate Internacional </br> 7: MC Executive Corporate </br> 8: Platinum MasterCard </br> 21: Tarjeta Prepaga </br> 22: MC Corporate Int Débitos </br> 23: MC Corporate Int Travel </br> 24: MC Corporate Int Purchase </br> 28: MC Corporate Int Combustible </br> 43: MasterCard Black </br> 124: Mastercard Black Corporativa '
+          format: int32
+          example: 3
+        issuingType:
+          maxLength: 1
+          pattern: 'F|V|| '
+          type: string
+          description: Este campo permite ingresar el formato en que se generara la reimpresión de tarjeta, puede tomar valores V para tarjetas emitidas solo en formato Virtual/Digital; F para tarjetas Físicas donde se generará el plástico para ser entregado o valor 0 (cero) cuando no haya decisión al respecto.
+          example: F
+        operationDate:
+          maxLength: 10
+          minLength: 10
+          pattern: ^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente a la fecha en que se realiza la operación de Alta Instantánea.
+          example: '2023-08-24'
+        internalRequestNumber:
+          maxLength: 6
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el número de solicitud interno de la entidad emisora.
+          format: int32
+          example: 900105
+        accountNumber:
+          maxLength: 32
+          minLength: 0
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        checkDigit:
+          maxLength: 9
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Dígito Verificador correspondiente a la cuenta que se informa.
+          format: int32
+          example: 0
+        corporateAccount:
+          maxLength: 9
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al número asignado a la cuenta empresa para la cual se emitirá la tarjeta. Aplica a altas de extensiones para cuentas/productos corporativos.
+          format: int32
+        fullName:
+          maxLength: 24
+          minLength: 1
+          type: string
+          description: Este campo de entrada, permite el ingreso del Apellido y Nombre de la persona, a la cual se le emitirá la tarjeta.
+          example: Julian Martínez
+        affinityGroupCode:
+          maxLength: 5
+          type: integer
+          description: Este campo de entrada, permite ingresar el código correspondiente al grupo de afinidad al momento de realizar el alta instantánea.
+          format: int32
+          example: 3794
+        affinityGroupCheckDigit:
+          maxLength: 1
+          type: integer
+          description: Esto campo de entrada, permite ingresar el dato correspondiente al Dígito Verificador del grupo de afinidad.
+          format: int32
+          example: 6
+        affinityGroupdescription:
+          maxLength: 17
+          minLength: 0
+          type: string
+          description: Esto campo de entrada, permite ingresar el dato correspondiente al nombre o descripción del grupo de afinidad.
+          example: APIS
+        streetNumber:
+          maxLength: 30
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Domicilio del Tarjetahabiente, detallando el Nombre y Número de la calle.
+          example: Avenida central 99
+        addressFloor:
+          maxLength: 2
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Número de Piso relacionado al domicilio.
+          example: '2'
+        addressApartment:
+          maxLength: 3
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Número de Departamento relacionado al domicilio.
+          example: A
+        addressZipCode:
+          maxLength: 5
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Código Postal relacionado al domicilio.
+          format: int32
+          example: 1881
+        city:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente a la Ciudad relacionada con el domicilio.
+          example: Capital Federal
+        addressprovinceCode:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Código de la Provincia relacionada al domicilio
+          format: int32
+          example: 1
+        distributionCode:
+          maxLength: 2
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente al código de distribución que representa un identificador para la permisionaria durante el flujo de delivery de la tarjeta.
+          example: '12'
+        phoneNumber:
+          maxLength: 12
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente al número de teléfono del tarjetahabiente.
+          example: '541122334455'
+        cuit:
+          maxLength: 11
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al nro. de CUIT en Argentina o RUT en Uruguay. El CUIT o RUT son los números de identificación de las empresas ante el Fisco. Es obligatorio y se controla solo en cuentas empresas.
+          format: int64
+        codCedula:
+          maxLength: 2
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite el ingreso del Código de Cedula. Es un dato opcional para las cedulas provinciales que se expendían históricamente.
+        numeroCedula:
+          maxLength: 9
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al número de cédula de identidad del tarjetahabiente.
+          format: int32
+        idCode:
+          maxLength: 2
+          minLength: 1
+          type: string
+          description: 'Este campo de entrada, permite ingresar el Código de Documento. En Argentina y Uruguay, los documentos tienen distintos tipos de códigos según su categoría. Por ejemplo: DU (Documento Único)'
+          example: DU
+        number:
+          maxLength: 9
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al número de Documento de identidad del tarjetahabiente.
+          format: int32
+          example: 99999999
+        dateOfBirth:
+          maxLength: 10
+          minLength: 10
+          pattern: ^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$
+          type: string
+          description: Este campo de entrada, proporciona el dato correspondiente a la fecha de nacimiento del tarjetahabiente.
+          example: '1990-12-31'
+        nationality:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente al Código de Nacionalidad del tarjetahabiente. '
+          example: ARG
+        gender:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente para la identificación del Sexo/Genero del tarjetahabiente.
+          example: M
+        cardDuration:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente a la Duración de la tarjeta. Siendo las opciones 12: Anual; 24: Bienal; 36: Trienal.'
+          format: int32
+          example: 24
+        creditLimitChar:
+          maxLength: 1
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar la letra correspondiente al límite de compra asignado al tarjetahabiente.
+          example: '6'
+        creditLimitCoefficient:
+          maximum: 9
+          maxLength: 3
+          minLength: 3
+          type: number
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente al coeficiente de modificación de limite de crédito. Longitud: 1 entero y 2 decimales (0.00)'
+          format: decimal
+          example: 0.01
+        creditLimit:
+          maxLength: 15
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Importe en moneda del límite de crédito asignado al tarjetahabiente. Información asignada por la entidad otorgante.
+          format: int64
+        minimumPaymentTerm:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente a la cantidad de días que deben sumarse a los configurados en parámetros / modelos de liquidación para fijar la fecha de vencimiento del plazo de pago del resumen de cuenta actual y futuros. Valores posibles: 00 a 09.'
+          format: int32
+        loyaltyProgramCode:
+          maxLength: 5
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar los datos correspondientes al código de Sumapuntos/Millaje al que debe pertenecer la cuenta, con el fin de establecer los puntajes pertenecientes al programa
+          format: int32
+        paymentMethod:
+          maxLength: 1
+          minLength: 0
+          type: string
+          description: 'Este campo de entrada, permite ingresar el método de la forma/método de pago seleccionado por el tarjetahabiente. </br>Método o Tipo de PAGO declarado desde el emisor: Valores posibles: </br>1 Por ventanilla </br>2 Débito en Cuenta Corriente (para Debitar en Cuenta o Débito Directo Interbancario) </br>3 Débito en Caja de Ahorro (para Debitar en Cuenta o Débito Directo Interbancario) </br>4 Por ventanilla con retención del resumen en la Entidad </br>5 Débito en Cuenta Corriente con retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) </br>6 Débito en Caja de Ahorro con retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) </br>7 Retenido Judicial </br>8 Por ventanilla cuando se quieran unificar todas las transacciones del socio bajo un mismo número interno de cliente </br>A Débito en Cuenta Corriente Especial sin retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) - solo Argentina. </br>B Débito en Cuenta Corriente Especial con retención del resumen en la Entidad (para Debitar en Cuenta o Débito Directo Interbancario) - solo Argentina.'
+          example: '1'
+        paymentMethodDEBIT:
+          maxLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el método o tipo de importe de la forma de pago por débito en la cuenta de la entidad bancaria (emisora) </br>Método o Tipo de importe a debitar. </br>Valores posibles y relación con los valores en el campo paymentMethod </br>1: Pago total del saldo actual (solo para Débito en Cuenta) </br>2: Pago mínimo (para Débito en Cuenta o Débito Directo Interbancario) </br>3: Pago a debitar según instrucciones del socio (solo para Débito en Cuenta) </br>4: Pago total consolidado en pesos (solo para Débito Directo Interbancario) </br>5: Pago total consolidado en dólares (solo para Débito Directo Interbancario)'
+          format: int32
+          example: 0
+        paymentMethodACCOUNT:
+          maxLength: 10
+          minLength: 1
+          type: integer
+          description: 'Solo para Débito en Cuenta. Número de cuenta para las formas de pago tipo 2, 3, 5, 6, A ó B. Para el tipo 8 se deberá indicar el número interno de cliente. Se informarán sólo números, sin barras ni guiones. Se completarán con ceros los espacios libres delante del número. </br>Valores posibles y relación con los valores en el campo paymentMethod </br>No informar para formas de pago tipo: 1, 4 y 7'
+          format: int64
+        paymentMethodBANK:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar los datos correspondiente a la Forma de Pago de Debito en Cuenta con la entidad otorgante. Código de la sucursal donde se encuentra radicada la Cuenta Corriente o Caja de Ahorro. </br>Valores posibles y relación con los valores en el campo paymentMethod </br>No informar para formas de pago tipo: 1, 4 y 7'
+          format: int32
+        instalmentsServiceFee:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar los datos correspondientes para determinar la cantidad de cuotas para el cobro del mantenimiento de cuenta.
+          format: int32
+          example: 1
+        waiveServiceFee:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar los datos correspondientes para determinar si al tarjetahabiente se le bonificará el cargo por el servicio. Este campo también permitirá conocer el porcentaje de bonificación que se aplicará.  Este valor podrá  variar entre 000 y 100. Para eliminar esta bonificación se informará 999. Si no se modifica este campo se informarán ceros. Para valores N - Opcionales, se utiliza 0 o no informar.
+          format: int32
+        keepServFeeWaiver:
+          maxLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar los datos correspondientes para determinar si el tarjetahabiente mantiene o no la bonificación del cargo. </br>Valores Posibles </br>1: Mantiene la bonificación para la renovación </br>2: No mantiene la bonificación para la renovación </br>3: Mantiene la bonificación para cargo intermedio </br>Para adicionales el sistema aplica el valor configurado para titular'
+          format: int32
+          example: 2
+        grupoctacte:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al Grupo de cuenta corriente al que pertenecen las cuentas listadas del tarjetahabiente. Valores posibles 11 12 13 14 (que configuran las fechas correspondientes a movimientos y cálculos en  cierres y vencimientos).
+          format: int32
+        guarantor:
+          maxLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente a si tiene o no garante asignado. 1: SI - 2: NO'
+          format: int32
+          example: 1
+        advanceATMCoefficient:
+          maximum: 9
+          maxLength: 3
+          minLength: 3
+          type: number
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente al coeficiente de adelanto en ATM. Son datos standard de altas de tarjetas y son de uso habitual de operaciones del emisor, en este caso define el disponible para adelantos en Cajeros / ATM. Longitud: 1 entero y 2 decimales (0.00)'
+          format: decimal
+          example: 0.01
+        occupationCode:
+          maxLength: 6
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el código correspondiente al tipo de ocupación/empleo del solicitante de la tarjeta. Son  datos adicionales opcionales que complementan el alta de una cuenta/tarjeta.
+          format: int32
+        addressHomeBusiness:
+          maxLength: 1
+          minLength: 0
+          type: string
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente al Tipo de domicilio: Particular o Laboral. Es opcional, amplia la información de domicilio. Se popula habitualmente para altas de productos corporativos. Tipo de domicilio informado por el socio. «P»: particular. «L»: laboral.'
+        authorizationModelNumber:
+          maxLength: 5
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente al número que identifica el Modelo de autorización que rige a la tarjeta
+          example: '00016'
+        settelmentModel:
+          maxLength: 5
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el dato correspondiente al tipo de modelo de liquidación seleccionado por el tarjetahabiente.
+          example: DEF01
+        sbmTasasLiquidacion:
+          maxLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar los datos correspondientes para indicar la configuración del Submodelo de Tasar que forma parte del Modelo de Liquidación asignado a la cuenta del tarjetahabiente.
+          format: int32
+          example: 1
+        sbmGastosLiq:
+          maxLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar los datos correspondientes a la definición del SubModelo de Gastos de Liquidación, el cual es un conjunto de parámetros y atributos necesarios para la liquidación de la cuenta corriente del tarjetahabiente.
+          format: int32
+          example: 1
+        sbmParametroLiquidacion:
+          maxLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar los datos correspondientes para indicar la ocurrencia del Submodelo de Parámetros que forma parte del Modelo de Liquidación asignado a la cuenta del tarjetahabiente.
+          format: int32
+          example: 1
+        salesChannel:
+          maxLength: 2
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite conocer cual ha sido el canal de venta por el cual ingresó la petición.
+        chipUpdate:
+          maxLength: 1
+          minLength: 0
+          type: string
+          description: 'Este campo de entrada, envía la novedad de chip en la instrucción de Personalización y esta relacionada a la impresión del plástico en punto de venta con embozadora homologada. Es dato requerido solo en las configuraciones donde la emisión es descentralizada y corresponde a la tecnología de la tarjeta a personalizar, en este modelo puede no popularse. Valores posibles: D - N - P (D CHIP CDA DDA  P Contactless N Banda).'
+        IVA:
+          maxLength: 1
+          type: integer
+          description: 'Este campo de entrada, permite ingresar el dato correspondiente para indicar cual es la situación del tarjetahabiente ante el IVA (Impuesto al valor agregado) </br> “0”: No Informado </br> “1”: Responsable Inscripto </br> “2”: Responsable No Inscripto (*) </br> “3”: Exento </br> “4”: Monotributista'
+          format: int32
+        ATMChargeServiceWaiver:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: Este campo de entrada, permite ingresar el dato correspondiente al porcentaje de bonificación a aplica al cargo que se debitara en la cuenta del tarjetahabiente, por las transacciones realizadas mediante el uso de cajeros automáticos, excepto que la misma sea un Adelanto en Efectivo
+          format: int32
+        CBU:
+          maxLength: 22
+          minLength: 0
+          type: string
+          description: 'Este campo de entrada, permite el ingreso del CBU del tarjetahabiente. CBU: Cuenta Bancaria Universal que el socio desea que se utilice para realizar el pago de su Estado de Cuenta mediante el servicio de Débito Directo Interbancario.'
+      description: Estructura de campos para la solicitud de la API Instant Issuance
+    InstantIssuanceResponse:
+      type: object
+      properties:
+        fullName:
+          maxLength: 96
+          minLength: 96
+          type: string
+          description: Este campo de salida, proporciona la información del Apellido y Nombre del solicitante de la tarjeta de crédito
+          example: 95A8667F36E3904376C0C9D03F9A12A85C62424AC2E98FFC431BA27C62DEA80FF36EA217EDD532B9A51D33852FDEE658
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de salida, proporciona la información del número de tarjeta completo del tarjetahabiente en manera encriptada. En formatos asociados a la mensajería de personalización que se envía en la opción de impresión en punto de venta  con embozadora homologada.
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        cvv:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Esta campo de salida, proporciona los datos relacionados al número de CVC de la tarjeta en voucher.
+          example: E5F6G7H8I9J10K11L12M13N14O15P16Q
+        cvcChip:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Esta campo de salida, proporciona los datos relacionados al número de CVC/Chip. Este dato es para la embozadora.
+          example: 7B292CF185A86031D6A5087280A0C182
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: 'Este campo de salida, proporciona el número de cuenta del tarjetahabiente. '
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        branchNumber:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Este mensaje de salida, proporciona datos correspondiente al código de la sucursal bancaria donde el socio tiene radicada su cuenta / tarjeta.
+          example: DC2F0E847982449324053C761156C17A
+        expirationDate:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de validez de la tarjeta
+          example: G7H8I9J10K11L12M13N14O15P16Q17R1
+        magStripe1:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
+          example: 84BA33108535CC62F7AF57A4F4FC0AD7F103407CCAA3E6D158E50A479BB3F0AA
+        magStripe2:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
+          example: 8ACDE757FCC671440DD32711C38082651B752E6AD9433C1EA18F2D7903908BBA
+        magStripe3:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
+          example: 8EA85A30A5B4E7046DEA1DE6F0D84D97D2D48D0B529EA1DE5EC5844919452B73
+        magStripe4:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de salida, proporciona información correspondiente al tipo de pista o track de la banda magnética. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
+          example: 7AA117BB24FAC266882324EB1A25825A699F32F65285140B334380C2221A6DD9
+        reversesideCardInformation:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de salida, proporcionará los datos del dorso de la tarjeta.
+          example: B8906899F23D3911467C0158A411E726720971CEFFB6D0058D5AB481ECB464B4
+        loyaltyNumber:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Este campo de salida, proporciona el código correspondiente al programa de Fidelización al cual pertenece el tarjetahabiente.
+          example: 9C8D2A4948A38A74DA6EC8CF3C554AFA
+        chipCheck:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Este campo de salida, proporciona información correspondiente a la marca de la tecnología chip o banda. Esta información es para ser utilizada por la personalizadora en el proceso de embozado
+          example: 8D5228C373EE4F6C5834E4A33A868413
+        securityChar:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Este campo de salida, proporciona el dato correspondiente al Código de Seguridad de la tarjeta (CVC)
+          example: CACA4EA8DA0E665E6CA15F644A5072D6
+      description: Estructura de campos que responde la API Instant Issuance
+    CvvRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 0
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        cardNumberM:
+          maxLength: 16
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
+          example: '1234000000001234'
+      description: Estructura de campos para la solicitud de la API CVV
+    CvvResponse:
+      type: object
+      properties:
+        cvv:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: Este campo de salida, proporciona el dato correspondiente al código CVC2 (si es Mastercard) CVV2 (si es Visa)
+          example: E5F6G7H8I9J10K11L12M13N14O15P16Q
+      description: Estructura de campos que responde la API CVV
+    CardNumberRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        cardNumberM:
+          maxLength: 16
+          minLength: 16
+          pattern: '[0-9]{4}0{8}[0-9]{4}'
+          type: string
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
+          example: '1234000000001234'
+      description: Estructura de campos para la solicitud de la API Card Number
+    CardNumberResponse:
+      type: object
+      properties:
+        cardNumber:
+          maxLength: 64
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la información del número de tarjeta completo del tarjetahabiente en manera encriptada
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        expirationDate:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de validez de la tarjeta
+          example: G7H8I9J10K11L12M13N14O15P16Q17R1
+        fullName:
+          maxLength: 96
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la información del Apellido y Nombre que esta realizando la consulta
+          example: 95A8667F36E3904376C0C9D03F9A12A85C62424AC2E98FFC431BA27C62DEA80FF36EA217EDD532B9A51D33852FDEE658
+      description: Estructura de campos que responde la API Card Number
+    BloqueoRequest:
+      required:
+        - addressId
+        - blockCode
+        - fullName
+        - isLost
+        - isReissue
+        - number
+        - type
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: ^[0-9A-F]{64}
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        cardNumberM:
+          maxLength: 16
+          minLength: 16
+          pattern: ^[0-9]{4}[0]{8}[0-9]{4}
+          type: string
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
+          example: '1234000000001234'
+        fullName:
+          maxLength: 30
+          minLength: 1
+          type: string
+          description: Este campo de entrada, permite ingresar el apellido y nombre de la persona, del denunciante y/o a la cual se le emitirá la tarjeta de crédito por la solicitud de denuncia o reimpresión.
+          example: 95A8667F36E3904376C0C9D03F9A12A85C62424AC2E98FFC431BA27C62DEA80FF36EA217EDD532B9A51D33852FDEE658
+        type:
+          maxLength: 2
+          minLength: 2
+          pattern: DU|PA
+          type: string
+          description: Este campo de entrada, permite ingresar el código de documento (Tipo de documento). En Argentina y Uruguay los documentos tienen distintos tipos de código según su categoria. DU - Documento Único, PA - Pasaporte.
+          example: DU
+        number:
+          maxLength: 9
+          pattern: ^[0-9]{6,9}
+          type: string
+          description: Este campo de entrada, permite ingresar el número de documento de identidad del tarjetahabiente.
+          example: '999999999'
+        isLost:
+          maxLength: 1
+          pattern: S|N
+          type: string
+          description: Este campo de entrada, permite informar si el documento de identidad fue extraviado, con valores Sí o No (S o N).
+          example: 'N'
+        comments:
+          maxLength: 120
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo y/o reimpresion.
+          example: Bloqueo por perdida de tarjeta
+        blockCode:
+          maxLength: 1
+          pattern: '7'
+          type: string
+          description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo y/o reimpresion.
+          example: '7'
+        isReissue:
+          maxLength: 1
+          pattern: S|N
+          type: string
+          description: Este campo de entrada, permite ingresar el valor Sí o No (S o N) para informar si la tarjeta se reimprime.
+          example: S
+        addressId:
+          maxLength: 1
+          pattern: '[C,N]{1}'
+          type: string
+          description: Este campo de entrada, permite ingresar el Id de la dirección, C = dirección de la cuenta registrada en el sistema.
+          example: C
+        addressStreetNumber:
+          maxLength: 30
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar el domicilio del tarjetahabiente detallando el nombre y número de la calle.
+          example: Av. San Martin 1882
+        countryCode:
+          maxLength: 3
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]{0,3}|N/I
+          type: string
+          description: 'Este campo de entrada, permite ingresar el código del país. '
+          example: ARG
+        addressprovinceCode:
+          maxLength: 2
+          minLength: 1
+          pattern: ^[a-zA-Z0-9]{0,2}|N/I
+          type: string
+          description: Este campo de entrada, permite ingresar el código de la provincia.
+          example: '01'
+        city:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: Este campo de entrada, permite ingresar la ciudad relacionada con el domicilio.
+          example: Capital Federal
+        phoneNumber:
+          maxLength: 20
+          pattern: ^[0-9]{0,20}|N/I
+          type: string
+          description: Este campo de entrada, permite ingresar el número de teléfono del tarjeta habiente.
+          example: '44211214'
+        issuingType:
+          maxLength: 1
+          pattern: 'F|V|| '
+          type: string
+          description: Este campo de entrada, permite ingresar el tipo de emisión que tendrá la tarjeta, pudiendo optar por la personalización y envío de la tarjeta plástica como fisica (F) , la emisión para consulta y uso virtual (V), el campo es opcional y puede enviarse 'ESPACIO o SIN INFORMAR'.
+          example: F
+        homeDeliveryCard:
+          $ref: '#/components/schemas/HomeDeliveryCard'
+      description: Estructura de campos para la solicitud de la API Block Card
+    BloqueoResponse:
+      type: object
+      properties:
+        blockNumber:
+          maxLength: 8
+          minLength: 8
+          type: string
+          description: Este campo de salida indica el número de denuncia / bloqueo / reimpresión
+          example: A0000371
+        orderNumber:
+          maxLength: 4
+          minLength: 1
+          type: string
+          description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
+          example: '2031'
+        returnCodeDescription:
+          maxLength: 18
+          minLength: 18
+          type: string
+          description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
+          example: DENUNCIA EFECTUADA
+      description: Estructura de campos que responde la API Block Card
+    BlockRequestFeesRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: ^[0-9A-F]{64}
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+      description: Estructura de campos para la solicitud de la API Block Fees Card
+    BlockRequestFeesResponseb:
+      type: object
+      properties:
+        rate:
+          maxLength: 13
+          minLength: 1
+          pattern: '[0-9]{1,13}([.][0-9]{1,3})'
+          type: string
+          description: Este campo de salida proporciona la información correspondiente al valor asociado al bloqueo o denuncia.
+          format: decimal
+          example: '991.0'
+      description: Estructura de campos que responde la API Block Fees Card
+    ActivationRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: ^[0-9A-F]{64}
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        cardNumberM:
+          maxLength: 16
+          minLength: 16
+          pattern: ^[0-9]{4}[0]{8}[0-9]{4}
+          type: string
+          description: Este campo de entrada, permite ingresar el número de tarjeta (PAN) enmascarado. Formato XXXX00000000XXXX..
+          example: '1234000000001234'
+      description: Estructura de campos para la solicitud de la API Activation Card
+    ActivationResponse:
+      type: object
+      properties:
+        orderNumber:
+          maxLength: 8
+          type: string
+          description: Este campo de salida indica el número de gestión / pedido con el cual se registra la acción.
+          example: A0000369
+        returnCodeDescription:
+          maxLength: 200
+          type: string
+          description: Este campo de salida proporciona la descripción del código de retorno/rechazo que devuelve el sistema
+          example: ACTIVACION EFECTUADA
+      description: Estructura de campos que responde la API Activation Card
