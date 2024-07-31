@@ -5,7 +5,7 @@
   "brandLogoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Fiserv_Logo.jpg",
   "solution": ["financial-institutions"],
   "brandDescription": "Silvercore LAS - Expand your business’  Expand your business’ reach by taking the acceptance process to a different level. SILVERCORE ™ is our processing solution that meets your challenges head-on and transforms your technology capability. We provide an end-to-end solution. SILVERCORE™ Restful APIs enable you to achieve platform modernization and competitive edge delivering the following benefits to your business.",
-  "getStartedFilePath": "/docs/getting-started.md",
+  "getStartedFilePath": "docs/get-started.md",
   "categories": [
     {
       "name": "businessTypes",
@@ -22,12 +22,23 @@
   "apiVersions": [
       {
         "version": "1.0.0",
-        "versionType": "major",
+        "versionType": "minor",
         "releaseNotesPath": "docs/release-notes/2023/september.md",
         "apiSpecFileNames": [
           "Accounts",
           "Cards",
           "Finantial"
+        ]
+      },
+      {
+        "version": "2.0.0",
+        "versionType": "major",
+        "releaseNotesPath": "docs/release-notes/2023/september.md",
+        "apiSpecFileNames": [
+          "Accounts",
+          "Cards",
+          "Finantial",
+          "Installment"
         ]
       }
   ],
@@ -45,7 +56,7 @@
     "feature":[
       {
         "name": "sandBox",
-        "value": false
+        "value": true
       },
       {
         "name": "plugins",
@@ -57,6 +68,10 @@
       },
       {
         "name": "editParameterAPIExplorer",
+        "value": false
+      },
+      {
+        "name": "downloadPostman",
         "value": false
       }
     ]

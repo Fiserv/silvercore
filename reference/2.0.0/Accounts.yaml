@@ -1,0 +1,1072 @@
+################################################################################
+# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates. 
+# Fiserv is a trademark of Fiserv, Inc., 
+# registered or used in the United States and foreign countries, 
+# and may or may not be registered in your country.  
+# All trademarks, service marks, 
+# and trade names referenced in this 
+# material are the property of their 
+# respective owners. This work, including its contents 
+# and programming, is confidential and its use 
+# is strictly limited. This work is furnished only 
+# for use by duly authorized licensees of Fiserv, Inc. 
+# or its affiliates, and their designated agents 
+# or employees responsible for installation or 
+# operation of the products. Any other use, 
+# duplication, or dissemination without the 
+# prior written consent of Fiserv, Inc. 
+# or its affiliates is strictly prohibited. 
+# Except as specified by the agreement under 
+# which the materials are furnished, Fiserv, Inc. 
+# and its affiliates do not accept any liabilities 
+# with respect to the information contained herein 
+# and are not responsible for any direct, indirect, 
+# special, consequential or exemplary damages 
+# resulting from the use of this information. 
+# No warranties, either express or implied, 
+# are granted or extended by this work or 
+# the delivery of this work
+################################################################################
+
+openapi: 3.0.1
+info:
+  title: Silvercore™ Account Service - API Documentation
+  description: This documentation describes the REST APIs provided by the Silvercore™
+  version: "2.0"
+servers:
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
+paths:
+  /accounts/tripLog:
+    put:
+      tags:
+        - TripLog
+      summary: Posibilita generar la carga de un nuevo viaje para uno o varios integrantes de la cuenta. Además, ejecuta Bajas o Modificaciones de uno o varios avisos de viaje previamente cargado. El emisor armara el PUT con los datos que obtiene originalmente de la Consulta de Viajes ofreciendo al cliente la gestión sobre alguno de ellos.
+      operationId: putTripLog
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutTripLogResponse'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Trip Log ABM
+      x-group-name: Account
+      x-child-product-name: Accounts
+    post:
+      tags:
+        - TripLog
+      summary: Permite listar los viajes previamente cargados, históricos, vigentes y futuros.
+      operationId: getTripLog
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripLogRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripLogResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Trip Log Status
+      x-group-name: Account
+      x-child-product-name: Accounts
+  /accounts/tripLog/delete:
+    post:
+      tags:
+        - TripLog
+      summary: Permite la Baja o Borrado de todos los viajes previamente cargados. El emisor armara el DEL  ofreciendo al cliente la eliminación del histórico de  viajes previamente cargados.
+      operationId: deleteTripLog
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripLogRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Trip Log Baja
+      x-group-name: Account
+      x-child-product-name: Accounts
+  /accounts/limitIncrease:
+    post:
+      tags:
+        - limitIncrease
+      summary: "Proporciona al cliente/tarjetahabiente la posibilidad de solicitar y procesar aumentos de limite transitorios en línea.\r\nEl limite podría tener un periodo determinado por el emisor donde vencido el plazo volverá a los limites determinados previamente.\r\n"
+      operationId: setIncrementoLimiteTransitorio
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncrementoLimiteTransitorioRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LimitIncreaseResponse'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+      x-proxy-name: Limit Increase
+      x-group-name: Account
+      x-child-product-name: Accounts
+  /accounts/cards:
+    post:
+      tags:
+        - Cards
+      summary: La consulta lista todas las tarjetas en condiciones de operar, de manera de seleccionar sobre cual  de ellas se  solicitará la información para conformar la imagen de la tarjeta para que el cliente final pueda operar. Esta orientada a prevalidación de tarjeta vigentes ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el  PAN enmascarado.
+      operationId: getConsultaTarjetas
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Cards
+      x-group-name: Account
+      x-child-product-name: Accounts
+  /accounts/cardholders:
+    post:
+      tags:
+        - Card Holders
+      summary: La consulta permite listar todos los componentes de una cuenta (Titular + Adicionales) de manera de seleccionar sobre cuál de ellos se solicitará la acción de ACTIVAR / BLOQUEAR / DENUNCIAR / REIMPRIMIR. Puede utilizarse como complemento de prevalidación de tarjeta ante posibles cambios en la numeración por reimpresiones/renovaciones y el posible solapamiento. La respuesta contiene el PAN enmascarado junto con más datos de los clientes listados.
+      operationId: getConsultaMiembros
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardHoldersRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardHoldersResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Card Holders
+      x-group-name: Account
+      x-child-product-name: Accounts
+  /accounts/availability:
+    post:
+      tags:
+        - Availability
+      summary: Posibilita consultar la disponibilidad del servicio previo al uso de la API que realizará el input para generación de la nueva Cuenta/Tarjeta. Se recomienda la ejecución previa al consumo de la API /cards/instantIssuance
+      operationId: getAvailability
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilityResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      - code: 0
+                        description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Availability
+      x-group-name: Account
+      x-child-product-name: Accounts
+components:
+  schemas:
+    ErrorDetailsResponse:
+      type: object
+      properties:
+        dateError:
+          type: string
+          format: date-time
+        message:
+          type: string
+        detail:
+          type: string
+    Country:
+      type: object
+      properties:
+        dateFrom:
+          maxLength: 10
+          minLength: 10
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
+          example: '2023-09-03'
+        dateTo:
+          maxLength: 10
+          minLength: 10
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
+          example: '2023-09-05'
+        countryCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
+          example: CUB
+      description: Este campo de salida, proporciona los datos de los registros de viajes
+    PutTripLogResponse:
+      required:
+        - countriesList
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        countriesList:
+          maxItems: 5
+          minItems: 5
+          type: array
+          description: Este campo de entrada proporciona los datos de los registros de viajes
+          items:
+            $ref: '#/components/schemas/Country'
+      description: Estructura de campos que responde a la API TripLog
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
+    Account:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Este campo de salida, proporciona el para identificar unívocamente Titulares y Adicionales de la misma. Conocido también como "AUTORIZADO"
+          format: int32
+          example: 5
+        countriesList:
+          type: array
+          description: Este campo de salida, proporciona los datos de los registros de viajes
+          items:
+            $ref: '#/components/schemas/Country'
+    TripLogRequest:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+      description: Estructura de campos para la solicitud de la API TripLog
+    TripLogResponse:
+      type: object
+      properties:
+        accountList:
+          type: array
+          description: Este campo de salida, proporciona los datos del tarjetahabiente o los tarjetahabientes.
+          items:
+            $ref: '#/components/schemas/Account'
+      description: Estructura de campos que responde a la API TripLog
+    IncrementoLimiteTransitorioRequest:
+      required:
+        - bankBranch
+        - checkDigit
+        - deadline
+        - newLimit
+        - requestNumber
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        requestNumber:
+          maxLength: 6
+          type: integer
+          description: Número de solicitud
+          format: int32
+          example: 194
+        bankBranch:
+          maxLength: 3
+          type: integer
+          description: Identificador de Sucursal
+          format: int32
+          example: 125
+        checkDigit:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Dígito Verificador de la cuenta
+          format: int32
+          example: 0
+        newLimit:
+          maxLength: 15
+          type: integer
+          description: 'Monto del nuevo límite Numéricos enteros, miles, no admite negativos) Ej: 200000 / 150000'
+          format: int32
+          example: 500000
+        deadline:
+          maxLength: 6
+          minLength: 6
+          type: string
+          description: Fecha de finalización. Formato DDMMYY
+          example: '010624'
+    LimitIncreaseResponse:
+      type: object
+      properties:
+        returnCode:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el código de retorno / rechazo que devuelve el sistema.
+          example: '0'
+        returnCodeDescription:
+          maxLength: 25
+          minLength: 25
+          type: string
+          description: Este campo de salida proporciona la descripción del código de retorno / rechazo que devuelve el sistema.
+          example: NOVEDAD CARGADA CON ÉXITO
+    CardsRequest:
+      required:
+        - accountNumber
+        - additional
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+      description: Estructura de campos para la solicitud de la API Reissue Card
+    Card:
+      type: object
+      properties:
+        cardNumberM:
+          maxLength: 16
+          minLength: 16
+          type: string
+          description: Este campo de salida, proporciona la información del número de tarjeta (PAN) enmascarado
+          example: '1234000000001234'
+      description: Corresponde a un listado Tarjetas. Cada elemento es un elemento tarjeta
+    CardsResponse:
+      required:
+        - cards
+      type: object
+      properties:
+        cards:
+          maxItems: 10
+          minItems: 10
+          type: array
+          description: Corresponde a un listado Tarjetas. Cada elemento es un elemento tarjeta
+          items:
+            $ref: '#/components/schemas/Card'
+      description: Estructura de campos que responde la API Cards
+    CardHoldersRequest:
+      required:
+        - accountNumber
+        - additional
+        - blockActivateCode
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9A-F]{32}
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        blockActivateCode:
+          maxLength: 1
+          minLength: 1
+          pattern: 0|7
+          type: string
+          description: Este campo de entrada, permite ingresar el motivo de boletín de bloqueo o activación. 0 - permite listar tarjetas para activar, 7 - permite listar tarjetas para denunciar.
+          example: '0'
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+      description: Estructura de campos para la solicitud de la API Card Holders
+    CardAccount:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: Este campo de salida complementa al dato cuenta para identificar unívocamente titulares y adicionales de la misma. Conocido también como Autorizado.
+          format: int32
+          example: 0
+        fullName:
+          maxLength: 30
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona la información del apellido y nombre del solicitante de la tarjeta de crédito.
+          example: BERTAZZINI,JORGE
+        cardNumber:
+          maxLength: 16
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el número de tarjeta enmascarado (1234000000001234).
+          example: '5505000000007223'
+        isRenewal:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el información si el tarjetahabiente tiene la marca de renovación de tarjeta.
+          example: S
+        desist:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: Este campo de salida se relaciona con la renovación de la tarjeta y conlleva un SI/NO.
+          example: 'N'
+        addressStreetNumber:
+          maxLength: 30
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el domicilio del tarjetahabiente detallando el nombre y número de la calle.
+          example: SIN DOMICILIO
+        addressFloor:
+          maxLength: 2
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el número de piso relacionado al domicilio
+        addressApartment:
+          maxLength: 3
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el número de departamento relacionado al domicilio.
+        countryCode:
+          maxLength: 3
+          minLength: 1
+          type: string
+          description: 'Este campo de salida proporciona el código del país. '
+        addressprovinceCode:
+          maxLength: 2
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el código de la provincia.
+          example: '0'
+        addressZipCode:
+          maxLength: 5
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona el código postal.
+          example: '0'
+        city:
+          maxLength: 20
+          minLength: 1
+          type: string
+          description: Este campo de salida proporciona la ciudad relacionada con el domicilio.
+      description: Corresponde a un listado. Cada elemento es un elemento tarjeta-cuenta
+    CardHoldersResponse:
+      type: object
+      properties:
+        cards:
+          type: array
+          description: Corresponde a un listado. Cada elemento es un elemento tarjeta-cuenta
+          items:
+            $ref: '#/components/schemas/CardAccount'
+      description: Estructura de campos que responde la API Card Holders
+    AvailabilityResponse:
+      type: object
+      properties:
+        returnCode:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: Este campo de salida, proporciona el código de retorno / rechazo que devuelve el sistema - Ver listado de códigos + descripciones  para la API correspondiente
+          format: int32
+          example: 1
+        returnCodeDescription:
+          maxLength: 200
+          minLength: 1
+          type: string
+          description: Este campo de salida, proporciona la descripción del código de retorno / rechazo que devuelve el sistema - Ver listado de códigos + descripciones  para la API correspondiente
+          example: SISTEMA DISPONIBLE
+      description: Estructura de campos que responde la API Availability
