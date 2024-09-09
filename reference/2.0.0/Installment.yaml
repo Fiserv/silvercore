@@ -983,19 +983,6 @@ components:
           description: 'El campo indica el tipo de pago en dolares, D: dólar billete (devuelve impuesto país), N: pago en dólares con pesos (no devuelve impuesto país)'
           nullable: true
           example: D
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     SummaryPaymentResponse:
       type: object
       properties:
@@ -1010,6 +997,19 @@ components:
           type: string
           example: '00000074'
       description: Estructura de campos que responde la API Pago Resumen
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     TransactionsRequest:
       type: object
       properties:
@@ -1020,6 +1020,13 @@ components:
           type: string
           description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9</br> *Nota: En futuras versiones, el valor de este campo será acotado a 0.'
+          format: int32
+          example: 0
         cardNumber:
           maxLength: 64
           minLength: 64
@@ -1685,7 +1692,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9</br> *Nota: En futuras versiones, el valor de este campo será acotado a 0.'
           format: int32
           example: 0
         cardNumber:

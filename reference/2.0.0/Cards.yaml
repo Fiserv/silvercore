@@ -41,7 +41,7 @@ paths:
     put:
       tags:
         - Pin Block
-      summary: "Esta Api permite la Gestión del PIN para extracciones en ATM u otras operaciones según mercado. El valor de PIN que se envía sobreescribe el previo existente y tiene impacto Batch. \r\nLos posibles mensajes de error de esta Api se deben a los siguientes casos: </br>- 11 Rutina - Error Gestión de PIN: Refiere a errores de ENCRIPCION Pin Pinblock – Pinblock generado no valido.</br>- Tarjeta Bloqueada: 3 Intentos fallidos. Es una respuesta acorde a una tarjeta que intento generar PIN sin éxito en cualquier canal (intentó por IVR/ATM y se encuentra bloqueado por seguridad)</br>- Pin ya generado para esta tarjeta. Tarjetas SOLAPADAS (esto es cuando hay dos tarjetas conviviendo)</br>- Cambio denegado – Igual al punto previo (Pin igual al anterior / compara OFFSET y declina)</br>- Entidad no permite cambio de PIN (configuración del emisor)"
+      summary: "Esta Api permite la Gestión del PIN para extracciones en ATM u otras operaciones según mercado. El valor de PIN que se envía sobrescribe el previo existente y tiene impacto Batch. \r\nLos posibles mensajes de error de esta Api se deben a los siguientes casos: </br>- 11 Rutina - Error Gestión de PIN: Refiere a errores de ENCRIPCION Pin Pinblock – Pinblock generado no valido.</br>- Tarjeta Bloqueada: 3 Intentos fallidos. Es una respuesta acorde a una tarjeta que intento generar PIN sin éxito en cualquier canal (intentó por IVR/ATM y se encuentra bloqueado por seguridad)</br>- Pin ya generado para esta tarjeta. Tarjetas SOLAPADAS (esto es cuando hay dos tarjetas conviviendo)</br>- Cambio denegado – Igual al punto previo (Pin igual al anterior / compara OFFSET y declina)</br>- Entidad no permite cambio de PIN (configuración del emisor)"
       operationId: setPinBlock
       parameters:
         - name: Authorization
@@ -1331,19 +1331,6 @@ components:
           description: PIN offset
           format: int32
           example: 9999
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     FeePinBlockData:
       type: object
       properties:
@@ -1375,6 +1362,19 @@ components:
       properties:
         fee:
           $ref: '#/components/schemas/FeePinBlockData'
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     VirtualCardRequest:
       required:
         - bankBranch
