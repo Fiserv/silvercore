@@ -990,11 +990,13 @@ components:
           maxLength: 8
           minLength: 1
           type: string
+          description: Código de autorización de la transacción.
           example: '637089'
         idPago:
           maxLength: 8
           minLength: 1
           type: string
+          description: Id de Pago de la transacción. Corresponde al “operId” del request.
           example: '00000074'
       description: Estructura de campos que responde la API Pago Resumen
     ErrorFiserVDetailsResponse:
@@ -1024,7 +1026,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9</br> *Nota: En futuras versiones, el valor de este campo será acotado a 0.'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1130,7 +1132,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1191,7 +1193,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1325,7 +1327,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1378,7 +1380,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1494,7 +1496,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         currencyPlan:
@@ -1641,7 +1643,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         installmentPlanId:
@@ -1692,7 +1694,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9</br> *Nota: En futuras versiones, el valor de este campo será acotado a 0.'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:

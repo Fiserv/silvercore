@@ -641,7 +641,11 @@ paths:
     post:
       tags:
         - On Off
-      summary: "Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. \r\nLa presente API ofrece al cliente tomar acción sobre la tarjeta; activar/pausar (ON/OFF) "
+      summary: |-
+        Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. 
+        La presente API ofrece al cliente tomar acción sobre la tarjeta; despausar/pausar (ON/OFF)
+        A nivel interno, se permite activar o desactivar la transaccionalidad de cualquier tarjeta, mediante 
+        boletinamiento 84
       operationId: PauseOrActive
       parameters:
         - name: Authorization
@@ -741,7 +745,11 @@ paths:
     post:
       tags:
         - On Off
-      summary: "Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar.  \r\nLa presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitirá habilitar al cliente para la acción a tomar (ON/OFF)"
+      summary: |-
+        Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. 
+        La presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Pausada / No Pausada / Bloqueada por otros motivos) que luego permitirá habilitar al cliente para la acción a tomar (ON / OFF)
+        A nivel interno, se permite Pausar o Despausar la transaccionalidad de cualquier tarjeta, mediante 
+        boletinamiento 84.
       operationId: getCardStatus
       parameters:
         - name: Authorization
@@ -1531,6 +1539,19 @@ components:
           description: PIN offset
           format: int32
           example: 9999
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     FeePinBlockData:
       type: object
       properties:
@@ -1562,19 +1583,6 @@ components:
       properties:
         fee:
           $ref: '#/components/schemas/FeePinBlockData'
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     VirtualCardRequest:
       required:
         - bankBranch
@@ -2573,7 +2581,7 @@ components:
 
             EUROPA = "D". 
 
-            AFRICA = "E".
+            AFRICA = "E". 
           example: '0'
         cardIssuingType:
           pattern: F|V
@@ -2935,7 +2943,7 @@ components:
           pattern: ^(AC|BL)$
           type: string
           description: Este campo de entrada permite indicar la acción a realizar. AC para activación y BL para Inhabilitación
-          example: AC
+          example: BL
     OnOffResponse:
       type: object
       properties:
@@ -2943,12 +2951,12 @@ components:
           maxLength: 5
           type: string
           description: Informa el código de retorno de la operación realizada.
-          example: '+2863'
+          example: '+1137'
         message:
           maxLength: 200
           type: string
           description: Informa el resultado de la operación solicitada.
-          example: Tarjeta inhabilitada
+          example: Tarjeta NO PAUSADA
       description: Estructura de campos que responde la API On Off
     OnOffStatusRequest:
       type: object
