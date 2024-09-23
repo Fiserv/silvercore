@@ -704,28 +704,32 @@ components:
           type: string
         detail:
           type: string
-    Country:
+    CountryRequest:
+      required:
+        - countryCode
+        - dateFrom
+        - dateTo
       type: object
       properties:
         dateFrom:
           maxLength: 10
           minLength: 10
           type: string
-          description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
-          example: '2023-09-03'
+          description: Este campo de entrada, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
+          example: '2023-10-20'
         dateTo:
           maxLength: 10
           minLength: 10
           type: string
-          description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
-          example: '2023-09-05'
+          description: Este campo de entrada, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
+          example: '2023-11-02'
         countryCode:
           maxLength: 3
           minLength: 3
           type: string
-          description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
-          example: CUB
-      description: Este campo de salida, proporciona los datos de los registros de viajes
+          description: Este campo de entrada, proporciona el dato del país destino del Aviso de Viaje
+          example: MEX
+      description: Este campo de entrada proporciona los datos de los registros de viajes
     PutTripLogResponse:
       required:
         - countriesList
@@ -758,21 +762,8 @@ components:
           type: array
           description: Este campo de entrada proporciona los datos de los registros de viajes
           items:
-            $ref: '#/components/schemas/Country'
+            $ref: '#/components/schemas/CountryRequest'
       description: Estructura de campos que responde a la API TripLog
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     Account:
       type: object
       properties:
@@ -788,6 +779,41 @@ components:
           description: Este campo de salida, proporciona los datos de los registros de viajes
           items:
             $ref: '#/components/schemas/Country'
+    Country:
+      type: object
+      properties:
+        dateFrom:
+          maxLength: 10
+          minLength: 10
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
+          example: '2023-09-03'
+        dateTo:
+          maxLength: 10
+          minLength: 10
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
+          example: '2023-09-05'
+        countryCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
+          example: CUB
+      description: Este campo de salida, proporciona los datos de los registros de viajes
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     TripLogRequest:
       type: object
       properties:
