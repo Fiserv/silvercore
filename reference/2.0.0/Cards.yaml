@@ -645,7 +645,17 @@ paths:
         Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. 
         La presente API ofrece al cliente tomar acción sobre la tarjeta; despausar/pausar (ON/OFF)
         A nivel interno, se permite activar o desactivar la transaccionalidad de cualquier tarjeta, mediante 
-        boletinamiento 84
+        boletinamiento 84Ejemplos mensaje de respuesta
+        ▪ Acción Pausado
+        {
+         "code": "+0000",
+         "message": "Su tarjeta ha sido Tarjeta pausada"
+        }
+        ▪ Acción Despausado
+        {
+         "code": "+0000",
+         "message": "Su tarjeta ha sido despausada"
+        }<table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Su tarjeta ha sido Tarjeta pausada”</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Su tarjeta ha sido despausada”</td></tr></table>
       operationId: PauseOrActive
       parameters:
         - name: Authorization
@@ -749,7 +759,30 @@ paths:
         Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. 
         La presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Pausada / No Pausada / Bloqueada por otros motivos) que luego permitirá habilitar al cliente para la acción a tomar (ON / OFF)
         A nivel interno, se permite Pausar o Despausar la transaccionalidad de cualquier tarjeta, mediante 
-        boletinamiento 84.
+        boletinamiento 84. Ejemplos mensaje de respuesta
+        ▪ Tarjeta con boletín 84
+        {
+         "code": "+0000",
+         "message": "Tarjeta PAUSADA"
+        }
+        ▪ Tarjeta sin boletín
+        {
+         "code": "+1137",
+         "message": "Tarjeta NO PAUSADA"
+        }
+        ▪ Tarjeta con boletín distinto a 84
+        {
+         "code": "+0000",
+         "message": "9 - Tarjeta Bloqueada"
+        }
+        {
+         "code": "+0000",
+         "message": "7 - Tarjeta Bloqueada"
+        }
+        {
+         "code": "+0000",
+         "message": "81 - Tarjeta Bloqueada"
+        }Posibles valores de mensajes por respuesta OK<table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th><th BORDER>Acción posible</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Tarjeta NO PAUSADA”</td><td>Puede pausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Tarjeta PAUSADA”</td><td>Puede despausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta en otro boletín distinto a 84</td><td>Código de Boletín - “Tarjeta Bloqueada”</td><td>No puede pausar ni bajar el bloqueo con la API cards/onOff</td></tr></table>
       operationId: getCardStatus
       parameters:
         - name: Authorization
@@ -797,7 +830,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnOffResponse'
+                $ref: '#/components/schemas/OnOffStatusResponse'
         '400':
           description: Bad Request
           content:
@@ -2951,12 +2984,12 @@ components:
           maxLength: 5
           type: string
           description: Informa el código de retorno de la operación realizada.
-          example: '+1137'
+          example: '+0000'
         message:
           maxLength: 200
           type: string
           description: Informa el resultado de la operación solicitada.
-          example: Tarjeta NO PAUSADA
+          example: Su tarjeta ha sido Tarjeta pausada
       description: Estructura de campos que responde la API On Off
     OnOffStatusRequest:
       type: object
@@ -2983,6 +3016,19 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
       description: Estructura de campos para la solicitud de la API On Off
+    OnOffStatusResponse:
+      type: object
+      properties:
+        code:
+          maxLength: 5
+          type: string
+          description: Informa el código de retorno de la operación realizada.
+          example: '+1137'
+        message:
+          maxLength: 200
+          type: string
+          description: Informa el resultado de la operación solicitada.
+          example: Tarjeta NO PAUSADA
     InstantIssuanceRequest:
       required:
         - branchNumber
