@@ -27,7 +27,6 @@
 # are granted or extended by this work or
 # the delivery of this work
 ################################################################################
-
 openapi: 3.0.1
 info:
   title: Silvercore™ Cards Service - API Documentation
@@ -2717,15 +2716,18 @@ components:
       type: object
       properties:
         organizationNumber:
+          maxLength: 3
           type: integer
           description: Exclusivo VisionPLUS. Número de organización. Valores entre 0 y 999.
           format: int32
           example: 999
         foreignOrganization:
+          maxLength: 3
           type: string
           description: Exclusivo VisionPLUS. Organización Extranjera. Valores entre 0 y 999.
           example: '999'
         cardSequence:
+          maxLength: 4
           type: string
           description: Exclusivo VisionPLUS. Secuencia de Tarjeta. Valores entre 0 y 9999.
           example: '1234'
