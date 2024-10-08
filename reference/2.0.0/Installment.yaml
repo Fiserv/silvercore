@@ -4,8 +4,8 @@ info:
   description: This documentation describes the REST APIs provided by the Silvercore™
   version: "2.0"
 servers:
-  - url: http://localhost:9082
-    description: Generated server url
+  - url: https://int.api.firstdata.com/latam-gfs-apis/
+    description: Sandbox Test
 paths:
   /transactions/statementPayment:
     post:
@@ -956,7 +956,7 @@ components:
           description: Indica el id de la compra/transacción.
           example: '74'
         operAmount:
-          maxLength: 13
+          maxLength: 16
           minLength: 1
           pattern: ^[0-9]{1,13}([.][0-9]{1,2})?$
           type: string
@@ -966,9 +966,10 @@ components:
         operCurrency:
           maxLength: 3
           minLength: 2
-          type: string
+          type: integer
           description: 'Moneda en que se realiza la operación. Ej: ARS=32, UYU=858, USD=840'
-          example: '840'
+          format: int32
+          example: 840
         operType:
           maxLength: 1
           minLength: 1
@@ -991,19 +992,6 @@ components:
             Valor único admitido en URUGUAY: Null 
           nullable: true
           example: D
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     SummaryPaymentResponse:
       type: object
       properties:
@@ -1020,6 +1008,19 @@ components:
           description: Id de Pago de la transacción. Corresponde al “operId” del request.
           example: '00000074'
       description: Estructura de campos que responde la API Pago Resumen
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     TransactionsRequest:
       type: object
       properties:
