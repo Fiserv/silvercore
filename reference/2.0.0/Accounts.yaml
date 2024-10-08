@@ -27,7 +27,6 @@
 # are granted or extended by this work or
 # the delivery of this work
 ################################################################################
-
 openapi: 3.0.1
 info:
   title: Silvercore™ Account Service - API Documentation
@@ -1018,19 +1017,6 @@ components:
           items:
             $ref: '#/components/schemas/CountryRequest'
       description: Estructura de campos que responde a la API TripLog
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     Account:
       type: object
       properties:
@@ -1068,6 +1054,19 @@ components:
           description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
           example: CUB
       description: Este campo de salida, proporciona los datos de los registros de viajes
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     AccountRequestOnlyTitular:
       type: object
       properties:
@@ -1206,6 +1205,7 @@ components:
       properties:
         name:
           maxLength: 60
+          minLength: 1
           type: string
           description: Nombre de la categoría bajo la cual se acumulan los consumos.
           example: Servicios
@@ -1248,6 +1248,7 @@ components:
       properties:
         name:
           maxLength: 120
+          minLength: 1
           type: string
           description: Nombre del comercio.
           example: WWW.IBERIA.COM.AR
@@ -1316,6 +1317,7 @@ components:
       type: object
       properties:
         file:
+          minLength: 1
           type: string
           description: Contiene el Resumen electrónico en formato PDF codificado en base64 que contiene toda la información de la cuenta y tarjetas.
           example: 'JVBERi0xLjcNCiWhs8XXDQoxIDAgb2JqDQo8PC9QYWdlcyAyIDAgUiAvVHlwZS9DYXRhbG9nPj4NCmVuZG9iag0KMiAwIG9iag0KPDwvQ291bnQgMS9LaWRzWyA0IDAgUiBdL1R5cGUvUGFnZXM... '
