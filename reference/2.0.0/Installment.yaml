@@ -953,14 +953,14 @@ components:
           minLength: 1
           pattern: '[0-9]{1,8}'
           type: string
-          description: Indica el id de la compra/transacción.
+          description: 'Indica el id de la operación/transacción. </br>Este id regresa en el mensaje de salida como “idPago”. </br>Es un campo numérico incremental con control de repetición, el mismo mantiene historia de 7 días y depura diariamente. El ID no puede repetirse para una misma cuenta durante dicho periodo. '
           example: '74'
         operAmount:
           maxLength: 16
           minLength: 1
           pattern: ^[0-9]{1,13}([.][0-9]{1,2})?$
           type: string
-          description: Valor de la operación pactada por el cliente. Importe del Pago/Ajuste.
+          description: 'Valor de la operación pactada por el cliente. Importe del Pago/Ajuste. </br></br>13 posiciones enteras, 2 posiciones decimales y separador decimal. </br></br>Topes máximos por transacción (Menores a): </br>- ARS 90.000.000  </br>- URU 900.000  </br>- USD 50.000'
           format: decimal
           example: '100.5'
         operCurrency:
@@ -981,17 +981,22 @@ components:
           maxLength: 1
           minLength: 1
           type: string
-          description: |-
-            Indica el tipo de pago en dólares.  
-            Es requerido si el “operCurrency” = 840.
-
-            Valores posibles en ARGENTINA: 
-            - D: dólar billete (devuelve impuesto país)
-            - N: pago en dólares con pesos (no devuelve impuesto país) 
-
-            Valor único admitido en URUGUAY: Null 
+          description: 'Indica el tipo de pago en dólares.  </br>Es requerido si el “operCurrency” = 840. </br></br>Valores posibles en ARGENTINA: </br>- D: dólar billete (devuelve impuesto país) </br>- N: pago en dólares con pesos (no devuelve impuesto país) </br></br>Valor único admitido en URUGUAY: Null '
           nullable: true
           example: D
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     SummaryPaymentResponse:
       type: object
       properties:
@@ -1008,19 +1013,6 @@ components:
           description: Id de Pago de la transacción. Corresponde al “operId” del request.
           example: '00000074'
       description: Estructura de campos que responde la API Pago Resumen
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     TransactionsRequest:
       type: object
       properties:
