@@ -240,7 +240,7 @@ paths:
     post:
       tags:
         - Transactions
-      summary: Esta API lista las transacciones del Último resumen (Transacciones liquidadas) y del periodo actual (pendientes de liquidación); pudiéndose consultar por fecha de cierre de resumen o por rango de fechas de consumo.  </br></br>* Los campos que tienen la leyenda "Exclusivo VisionPLUS" no son requeridos en esta instancia. Pueden no incluirse o ser enviados con valor null.
+      summary: Esta API lista las transacciones del Último resumen (Transacciones liquidadas) y del periodo actual (pendientes de liquidación); pudiéndose consultar por fecha de cierre de resumen o por rango de fechas de consumo.
       operationId: consulta
       parameters:
         - name: Authorization
@@ -340,7 +340,7 @@ paths:
     post:
       tags:
         - Claims
-      summary: "Esta API permite que el Emisor pueda ofrecer al cliente la posibilidad del ingreso de reclamos, sobre las transacciones previamente listadas, a los sistemas FISERV + Claim Manager con el fin de dar tratamiento según tipologías: \n•\tDesconocimientos\n•\tIncidentes\nAdemás de bloquear la tarjeta cuando el motivo de reclamo lo amerite.  </br></br>* Los campos que tienen la leyenda \"Exclusivo VisionPLUS\" no son requeridos en esta instancia. Pueden no incluirse o ser enviados con valor null."
+      summary: "Esta API permite que el Emisor pueda ofrecer al cliente la posibilidad del ingreso de reclamos, sobre las transacciones previamente listadas, a los sistemas FISERV + Claim Manager con el fin de dar tratamiento según tipologías: \n•\tDesconocimientos\n•\tIncidentes\nAdemás de bloquear la tarjeta cuando el motivo de reclamo lo amerite.\n."
       operationId: alta
       parameters:
         - name: Authorization
@@ -644,7 +644,7 @@ paths:
         Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. 
         La presente API ofrece al cliente tomar acción sobre la tarjeta; despausar/pausar (ON/OFF).
         A nivel interno, se permite activar o desactivar la transaccionalidad de cualquier tarjeta, mediante 
-        boletinamiento 84.</br>Ejemplos mensaje de respuesta </br></br>▪ Acción Pausado </br>{ </br> "code": "+0000", </br> "message": "Su tarjeta ha sido Tarjeta pausada" </br>} </br>▪ Acción Despausado </br>{ </br> "code": "+0000", </br> "message": "Su tarjeta ha sido despausada" </br>} </br></br>Posibles casos de respuesta </br></br><table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Su tarjeta ha sido Tarjeta pausada”</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Su tarjeta ha sido despausada”</td></tr></table>
+        boletinamiento 84. </br></br>Ejemplos de respuesta de la API </br></br>▪ Acción Pausado </br>{ </br> "code": "+0000", </br> "message": "Su tarjeta ha sido Tarjeta pausada" </br>} </br>▪ Acción Despausado </br>{ </br> "code": "+0000", </br> "message": "Su tarjeta ha sido despausada" </br>} </br></br>Posibles casos de respuesta </br></br><table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Su tarjeta ha sido Tarjeta pausada”</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Su tarjeta ha sido despausada”</td></tr></table>
       operationId: PauseOrActive
       parameters:
         - name: Authorization
@@ -749,7 +749,7 @@ paths:
         La presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Pausada / No Pausada / Bloqueada 
         por otros motivos) que luego permitirá habilitar al cliente para la acción a tomar (ON / OFF).
         A nivel interno, se permite Pausar o Despausar la transaccionalidad de cualquier tarjeta, mediante 
-        boletinamiento 84.</br> Ejemplos mensaje de respuesta </br></br>▪ Tarjeta con boletín 84 </br>{ </br> "code": "+0000", </br> "message": "Tarjeta PAUSADA" </br>} </br>▪ Tarjeta sin boletín </br>{ </br> "code": "+1137", </br> "message": "Tarjeta NO PAUSADA" </br>} </br>▪ Tarjeta con boletín distinto a 84 </br>{ </br> "code": "+0000", </br> "message": "9 - Tarjeta Bloqueada" </br>} </br>{ </br> "code": "+0000", </br> "message": "7 - Tarjeta Bloqueada" </br>} </br>{ </br> "code": "+0000", </br> "message": "81 - Tarjeta Bloqueada" </br>} </br></br>Posibles casos de respuesta </br></br><table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th><th BORDER>Acción posible</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Tarjeta NO PAUSADA”</td><td>Puede pausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Tarjeta PAUSADA”</td><td>Puede despausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta en otro boletín distinto a 84</td><td>Código de Boletín - “Tarjeta Bloqueada”</td><td>No puede pausar ni bajar el bloqueo con la API cards/onOff</td></tr></table>
+        boletinamiento 84. </br></br>Ejemplos de respuesta de la API </br></br>▪ Tarjeta con boletín 84 </br>{ </br> "code": "+0000", </br> "message": "Tarjeta PAUSADA" </br>} </br>▪ Tarjeta sin boletín </br>{ </br> "code": "+1137", </br> "message": "Tarjeta NO PAUSADA" </br>} </br>▪ Tarjeta con boletín distinto a 84 </br>{ </br> "code": "+0000", </br> "message": "9 - Tarjeta Bloqueada" </br>} </br>{ </br> "code": "+0000", </br> "message": "7 - Tarjeta Bloqueada" </br>} </br>{ </br> "code": "+0000", </br> "message": "81 - Tarjeta Bloqueada" </br>} </br></br>Posibles casos de respuesta </br></br><table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th><th BORDER>Acción posible</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Tarjeta NO PAUSADA”</td><td>Puede pausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Tarjeta PAUSADA”</td><td>Puede despausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta en otro boletín distinto a 84</td><td>Código de Boletín - “Tarjeta Bloqueada”</td><td>No puede pausar ni bajar el bloqueo con la API cards/onOff</td></tr></table>
       operationId: getCardStatus
       parameters:
         - name: Authorization
@@ -1539,6 +1539,19 @@ components:
           description: PIN offset
           format: int32
           example: 9999
+    ErrorFiserVDetailsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ErrorFiserVResponse:
+      type: object
+      properties:
+        errorResponse:
+          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     FeePinBlockData:
       type: object
       properties:
@@ -1570,19 +1583,6 @@ components:
       properties:
         fee:
           $ref: '#/components/schemas/FeePinBlockData'
-    ErrorFiserVDetailsResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        description:
-          type: string
-    ErrorFiserVResponse:
-      type: object
-      properties:
-        errorResponse:
-          $ref: '#/components/schemas/ErrorFiserVDetailsResponse'
     VirtualCardRequest:
       required:
         - bankBranch
@@ -1686,13 +1686,13 @@ components:
         from:
           maxLength: 18
           type: integer
-          description: Exclusivo VisionPLUS. Rango de monto de la transacción. Este campo indica el monto "Desde". 18 posiciones enteras. Valor máximo 100000000000000000.
+          description: Exclusivo VisionPLUS. Rango de monto de la transacción. Este campo indica el monto "Desde". Valor máximo 100000000000000000.
           format: int32
           example: 100000
         to:
           maxLength: 18
           type: integer
-          description: Exclusivo VisionPLUS. Rango de monto de la transacción. Este campo indica el monto "hasta". 18 posiciones enteras. Valor máximo 100000000000000000.
+          description: Exclusivo VisionPLUS. Rango de monto de la transacción. Este campo indica el monto "hasta". Valor máximo 100000000000000000.
           format: int32
           example: 100000
       description: Exclusivo VisionPLUS. Criterio de búsqueda de los cupones a reclamar.
@@ -1716,7 +1716,7 @@ components:
         isFirstCall:
           type: boolean
           description: 'Fase. En el primer llamado se informa "true". Llamados posteriores, sólo si hay más información, se debe ingresar el valor del último cupón de la página enviada anteriormente. Campos de Orden / Paginado. Valores: true: Primer llamado; false: Llamados posteriores.'
-          example: false
+          example: true
         sequence:
           maxLength: 3
           minLength: 1
@@ -1769,7 +1769,7 @@ components:
         isLocationType:
           type: boolean
           description: 'Criterio de búsqueda de los cupones a reclamar. Tipo de operación. “true”: Local. “false”: Internacional.'
-          example: false
+          example: true
         statementDate:
           maxLength: 10
           minLength: 10
@@ -2028,7 +2028,7 @@ components:
         totalEffectiveValue:
           maxLength: 16
           type: integer
-          description: 'Exclusivo VisionPLUS. Este campo es para capturar el valor efectivo total (VET) de la transacción internacional solo para Brasil. El campo se completará si se cumplen las siguientes condiciones. 13 posiciones enteras, 2 posiciones decimales y separador decimal. Formato: EEEEEEEEEEEEE.DD'
+          description: 'Exclusivo VisionPLUS. Este campo es para capturar el valor efectivo total (VET) de la transacción internacional solo para Brasil. El campo se completará si se cumplen las siguientes condiciones. Longitud máxima 15. Formato: EEEEEEEEEEEEE.DD'
           format: int32
           example: 2345678973
         demandDepositAccountIndicator:
@@ -2156,7 +2156,7 @@ components:
         originalTransactionAmount:
           maxLength: 14
           type: number
-          description: Exclusivo VisionPLUS. Monto original de la transacción a plazos. 13 posiciones enteras, 2 posiciones decimales y separador decimal.
+          description: Exclusivo VisionPLUS. Monto original de la transacción a plazos. Hasta 13 posiciones.
           format: double
           example: 29329.33
         firstEarlyRelease:
@@ -2311,7 +2311,7 @@ components:
         formattedAmount:
           maxLength: 16
           type: number
-          description: Importe de la transacción. 13 posiciones enteras, 2 posiciones decimales y separador decimal.
+          description: Importe de la transacción. Hasta 13 posiciones enteras. 2 decimales.
           format: double
           example: 9999999999999.99
         currency:
@@ -2672,10 +2672,9 @@ components:
         isIdLost:
           type: boolean
           description: "Informa si el Documento de Identidad, Pasaporte o cualquier otro documento identificatorio del tarjetahabiente fue extraviado junto con su tarjeta.\nValores\n•\ttrue: El documento identificatorio fue extraviado;\n•\tfalse: El documento identificatorio no fue extraviado.\n"
-          example: false
+          example: true
         phoneNumber:
-          maxLength: 2147483647
-          minLength: 0
+          maxLength: 20
           pattern: '[0-9]{0,20}'
           type: string
           description: Número de teléfono del tarjetahabiente.
@@ -2688,7 +2687,6 @@ components:
       properties:
         currencyCode:
           maxLength: 3
-          minLength: 1
           pattern: 0|032|32|840|858
           type: string
           description: 'Código de Moneda del consumo. 32: ARS – Pesos argentinos. 858: URU – Pesos Uruguayos. 840: USD - Dólares.'
@@ -2697,14 +2695,13 @@ components:
           maxLength: 2
           pattern: '[0-9]{0,2}'
           type: string
-          description: Cantidad total de cuotas del plan de cuotas. Puede ser vacío o null.
+          description: Cantidad total de cuotas del plan de cuotas.
           example: '01'
         amount:
           maxLength: 16
-          minLength: 1
           pattern: 0|[0-9]{1,13}[.][0-9]{1,2}
           type: string
-          description: Importe del consumo. 13 posiciones enteras, 2 posiciones decimales y separador decimal. Si es distinto de cero debe observar el formato 9.9
+          description: Importe del consumo. Hasta 13 posiciones enteras. 2 decimales.
           format: decimal
           example: '5310000.01'
       description: En caso de haber diferencia en las compras/cupones a reclamar. Aplica para el motivo de reclamo 2.
@@ -2823,14 +2820,12 @@ components:
           example: 4114045
         errorsVoucher:
           maxLength: 2
-          minLength: 1
           type: integer
           description: Número de transacciones rechazadas por algún error. Valores entre 0 y 99.
           format: int32
           example: 0
         claimMessage:
           maxLength: 78
-          minLength: 1
           type: string
           description: Mensaje que describe los diferentes códigos de respuesta de sistema.
           example: 'RECLAMO OTORGADO NRO:  CON 01 CUPONES GRABADOS Y  CUPONES SIN GRABAR'

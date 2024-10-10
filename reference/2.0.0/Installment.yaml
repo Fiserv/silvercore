@@ -1532,10 +1532,10 @@ components:
           example: '10000.001'
         cardLast4:
           maxLength: 4
-          type: integer
+          pattern: '[0-9]{4}'
+          type: string
           description: Ultimos 4 digitos de la tarjeta.
-          format: int32
-          example: 1234
+          example: '1234'
         cardNumber:
           maxLength: 64
           minLength: 64
