@@ -1,33 +1,32 @@
 ################################################################################
-# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates. 
-# Fiserv is a trademark of Fiserv, Inc., 
-# registered or used in the United States and foreign countries, 
-# and may or may not be registered in your country.  
-# All trademarks, service marks, 
-# and trade names referenced in this 
-# material are the property of their 
-# respective owners. This work, including its contents 
-# and programming, is confidential and its use 
-# is strictly limited. This work is furnished only 
-# for use by duly authorized licensees of Fiserv, Inc. 
-# or its affiliates, and their designated agents 
-# or employees responsible for installation or 
-# operation of the products. Any other use, 
-# duplication, or dissemination without the 
-# prior written consent of Fiserv, Inc. 
-# or its affiliates is strictly prohibited. 
-# Except as specified by the agreement under 
-# which the materials are furnished, Fiserv, Inc. 
-# and its affiliates do not accept any liabilities 
-# with respect to the information contained herein 
-# and are not responsible for any direct, indirect, 
-# special, consequential or exemplary damages 
-# resulting from the use of this information. 
-# No warranties, either express or implied, 
-# are granted or extended by this work or 
+# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates.
+# Fiserv is a trademark of Fiserv, Inc.,
+# registered or used in the United States and foreign countries,
+# and may or may not be registered in your country.
+# All trademarks, service marks,
+# and trade names referenced in this
+# material are the property of their
+# respective owners. This work, including its contents
+# and programming, is confidential and its use
+# is strictly limited. This work is furnished only
+# for use by duly authorized licensees of Fiserv, Inc.
+# or its affiliates, and their designated agents
+# or employees responsible for installation or
+# operation of the products. Any other use,
+# duplication, or dissemination without the
+# prior written consent of Fiserv, Inc.
+# or its affiliates is strictly prohibited.
+# Except as specified by the agreement under
+# which the materials are furnished, Fiserv, Inc.
+# and its affiliates do not accept any liabilities
+# with respect to the information contained herein
+# and are not responsible for any direct, indirect,
+# special, consequential or exemplary damages
+# resulting from the use of this information.
+# No warranties, either express or implied,
+# are granted or extended by this work or
 # the delivery of this work
 ################################################################################
-
 openapi: 3.0.1
 info:
   title: Silvercore™ Cards Service - API Documentation
@@ -41,7 +40,7 @@ paths:
     put:
       tags:
         - Pin Block
-      summary: "Esta Api permite la Gestión del PIN para extracciones en ATM u otras operaciones según mercado. El valor de PIN que se envía sobreescribe el previo existente y tiene impacto Batch. \r\nLos posibles mensajes de error de esta Api se deben a los siguientes casos: </br>- 11 Rutina - Error Gestión de PIN: Refiere a errores de ENCRIPCION Pin Pinblock – Pinblock generado no valido.</br>- Tarjeta Bloqueada: 3 Intentos fallidos. Es una respuesta acorde a una tarjeta que intento generar PIN sin éxito en cualquier canal (intentó por IVR/ATM y se encuentra bloqueado por seguridad)</br>- Pin ya generado para esta tarjeta. Tarjetas SOLAPADAS (esto es cuando hay dos tarjetas conviviendo)</br>- Cambio denegado – Igual al punto previo (Pin igual al anterior / compara OFFSET y declina)</br>- Entidad no permite cambio de PIN (configuración del emisor)"
+      summary: "Esta Api permite la Gestión del PIN para extracciones en ATM u otras operaciones según mercado. El valor de PIN que se envía sobrescribe el previo existente y tiene impacto Batch. \r\nLos posibles mensajes de error de esta Api se deben a los siguientes casos: </br>- 11 Rutina - Error Gestión de PIN: Refiere a errores de ENCRIPCION Pin Pinblock – Pinblock generado no valido.</br>- Tarjeta Bloqueada: 3 Intentos fallidos. Es una respuesta acorde a una tarjeta que intento generar PIN sin éxito en cualquier canal (intentó por IVR/ATM y se encuentra bloqueado por seguridad)</br>- Pin ya generado para esta tarjeta. Tarjetas SOLAPADAS (esto es cuando hay dos tarjetas conviviendo)</br>- Cambio denegado – Igual al punto previo (Pin igual al anterior / compara OFFSET y declina)</br>- Entidad no permite cambio de PIN (configuración del emisor)"
       operationId: setPinBlock
       parameters:
         - name: Authorization
@@ -235,6 +234,206 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Virtual Card
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/transactions/v2/transactions:
+    post:
+      tags:
+        - Transactions
+      summary: Esta API lista las transacciones del Último resumen (Transacciones liquidadas) y del periodo actual (pendientes de liquidación); pudiéndose consultar por fecha de cierre de resumen o por rango de fechas de consumo.  </br></br>Los campos que tienen la leyenda "Exclusivo VisionPLUS" no son requeridos en esta instancia. Pueden no incluirse o ser enviados con valor null.
+      operationId: consulta
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Claim Status
+      x-group-name: Card
+      x-child-product-name: Cards
+  /cards/transactions/v2/claims:
+    post:
+      tags:
+        - Claims
+      summary: "Esta API permite que el Emisor pueda ofrecer al cliente la posibilidad del ingreso de reclamos, sobre las transacciones previamente listadas, a los sistemas FISERV + Claim Manager con el fin de dar tratamiento según tipologías: </br>•\tDesconocimientos </br>•\tIncidentes </br>Además de bloquear la tarjeta cuando el motivo de reclamo lo amerite.  </br></br>Los campos que tienen la leyenda \"Exclusivo VisionPLUS\" no son requeridos en esta instancia. Pueden no incluirse o ser enviados con valor null."
+      operationId: alta
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Claim
       x-group-name: Card
       x-child-product-name: Cards
   /cards/replacement:
@@ -441,7 +640,11 @@ paths:
     post:
       tags:
         - On Off
-      summary: "Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. \r\nLa presente API ofrece al cliente tomar acción sobre la tarjeta; activar/pausar (ON/OFF) "
+      summary: |-
+        Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. 
+        La presente API ofrece al cliente tomar acción sobre la tarjeta; despausar/pausar (ON/OFF).
+        A nivel interno, se permite activar o desactivar la transaccionalidad de cualquier tarjeta, mediante 
+        boletinamiento 84. </br></br><b>Ejemplos de respuesta de la API </b> </br></br>▪ Acción Pausado </br>{ </br> "code": "+0000", </br> "message": "Su tarjeta ha sido Tarjeta pausada" </br>} </br>▪ Acción Despausado </br>{ </br> "code": "+0000", </br> "message": "Su tarjeta ha sido despausada" </br>} </br></br><b>Posibles casos de respuesta </b> </br></br><table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Su tarjeta ha sido Tarjeta pausada”</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Su tarjeta ha sido despausada”</td></tr></table>
       operationId: PauseOrActive
       parameters:
         - name: Authorization
@@ -541,7 +744,12 @@ paths:
     post:
       tags:
         - On Off
-      summary: "Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar.  \r\nLa presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Activa/Inactiva) que luego permitirá habilitar al cliente para la acción a tomar (ON/OFF)"
+      summary: |-
+        Este servicio ofrece al tarjetahabiente mantener pausadas/inactivas sus tarjetas para operar. 
+        La presente API realiza la consulta inicial que reporta el ESTADO de la tarjeta (Pausada / No Pausada / Bloqueada 
+        por otros motivos) que luego permitirá habilitar al cliente para la acción a tomar (ON / OFF).
+        A nivel interno, se permite Pausar o Despausar la transaccionalidad de cualquier tarjeta, mediante 
+        boletinamiento 84. </br></br><b>Ejemplos de respuesta de la API </b> </br></br>▪ Tarjeta con boletín 84 </br>{ </br> "code": "+0000", </br> "message": "Tarjeta PAUSADA" </br>} </br>▪ Tarjeta sin boletín </br>{ </br> "code": "+1137", </br> "message": "Tarjeta NO PAUSADA" </br>} </br>▪ Tarjeta con boletín distinto a 84 </br>{ </br> "code": "+0000", </br> "message": "9 - Tarjeta Bloqueada" </br>} </br>{ </br> "code": "+0000", </br> "message": "7 - Tarjeta Bloqueada" </br>} </br>{ </br> "code": "+0000", </br> "message": "81 - Tarjeta Bloqueada" </br>} </br></br><b>Posibles casos de respuesta </b> </br></br><table BORDER style="border-collapse: collapse; text-align: center;"><tr BORDER><th BORDER>Caso</th><th BORDER>Respuesta de la API</th><th BORDER>Acción posible</th></tr BORDER><tr><td>Tarjeta sin boletín</td><td>“Tarjeta NO PAUSADA”</td><td>Puede pausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta con boletín 84 (pausado)</td><td>“Tarjeta PAUSADA”</td><td>Puede despausar con la API cards/onOff</td></tr><tr BORDER><td>Tarjeta en otro boletín distinto a 84</td><td>Código de Boletín - “Tarjeta Bloqueada”</td><td>No puede pausar ni bajar el bloqueo con la API cards/onOff</td></tr></table>
       operationId: getCardStatus
       parameters:
         - name: Authorization
@@ -589,7 +797,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnOffResponse'
+                $ref: '#/components/schemas/OnOffStatusResponse'
         '400':
           description: Bad Request
           content:
@@ -1437,6 +1645,1304 @@ components:
           type: string
           example: NOVEDAD CARGADA CON EXITO
       description: Estructura de campos que responde la API Virtual Card
+    AccountReclamo:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          format: int32
+          example: 0
+      description: Datos de la cuenta.
+    RangeTransactionsRequest:
+      type: object
+      properties:
+        from:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Fecha desde. En formato ISO 8601.
+          example: 01-01-2024
+        to:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: 'Fecha hasta. La fecha no deberá ser superior a 91 días naturales a partir de la fecha ingresada en el campo "from." En formato ISO 8601. '
+          example: 01-01-2024
+      description: Criterio de búsqueda de los cupones a reclamar. Menor a 91 días entre “from” y “to".
+    TransactionAmountRangeRequest:
+      type: object
+      properties:
+        from:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Rango de monto de la transacción. Este campo indica el monto "Desde". 18 posiciones enteras. Valor máximo 100000000000000000.
+          format: int32
+          nullable: true
+          example: 100000
+        to:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Rango de monto de la transacción. Este campo indica el monto "hasta". 18 posiciones enteras. Valor máximo 100000000000000000.
+          format: int32
+          nullable: true
+          example: 100000
+      description: Exclusivo VisionPLUS. Criterio de búsqueda de los cupones a reclamar.
+    TransactionsRequest:
+      required:
+        - isFirstCall
+        - sequence
+        - transaction
+      type: object
+      properties:
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        account:
+          $ref: '#/components/schemas/AccountReclamo'
+        transaction:
+          $ref: '#/components/schemas/TransactionsTransactionRequest'
+        isFirstCall:
+          type: boolean
+          description: 'Fase. En el primer llamado se informa "true". Llamados posteriores, sólo si hay más información, se debe ingresar el valor del último cupón de la página enviada anteriormente. Campos de Orden / Paginado. Valores: true: Primer llamado; false: Llamados posteriores.'
+        sequence:
+          maxLength: 3
+          minLength: 1
+          pattern: ^[0-9]{1,3}
+          type: string
+          description: Secuencia. Si hay más información debe ingresar el último cupón de la página enviada anteriormente. Valores numéricos válidos desde 0 hasta 999. No puede estar vacío.
+          example: '0'
+        organizationNumber:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. El campo OrganizationNumber es un atributo que contiene el número de identificación único asignado a una organización dentro de la API. Valores numéricos válidos desde 0 hasta 999.
+          format: int32
+          nullable: true
+          example: 999
+        keyword:
+          maxLength: 20
+          type: string
+          description: Exclusivo VisionPLUS. El campo de palabra clave se utiliza para buscar la descripción de la transacción.
+          nullable: true
+          example: user's_keyword
+        startToken:
+          maxLength: 26
+          type: string
+          description: Exclusivo VisionPLUS. El campo startToken es el token generado para que la API comprenda el siguiente conjunto de transacciones que se recuperarán.
+          nullable: true
+          example: 177100079202316ES000000013
+        isMerchantInformationRequired:
+          type: boolean
+          description: "Exclusivo VisionPLUS. El campo isMerchantInformationRequired indica si la información del comerciante es obligatoria o no.\nValores:\n•\tfalse = No se requiere información del comerciante;\n•\ttrue = Se requiere información del comerciante.\n"
+        isForeign:
+          type: boolean
+          description: "Exclusivo VisionPLUS. El campo isForeign se proporciona en el mensaje de entrada para que la fuente solicitante pueda especificar si la solicitud se aplica a la cuenta local o extranjera cuando la cuenta está en una organización de procesamiento de doble moneda. El valor predeterminado es la cuenta local.\nValores:\n•\tfalso = Cuenta local;\n•\tverdadero = Cuenta extranjera.\n"
+        queryMoreTransactions:
+          maxLength: 1
+          type: string
+          description: "Exclusivo VisionPLUS. El campo queryMoreTransactions se utiliza cuando se completa el campo \"startToken\" para obtener más transacciones.\nValores:\n•\tN = Próximas transacciones;\n•\tP = Transacciones anteriores.\n"
+          nullable: true
+          example: 'N'
+    TransactionsTransactionRequest:
+      required:
+        - complaintType
+        - isLocationType
+      type: object
+      properties:
+        complaintType:
+          maxLength: 1
+          minLength: 1
+          pattern: 1|2|3|4|5|6|8|9
+          type: string
+          description: "Informa el Motivo de Reclamo. Valores\n•\t1 = Desconocimiento del cupón liquidado;\n•\t2 = Diferencias en cupón liquidado;\n•\t3 = Cupón de sistema AC (amplia cobertura);\n•\t4 = Cupón de operatoria internacional;\n•\t5 = Cupón de operatoria extravío en tránsito;\n•\t6 = Cupón crédito;\n•\t8 = Cupón;\n•\t9 = Incidente.\n"
+          example: '1'
+        isLocationType:
+          type: boolean
+          description: 'Criterio de búsqueda de los cupones a reclamar. Tipo de operación. “true”: Local. “false”: Internacional.'
+        statementDate:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Fecha de Cierre de Cuenta Corriente. Criterio de búsqueda de los cupones a reclamar. En formato ISO 8601.
+          example: 01-01-2024
+        details:
+          maxLength: 1
+          type: string
+          description: "Exclusivo VisionPLUS. El campo de detalles representa el indicador de detalles de la transacción.\nValores:\n•\tEspacio = Usar tanto actual como reciente (Mostrar la transacción pendiente/publicada);\n•\tB = Usar tanto actual como reciente (Mostrar la transacción pendiente/publicada)\n•\tC = Actual (Transacciones del ciclo hasta la fecha);\n•\tR = Recientes (Transacciones detalladas del estado de cuenta);\n•\tS = Sólo el primer estado de cuenta reciente\n•\tM = Mensual (Transacciones detalladas del estado de cuenta);\n•\tP = Transacciones contabilizadas.\n"
+          nullable: true
+          example: B
+        type:
+          maxLength: 1
+          type: integer
+          description: "Exclusivo VisionPLUS. El campo tipo representa el tipo de transacción.\nValores:\n•\t0 = Todos;\n•\t1 = Intereses y comisiones;\n•\t2 = Pago;\n•\t3 = Disputa;\n•\t4 = Almacén;\n•\t5 = Sólo intereses;\n•\t6 = Solo tarifa;\n•\t7 = Sólo tarjeta.\n"
+          format: int32
+          nullable: true
+          example: 0
+        transactionsNumber:
+          maxLength: 2
+          type: integer
+          description: Exclusivo VisionPLUS. El número de transacciones representa el número de transacciones. El número máximo es 50.
+          format: int32
+          nullable: true
+          example: 50
+        monthsNumber:
+          maxLength: 2
+          type: string
+          description: Exclusivo VisionPLUS. Representa el número de meses de las transacciónes.
+          nullable: true
+          example: '12'
+        transactionDateRange:
+          $ref: '#/components/schemas/RangeTransactionsRequest'
+        transactionAmountRange:
+          $ref: '#/components/schemas/TransactionAmountRangeRequest'
+      description: Datos de busqueda.
+    BlockTransactions:
+      type: object
+      properties:
+        code:
+          maxLength: 2
+          type: integer
+          description: Código de bloqueo de la tarjeta. Hasta 99. Este campo puede ser null.
+          format: int32
+          nullable: true
+          example: 19
+        codeDescription:
+          maxLength: 40
+          type: string
+          description: Descripción del código de bloqueo de la tarjeta. Este campo puede ser null.
+          nullable: true
+          example: BLOQ-FRAUDE
+        date:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Fecha en que se realizó el bloqueo de la tarjeta.
+          example: 31-05-2024
+        status:
+          maxLength: 80
+          type: string
+          description: Informa de manera descriptiva estado de bloqueo de la tarjeta. Este campo puede ser null.
+          nullable: true
+          example: TARJETA BLOQUEADA
+      description: Datos del bloqueo de tarjeta.
+    TransactionsCard:
+      type: object
+      properties:
+        cardNumber:
+          maxLength: 16
+          type: integer
+          description: Número PAN completo de la tarjeta, enmascarado. Este campo puede ser null.
+          format: int64
+          nullable: true
+          example: 5399000000009003
+        block:
+          $ref: '#/components/schemas/BlockTransactions'
+      description: Datos de la tarjeta.
+    TransactionsResponse:
+      type: object
+      properties:
+        organizationNumber:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. El campo OrganizationNumber es un atributo que contiene el número de identificación único asignado a una organización dentro de la API. Hasta 999.
+          format: int32
+          nullable: true
+          example: 998
+        logo:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. El campo del logo almacena el código del logo del emisor asociado con una tarjeta de pago. Representa el identificador o código único asignado al logotipo del emisor de la tarjeta, lo que permite una identificación y asociación precisas con el banco emisor. Hasta 999.
+          format: int32
+          nullable: true
+          example: 501
+        currencyCode:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. Código de moneda estándar ISO que identifica la unidad monetaria de esta organización. Hasta 999.
+          format: int32
+          nullable: true
+          example: 123
+        currencyDescription:
+          maxLength: 28
+          type: string
+          description: Exclusivo VisionPLUS. Descripción de la moneda.
+          nullable: true
+          example: currency description
+        isForeign:
+          type: boolean
+          description: "Exclusivo VisionPLUS. El indicador USO EXTRANJERO se proporciona en el mensaje de entrada para que la fuente solicitante pueda especificar si la solicitud se aplica a la cuenta local o extranjera cuando la cuenta está en una organización de procesamiento de doble moneda.\nValores:\n•\tfalse = cuenta local; (por defecto)\n•\ttrue = cuenta extranjera.\n"
+        card:
+          $ref: '#/components/schemas/TransactionsCard'
+        transaction:
+          $ref: '#/components/schemas/TransactionsTransactionResponse'
+    TransactionsTransactionDetails:
+      type: object
+      properties:
+        sequence:
+          maxLength: 3
+          minLength: 1
+          type: integer
+          description: Secuencia. Incremental; número de secuencia asignado en la consulta a cada transacción.
+          format: int32
+          nullable: true
+          example: 1
+        type:
+          maxLength: 1
+          type: string
+          description: "Exclusivo VisionPLUS. Indica si una transacción es de débito, crédito o nota.\nValores:\n•\tD = débito;\n•\tC = crédito;\n•\tM = nota.\n"
+          nullable: true
+          example: D
+        organizationNumber:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. Número de organización. Hasta 999.
+          format: int32
+          nullable: true
+          example: 998
+        logo:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. Número de logo. Hasta 999.
+          format: int32
+          nullable: true
+          example: 998
+        accountNumber:
+          maxLength: 19
+          type: string
+          description: Exclusivo VisionPLUS. Número de cuenta o número de tarjeta.
+          nullable: true
+          example: '0123456789123456789'
+        categoryCode:
+          maxLength: 5
+          type: integer
+          description: Exclusivo VisionPLUS. Código de categoría estándar ISO (ISO 18245) del comerciante donde se otorgaron puntos de comprador frecuente. Hasta 99999.
+          format: int32
+          nullable: true
+          example: 5192
+        categoryDescription:
+          maxLength: 28
+          type: string
+          description: Exclusivo VisionPLUS. Descripción de categoría.
+          nullable: true
+          example: Category Description
+        logicModuleNumber:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. Módulo lógico asociado al código de transacción. Hasta 999.
+          format: int32
+          nullable: true
+          example: 605
+        transactionType:
+          maxLength: 7
+          type: string
+          description: Exclusivo VisionPLUS. Tipo de transacción.
+          nullable: true
+          example: TYPE
+        statementDate:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Fecha de cierre de cuenta corriente. En formato ISO 8601.
+          example: 31-05-2024
+        locationType:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: "Tipo de transacción. Valores\n•\tS: Local,\n•\tN: Internacional.\n"
+          example: S
+        insuranceProduct:
+          maxLength: 2
+          type: string
+          description: Exclusivo VisionPLUS. Producto de seguro.
+          nullable: true
+          example: AB
+        virtualIndicator:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Indicador Virtual.
+          nullable: true
+          example: s
+        qualifierIndicator:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Indicador de calificación.
+          nullable: true
+          example: A
+        hasFeeAdjustment:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de ajuste de tarifas.\nValores:\n•\tfalso = Sin ajuste;\n•\tverdadero = Ajuste.\n"
+        hasInterestAdjustment:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de ajuste de intereses.\nValores:\n•\tfalso = Sin ajuste;\n•\tverdadero = Ajuste.\n"
+        hasDispute:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de disputa.\nValores:\n•\tfalso = Sin disputa;\n•\tverdadero = Disputa.\n"
+        isChargebackEligible:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de devolución de carga.\nValores:\n•\tfalse = La transacción no es elegible para devolución de cargo;\n•\ttrue = La transacción es elegible para devolución de cargo.\n"
+        isCopyRequest:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de solicitud de copia.\nValores:\n•\tfalse = Sin solicitud de copia;\n•\tverdadero = Copiar solicitud.\n"
+        isReversal:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de reversión.\nValores:\n•\tfalso = Sin reversión;\n•\tverdadero = inversión\n"
+        isMisapplied:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador mal aplicado.\nValores:\n•\tfalse = No mal aplicado;\n•\tverdadero = Mal aplicado.\n"
+        isIssuerClearingHouse:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de la Cámara de Compensación del Emisor.\nValores:\n•\tfalse = Sin Cámara de Compensación Emisora (ICH);\n•\tverdadero = Cámara de Compensación del Emisor (ICH).\n"
+        isDisputeAuxiliaryFile:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de archivo auxiliar de disputa.\nValores:\n•\tfalse = Archivo auxiliar sin disputa;\n•\ttrue = Disputar archivo auxiliar.\n"
+        recurringTransaction:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de parada/reanudación.\nValores:\n•\tfalse = Detener una transacción recurrente;\n•\ttrue = Reanudar una transacción recurrente.\n"
+        visaId:
+          maxLength: 15
+          type: integer
+          description: Exclusivo VisionPLUS. Identificación de transacción de Visa. Hasta 999999999999999.
+          format: int64
+          nullable: true
+          example: 123456789123456
+        effectiveDate:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Fecha de la transacción. Fecha de cuando se realizó la compra / Consumo. En formato ISO 8601
+          example: 20-06-2024
+        postDate:
+          maxLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Exclusivo VisionPLUS. Fecha de publicación (en ISO 8601).
+          nullable: true
+          example: 22-04-2023
+        batchDate:
+          maxLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Exclusivo VisionPLUS. Fecha de lote (en ISO 8601).
+          nullable: true
+          example: 15-08-2023
+        totalEffectiveValue:
+          maxLength: 16
+          type: integer
+          description: 'Exclusivo VisionPLUS. Este campo es para capturar el valor efectivo total (VET) de la transacción internacional solo para Brasil. El campo se completará si se cumplen las siguientes condiciones. 13 posiciones enteras, 2 posiciones decimales y separador decimal. Formato: EEEEEEEEEEEEE.DD'
+          format: int32
+          nullable: true
+          example: 2345678973
+        demandDepositAccountIndicator:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Indicador DDA (cuentas de depósito a la vista). Este campo se muestra solo para transacciones con tarjeta de débito. La funcionalidad de la tarjeta de débito debe estar activa.
+          nullable: true
+          example: D
+        record:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsRecord'
+        loyalty:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsLoyalty'
+        terminal:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsTerminal'
+        authorization:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsAuthorization'
+        fraud:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsFraud'
+        original:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsOriginal'
+        conversionRate:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsConversionRate'
+        usd:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsUsd'
+        interchange:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInterchange'
+        principal:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsPrincipal'
+        purchase:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsPurchase'
+        card:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsCard'
+        installment:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInstallment'
+        merchant:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsMerchant'
+      description: Detalle de las transacciones.
+    TransactionsTransactionDetailsAuthorization:
+      type: object
+      properties:
+        authorizationTime:
+          maxLength: 8
+          pattern: HH:MM:SS
+          type: string
+          description: Exclusivo VisionPLUS. Hora de autorización de la transacción.
+          nullable: true
+          example: '14:27:45'
+        authorizationCode:
+          maxLength: 8
+          minLength: 1
+          type: string
+          description: Código de autorización de la transacción.
+          example: A01526
+      description: Datos de la autorización.
+    TransactionsTransactionDetailsCard:
+      type: object
+      properties:
+        number:
+          maxLength: 19
+          type: string
+          description: Exclusivo VisionPLUS. Identificador único o token asociado al número de tarjeta o instrumento de pago FirstVision PAN Token.
+          nullable: true
+          example: 00123456ID5IXX12345
+        sequence:
+          maxLength: 5
+          type: integer
+          description: Exclusivo VisionPLUS. Secuencia de tarjeta. Hasta 99999.
+          format: int32
+          nullable: true
+          example: 1
+        blockCode:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Código de bloqueo de tarjeta.
+          nullable: true
+          example: A
+        acceptorId:
+          maxLength: 16
+          type: string
+          description: Exclusivo VisionPLUS. Identificación del receptor de tarjetas.
+          nullable: true
+          example: LJS38RNS24900003
+        embossedName:
+          maxLength: 40
+          type: string
+          description: Exclusivo VisionPLUS. Nombre en relieve en tarjeta.
+          nullable: true
+          example: Embossed name
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsConversionRate:
+      type: object
+      properties:
+        value:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Tasa de conversión de transacciones. Hasta 100000000000000000.
+          format: int32
+          nullable: true
+          example: 125
+        formattedValue:
+          maxLength: 18
+          pattern: decimal
+          type: string
+          description: Exclusivo VisionPLUS. Tasa de conversión de transacciones.
+          nullable: true
+          example: '125.0'
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsFraud:
+      type: object
+      properties:
+        transferredStatus:
+          maxLength: 1
+          type: string
+          description: "Exclusivo VisionPLUS. Bandera que indica el estado de la transacción fraudulenta transferida.\nValores:\n•\tP = Transferencia pendiente;\n•\tT = Transferido;\n•\tX = Transferido en;\n•\tEspacio = no aplicable.\n"
+          nullable: true
+          example: P
+        transferIndicator:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de transferencia de fraude.\nValores:\n•\tfalse = Transferencia sin fraude;\n•\tverdadero = transferencia fraudulenta\n"
+        fraudIndicator:
+          type: boolean
+          description: "Exclusivo VisionPLUS. Indicador de fraude.\nValores:\n•\tfalso = Sin fraude;\n•\tverdadero = fraude.\n"
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsInstallment:
+      type: object
+      properties:
+        total:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Número total de cuotas que el titular de la tarjeta acordó pagar por la transacción. Hasta 99.
+          format: int32
+          example: 12
+        originalTransactionAmount:
+          maxLength: 14
+          type: number
+          description: Exclusivo VisionPLUS. Monto original de la transacción a plazos. 13 posiciones enteras, 2 posiciones decimales y separador decimal.
+          format: double
+          nullable: true
+          example: 29329.33
+        firstEarlyRelease:
+          maxLength: 2
+          type: integer
+          description: Exclusivo VisionPLUS. Número de cuota de una cuota facturada en particular o la primera secuencia de cuotas en un rango de cuotas marcadas para una liberación anticipada desde el archivo de facturación de cuotas. Hasta 99.
+          format: int32
+          nullable: true
+          example: 12
+        lastEarlyRelease:
+          maxLength: 2
+          type: integer
+          description: Exclusivo VisionPLUS. Última secuencia de pago que está marcada para una liberación anticipada desde el archivo de facturación a plazos. El valor predeterminado es 00, lo que indica que el plazo contabilizado se libera. Hasta 99.
+          format: int32
+          nullable: true
+          example: 19
+        terms:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInstallmentTerms'
+        plan:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsInstallmentPlan'
+      description: Datos del Plan de Cuotas.
+    TransactionsTransactionDetailsInstallmentPlan:
+      type: object
+      properties:
+        type:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS.
+          nullable: true
+          example: A
+        number:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 12345
+        sequenceNumber:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 12
+        openDate:
+          maxLength: 10
+          type: string
+          description: Exclusivo VisionPLUS.
+          nullable: true
+          example: '2022-10-29'
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsInstallmentTerms:
+      type: object
+      properties:
+        total:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 37
+        originalTotal:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 24
+        current:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 75
+        remaining:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 11
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsInterchange:
+      type: object
+      properties:
+        reference:
+          maxLength: 23
+          type: string
+          description: Exclusivo VisionPLUS. Número de referencia del intercambio.
+          nullable: true
+          example: '68456546'
+        fee:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS. Tarifa de intercambio. Hasta 999999999.
+          format: int32
+          nullable: true
+          example: 4
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsLoyalty:
+      type: object
+      properties:
+        points:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS. Puntos. Hasta 999999999
+          format: int32
+          nullable: true
+          example: 123456789
+        programNumber:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Número de programa.
+          nullable: true
+          example: A
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsMerchant:
+      type: object
+      properties:
+        city:
+          maxLength: 21
+          type: string
+          description: Exclusivo VisionPLUS. Ciudad del comercio.
+          nullable: true
+          example: Brookfield
+        state:
+          maxLength: 3
+          type: string
+          description: Exclusivo VisionPLUS. Estado/Región del comercio.
+          nullable: true
+          example: WI
+        postalCode:
+          maxLength: 10
+          type: string
+          description: Exclusivo VisionPLUS. Código postal del comercio.
+          nullable: true
+          example: 53008-0979
+        countryCode:
+          maxLength: 3
+          type: string
+          description: Exclusivo VisionPLUS. Código de país del comercio.
+          nullable: true
+          example: USA
+        phoneNumber:
+          maxLength: 21
+          type: string
+          description: Exclusivo VisionPLUS. Teléfono del comercio.
+          nullable: true
+          example: 800-848-1337
+        name:
+          maxLength: 30
+          minLength: 1
+          type: string
+          description: Nombre de comercio.
+          example: COMERCIALIZADORA B
+        storeNumber:
+          maxLength: 9
+          minLength: 1
+          type: string
+          description: Número del comercio. Hasta 999999999.
+          example: '125801'
+      description: Datos del comercio.
+    TransactionsTransactionDetailsOriginal:
+      type: object
+      properties:
+        amount:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Monto original de la transacción. Hasta 100000000000000000.
+          format: int32
+          nullable: true
+          example: 78
+        formattedAmount:
+          maxLength: 16
+          minLength: 1
+          type: number
+          description: Importe de la transacción. 13 posiciones enteras, 2 posiciones decimales y separador decimal.
+          format: double
+          example: 9999999999999.99
+        currency:
+          maxLength: 3
+          minLength: 2
+          type: integer
+          description: "Código de moneda. Valores: </br>•\t32: ARS Pesos argentinos </br>•\t858: URU Pesos Uruguayos </br>•\t840: USD Dólar\n"
+          format: int32
+          example: 840
+        currencyDescription:
+          maxLength: 28
+          type: string
+          description: Exclusivo VisionPLUS. Descripción de la moneda de la transacción original.
+          nullable: true
+          example: MXN
+      description: Original
+    TransactionsTransactionDetailsPrincipal:
+      type: object
+      properties:
+        unbilled:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Principal no facturado. Hasta 100000000000000000.
+          format: int64
+          nullable: true
+          example: 3464593827
+        remaining:
+          maxLength: 18
+          type: number
+          description: Exclusivo VisionPLUS. Principal restante. Hasta 100000000000000000.
+          format: double
+          nullable: true
+          example: 38937302.98
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsPurchase:
+      type: object
+      properties:
+        order:
+          maxLength: 16
+          type: string
+          description: Exclusivo VisionPLUS. Orden de compra.
+          nullable: true
+          example: 0A1B2C3D4E5F6G
+        ticketNumber:
+          maxLength: 15
+          type: string
+          description: Exclusivo VisionPLUS. Numero de ticket.
+          nullable: true
+          example: 0A1B2C3D4E5F6G
+        referenceNumber:
+          maxLength: 23
+          type: string
+          description: Exclusivo VisionPLUS. Número de referencia.
+          nullable: true
+          example: 0A1B2C3D4E5F6G
+        amount:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Monto. Hasta 100000000000000000.
+          format: int32
+          nullable: true
+          example: 125
+        quantity:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. Cantidad. Hasta 999.
+          format: int32
+          nullable: true
+          example: 1
+        unitPrice:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Precio unitario. Hasta 100000000000000000.
+          format: int32
+          nullable: true
+          example: 10000
+        itemNumber:
+          maxLength: 5
+          type: integer
+          description: Exclusivo VisionPLUS. Número de item. Hasta 99999.
+          format: int32
+          nullable: true
+          example: 45
+        inventoryNumber:
+          maxLength: 9
+          type: integer
+          description: Exclusivo VisionPLUS. Número de SKU. Hasta 999999999.
+          format: int32
+          nullable: true
+          example: 56789
+        department:
+          maxLength: 4
+          type: string
+          description: Exclusivo VisionPLUS. Departamento.
+          nullable: true
+          example: XDE
+        source:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Fuente.
+          nullable: true
+          example: A
+        salesperson:
+          maxLength: 12
+          type: string
+          description: Exclusivo VisionPLUS. Vendedor. Empleado de ventas.
+          nullable: true
+          example: SALESPERSON
+        description:
+          maxLength: 40
+          type: string
+          description: Exclusivo VisionPLUS. Descripción.
+          nullable: true
+          example: 0A1B2C3 D4E5F 6G
+        payment:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsPurchasePayment'
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsPurchasePayment:
+      type: object
+      properties:
+        recurringIndicator:
+          maxLength: 40
+          type: string
+          description: Exclusivo VisionPLUS.
+          nullable: true
+          example: R
+        referenceNumber:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int64
+          nullable: true
+          example: 12345678912345
+        originalAmount:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 125
+        relationshipAmount:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS.
+          format: int32
+          nullable: true
+          example: 125
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsRecord:
+      type: object
+      properties:
+        recordNumber:
+          maxLength: 5
+          type: integer
+          description: Exclusivo VisionPLUS. Número de registro. Hasta 99999.
+          format: int32
+          nullable: true
+          example: 12345
+        code:
+          maxLength: 4
+          type: integer
+          description: Exclusivo VisionPLUS. Codigo de transacción. Hasta 9999
+          format: int32
+          nullable: true
+          example: 1234
+        reference:
+          maxLength: 23
+          type: string
+          description: Exclusivo VisionPLUS. Referencia de transacción.
+          nullable: true
+          example: 839FJJHS00
+        channelId:
+          maxLength: 2
+          type: string
+          description: Exclusivo VisionPLUS. Canal ID.
+          nullable: true
+          example: st
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsTerminal:
+      type: object
+      properties:
+        id:
+          maxLength: 8
+          type: string
+          description: Exclusivo VisionPLUS. Campo para capturar el ID de terminal de la transacción que se completará desde NCBTRAN-TERM-ID.
+          nullable: true
+          example: ID0002
+        entryMode:
+          maxLength: 2
+          type: string
+          description: Exclusivo VisionPLUS. Modo de entrada de terminal.
+          nullable: true
+          example: AB
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsUsd:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsUsdAmount'
+        conversionRate:
+          $ref: '#/components/schemas/TransactionsTransactionDetailsUsdConversionRate'
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsUsdAmount:
+      type: object
+      properties:
+        value:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Tasa de conversión de transacciones. Hasta 100000000000000000.
+          format: int32
+          nullable: true
+          example: 125
+        formattedValue:
+          maxLength: 18
+          type: string
+          description: Exclusivo VisionPLUS. Tasa de conversión de transacciones.
+          nullable: true
+          example: '125.0'
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionDetailsUsdConversionRate:
+      type: object
+      properties:
+        value:
+          maxLength: 18
+          type: integer
+          description: Exclusivo VisionPLUS. Tasa de conversión de transacciones. Hasta 100000000000000000.
+          format: int32
+          nullable: true
+          example: 125
+        formattedValue:
+          maxLength: 18
+          type: string
+          description: Exclusivo VisionPLUS. Tasa de conversión de transacciones.
+          nullable: true
+          example: '125.0'
+      description: Exclusivo VisionPLUS.
+    TransactionsTransactionResponse:
+      type: object
+      properties:
+        operationDate:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: 'Fecha de operación. Generalmente corresponde a la fecha de ejecución del procesola (fecha de sistema). En formato ISO 8601: dd-MM-YYYY'
+          example: 31-05-2024
+        monthsNumber:
+          maxLength: 2
+          type: string
+          description: Exclusivo VisionPLUS. Número de meses para recuperar registros de transacciones. Hasta 99.
+          nullable: true
+          example: '12'
+        recordsNumber:
+          maxLength: 3
+          type: integer
+          description: Cantidad de elementos resultados de la consulta. Hasta 999. Este campo puede ser null.
+          format: int32
+          nullable: true
+          example: 100
+        hasMoreTransactionsAvailable:
+          type: boolean
+          description: "Indicador de más transacciones disponibles.\nValores:\n•\tfalse = No hay más transacciones;\n•\ttrue = Hay más transacciones por mostrar.\n"
+        complaintType:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: "Informa el motivo de reclamo.\nValores\n•\t1 = Desconocimiento del cupón liquidado;\n•\t2 = Diferencias en cupón liquidado;\n•\t3 = Cupón de sistema AC (amplia cobertura);\n•\t4 = Cupón de operatoriainternacional;\n•\t5 = Cupón de operatoria extravio en transito;\n•\t6 = Cupón crédito;\n•\t8 = Cupón;\n•\t9 = Incidente.\n"
+          example: '1'
+        details:
+          type: array
+          description: Detalle de las transacciones.
+          items:
+            $ref: '#/components/schemas/TransactionsTransactionDetails'
+        token:
+          $ref: '#/components/schemas/TransactionsTransactionToken'
+      description: Datos generales de las consulta de transacciones.
+    TransactionsTransactionToken:
+      type: object
+      properties:
+        previous:
+          maxLength: 26
+          type: string
+          description: Exclusivo VisionPLUS. Código que indica el registro anterior para el criterio seleccionado.
+          nullable: true
+          example: ABC123DEF456GHI789J1K0
+        next:
+          maxLength: 26
+          type: string
+          description: Exclusivo VisionPLUS. Código que indica el siguiente registro posible para el criterio seleccionado, cuando el campo Más Indicador es “Y”.
+          nullable: true
+          example: 123DEF456GHI789J1K0ABC
+      description: Exclusivo VisionPLUS.
+    AddressClaimRequest:
+      type: object
+      properties:
+        street:
+          maxLength: 30
+          minLength: 0
+          type: string
+          description: Dato correspondiente al Domicilio del Tarjetahabiente, detallando el Nombre y Número de la calle. Este campo puede ser null.
+          nullable: true
+          example: OCAMPO 25001
+        provinceCode:
+          maxLength: 2
+          pattern: '[0-9]{2}| ||'
+          type: string
+          description: Dato correspondiente al Código de la Provincia. Debe contener 2 caracteres desde 00 hasta 99.  Este campo puede ser null.
+          nullable: true
+          example: '01'
+        city:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: Dato correspondiente a la Ciudad relacionada con el domicilio.  Este campo puede ser null.
+          nullable: true
+          example: CAPITAL FEDERAL
+        countryCode:
+          maxLength: 3
+          pattern: ARG|URY| ||
+          type: string
+          description: 'Dato correspondiente al Código del País: Argentina = ARG, Uruguay= URY.  Este campo puede ser null.'
+          nullable: true
+          example: ARG
+      description: Datos de dirección del cliente.
+    ClaimRequest:
+      required:
+        - customer
+      type: object
+      properties:
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        account:
+          $ref: '#/components/schemas/AccountReclamo'
+        dispute:
+          $ref: '#/components/schemas/DisputeClaimRequest'
+        customer:
+          $ref: '#/components/schemas/CustomerClaimRequest'
+        transactions:
+          type: array
+          description: Datos de las transacciones a reclamar. OCCURS 14 TIMES.
+          items:
+            $ref: '#/components/schemas/TransactionsClaimRequest'
+        notes:
+          type: array
+          description: Notas. Texto libre. OCCURS 8 TIMES.
+          items:
+            $ref: '#/components/schemas/TextClaimRequest'
+        organizationNumber:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. Número de organización. Acepta valores entre 0 y 999.
+          format: int32
+          nullable: true
+          example: 999
+        sequenceNumber:
+          maxLength: 4
+          type: integer
+          description: Exclusivo VisionPLUS. El campo representa el número de secuencia de la tarjeta. Acepta valores entre 0 y 9999.
+          format: int32
+          nullable: true
+          example: 1234
+        functionCode:
+          maxLength: 1
+          type: string
+          description: 'Exclusivo VisionPLUS. Código de función. Valores: B = bloquear cuenta; U = desbloquear cuenta'
+          nullable: true
+          example: B
+        blockCode:
+          maxLength: 1
+          type: string
+          description: 'Exclusivo VisionPLUS. Valores: A-Z = código de bloque;  espacio = desbloquear cuenta.'
+          nullable: true
+          example: Z
+    CustomerClaimRequest:
+      required:
+        - address
+        - fullName
+        - idNumber
+        - isIdLost
+      type: object
+      properties:
+        fullName:
+          maxLength: 30
+          minLength: 1
+          type: string
+          description: Nombre y apellido del socio a quien le fue/ron imputado/s el/los cargo/s y que efectúa el reclamo.
+          example: Nombre Apellido
+        idNumber:
+          maxLength: 9
+          minLength: 1
+          pattern: '[a-zA-Z0-9]{1,9}'
+          type: string
+          description: Número de Documento de identidad alfanumérico del tarjetahabiente.
+          example: '193916'
+        isIdLost:
+          type: boolean
+          description: "Informa si el Documento de Identidad, Pasaporte o cualquier otro documento identificatorio del tarjetahabiente fue extraviado junto con su tarjeta.\nValores\n•\ttrue: El documento identificatorio fue extraviado;\n•\tfalse: El documento identificatorio no fue extraviado.\n"
+        phoneNumber:
+          maxLength: 2147483647
+          minLength: 0
+          pattern: '[0-9]{0,20}'
+          type: string
+          description: Número de teléfono del tarjetahabiente. Este campo puede ser null.
+          nullable: true
+          example: '44211214'
+        address:
+          $ref: '#/components/schemas/AddressClaimRequest'
+      description: Datos del cliente.
+    DifferenceClaimRequest:
+      type: object
+      properties:
+        currencyCode:
+          maxLength: 3
+          minLength: 1
+          pattern: 0|032|32|840|858
+          type: string
+          description: 'Código de Moneda del consumo. 32: ARS – Pesos argentinos. 858: URU – Pesos Uruguayos. 840: USD - Dólares.'
+          example: '032'
+        installmentQuantity:
+          maxLength: 2
+          pattern: '[0-9]{0,2}'
+          type: string
+          description: Cantidad total de cuotas del plan de cuotas.  Este campo puede ser null.
+          nullable: true
+          example: '01'
+        amount:
+          maxLength: 16
+          minLength: 1
+          pattern: 0|[0-9]{1,13}[.][0-9]{1,2}
+          type: string
+          description: Importe del consumo. 13 posiciones enteras, 2 posiciones decimales y separador decimal. Si es distinto de cero debe observar el formato 9.9
+          format: decimal
+          example: '5310000.01'
+      description: En caso de haber diferencia en las compras/cupones a reclamar. Aplica para el motivo de reclamo 2.
+    DisputeClaimRequest:
+      required:
+        - cardIssuingType
+        - complaintType
+        - region
+      type: object
+      properties:
+        complaintType:
+          maxLength: 1
+          minLength: 1
+          pattern: 1|2|3|4|5|6|8|9
+          type: string
+          description: "Informa el Motivo de Reclamo. Valores\n•\t1 = Desconocimiento del cupón liquidado;\n•\t2 = Diferencias en cupón liquidado;\n•\t3 = Cupón de sistema AC (amplia cobertura);\n•\t4 = Cupón de operatoria internacional;\n•\t5 = Cupón de operatoria extravío en tránsito;\n•\t6 = Cupón crédito;\n•\t8 = Cupón;\n•\t9 = Incidente.\n"
+          example: '1'
+        region:
+          maxLength: 1
+          minLength: 1
+          pattern: 0|B|1|A|C|D|E
+          type: string
+          description: "Región donde se realizó la compra/consumo a reclamar.\nValores:\n•\t0 = Boletin Local;\n•\tB = Latinoamerica o limitrofe;\n•\t1 = Estados Unidos de Norteamerica;\n•\tA = Canada;\n•\tC = Oceania - Asia;\n•\tD = Europa;\n•\t E = Africa.\n"
+          example: '0'
+        cardIssuingType:
+          maxLength: 1
+          minLength: 1
+          pattern: F|V
+          type: string
+          description: "Tipo de emisión que tendrá la tarjeta.\nValores:\n•\tF = Física;\n•\tV = Virtual;\n"
+          example: F
+        comments:
+          maxLength: 120
+          minLength: 0
+          type: string
+          description: Permite ingresar comentarios adicionales en el proceso de solicitud de bloqueo con reimpresión.  Este campo puede ser null.
+          nullable: true
+          example: NINGÚN COMENTARIO
+      description: Datos del Reclamo.
+    TextClaimRequest:
+      type: object
+      properties:
+        text:
+          maxLength: 64
+          minLength: 0
+          type: string
+          description: Texto libre. Texto que describe el motivo por el cual se realiza el reclamo o desconocimiento. Este campo puede ser null.
+          nullable: true
+          example: Good Morning
+      description: Notas. Texto libre. OCCURS 8 TIMES.
+    TransactionsClaimRequest:
+      required:
+        - operationDate
+        - sequence
+      type: object
+      properties:
+        operationDate:
+          maxLength: 10
+          minLength: 10
+          pattern: '[0-9]{2}-[0-9]{2}-[0-9]{4}'
+          type: string
+          description: Fecha de la se realizó la transacción. En formato ISO 8601.
+          example: 01-01-2024
+        sequence:
+          maxLength: 3
+          minLength: 1
+          pattern: '[0-9]{1,3}'
+          type: string
+          description: Número incremental asignado al registro durante la Consulta de Transacciones.
+          example: '19'
+        difference:
+          $ref: '#/components/schemas/DifferenceClaimRequest'
+      description: Datos de las transacciones a reclamar. OCCURS 14 TIMES.
+    ClaimCardBlockStatus:
+      type: object
+      properties:
+        organizationNumber:
+          maxLength: 3
+          type: integer
+          description: Exclusivo VisionPLUS. Número de organización. Valores entre 0 y 999.
+          format: int32
+          nullable: true
+          example: 999
+        foreignOrganization:
+          maxLength: 3
+          type: string
+          description: Exclusivo VisionPLUS. Organización Extranjera. Valores entre 0 y 999.
+          nullable: true
+          example: '999'
+        cardSequence:
+          maxLength: 4
+          type: string
+          description: Exclusivo VisionPLUS. Secuencia de Tarjeta. Valores entre 0 y 9999.
+          nullable: true
+          example: '1234'
+        functionCode:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Código de función.
+          nullable: true
+          example: B
+        blockCode:
+          maxLength: 1
+          type: string
+          description: Exclusivo VisionPLUS. Código de bloqueo.
+          nullable: true
+          example: B
+        description:
+          maxLength: 60
+          type: string
+          description: Informa de manera descriptiva estatus actual de bloqueo de la tarjeta. Este campo puede ser null.
+          nullable: true
+          example: '- TARJETA ACTIVA -'
+      description: Datos del bloqueo de tarjeta.
+    ClaimResponse:
+      type: object
+      properties:
+        clamId:
+          maxLength: 7
+          minLength: 1
+          type: integer
+          description: 'N° Reclamo: Número que identifica al reclamo. Valores entre 1 y 9999999.'
+          format: int32
+          example: 4114045
+        errorsVoucher:
+          maxLength: 2
+          minLength: 1
+          type: integer
+          description: Número de transacciones rechazadas por algún error. Valores entre 0 y 99.
+          format: int32
+          example: 0
+        claimMessage:
+          maxLength: 78
+          minLength: 1
+          type: string
+          description: Mensaje que describe los diferentes códigos de respuesta de sistema.
+          example: 'RECLAMO OTORGADO NRO:  CON 01 CUPONES GRABADOS Y  CUPONES SIN GRABAR'
+        observationMessage:
+          maxLength: 78
+          type: string
+          description: Mensaje que describe los diferentes códigos de respuesta de sistema. Este campo puede ser null.
+          nullable: true
+          example: INGRESAR A CONSULTA DE RECLAMOS PARA VERIFICAR LOS CUPONES GRABADOS
+        cardBlockStatus:
+          $ref: '#/components/schemas/ClaimCardBlockStatus'
     ReplacementRequest:
       required:
         - branchNumber
@@ -1690,7 +3196,7 @@ components:
           pattern: ^(AC|BL)$
           type: string
           description: Este campo de entrada permite indicar la acción a realizar. AC para activación y BL para Inhabilitación
-          example: AC
+          example: BL
     OnOffResponse:
       type: object
       properties:
@@ -1698,12 +3204,12 @@ components:
           maxLength: 5
           type: string
           description: Informa el código de retorno de la operación realizada.
-          example: '+2863'
+          example: '+0000'
         message:
           maxLength: 200
           type: string
           description: Informa el resultado de la operación solicitada.
-          example: Tarjeta inhabilitada
+          example: Su tarjeta ha sido Tarjeta pausada
       description: Estructura de campos que responde la API On Off
     OnOffStatusRequest:
       type: object
@@ -1730,6 +3236,19 @@ components:
           description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
           example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
       description: Estructura de campos para la solicitud de la API On Off
+    OnOffStatusResponse:
+      type: object
+      properties:
+        code:
+          maxLength: 5
+          type: string
+          description: Informa el código de retorno de la operación realizada.
+          example: '+1137'
+        message:
+          maxLength: 200
+          type: string
+          description: Informa el resultado de la operación solicitada.
+          example: Tarjeta NO PAUSADA
     InstantIssuanceRequest:
       required:
         - branchNumber
