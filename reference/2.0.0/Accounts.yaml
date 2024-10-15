@@ -1,33 +1,32 @@
 ################################################################################
-# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates. 
-# Fiserv is a trademark of Fiserv, Inc., 
-# registered or used in the United States and foreign countries, 
-# and may or may not be registered in your country.  
-# All trademarks, service marks, 
-# and trade names referenced in this 
-# material are the property of their 
-# respective owners. This work, including its contents 
-# and programming, is confidential and its use 
-# is strictly limited. This work is furnished only 
-# for use by duly authorized licensees of Fiserv, Inc. 
-# or its affiliates, and their designated agents 
-# or employees responsible for installation or 
-# operation of the products. Any other use, 
-# duplication, or dissemination without the 
-# prior written consent of Fiserv, Inc. 
-# or its affiliates is strictly prohibited. 
-# Except as specified by the agreement under 
-# which the materials are furnished, Fiserv, Inc. 
-# and its affiliates do not accept any liabilities 
-# with respect to the information contained herein 
-# and are not responsible for any direct, indirect, 
-# special, consequential or exemplary damages 
-# resulting from the use of this information. 
-# No warranties, either express or implied, 
-# are granted or extended by this work or 
+# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates.
+# Fiserv is a trademark of Fiserv, Inc.,
+# registered or used in the United States and foreign countries,
+# and may or may not be registered in your country.
+# All trademarks, service marks,
+# and trade names referenced in this
+# material are the property of their
+# respective owners. This work, including its contents
+# and programming, is confidential and its use
+# is strictly limited. This work is furnished only
+# for use by duly authorized licensees of Fiserv, Inc.
+# or its affiliates, and their designated agents
+# or employees responsible for installation or
+# operation of the products. Any other use,
+# duplication, or dissemination without the
+# prior written consent of Fiserv, Inc.
+# or its affiliates is strictly prohibited.
+# Except as specified by the agreement under
+# which the materials are furnished, Fiserv, Inc.
+# and its affiliates do not accept any liabilities
+# with respect to the information contained herein
+# and are not responsible for any direct, indirect,
+# special, consequential or exemplary damages
+# resulting from the use of this information.
+# No warranties, either express or implied,
+# are granted or extended by this work or
 # the delivery of this work
 ################################################################################
-
 openapi: 3.0.1
 info:
   title: Silvercore™ Account Service - API Documentation
@@ -235,6 +234,206 @@ paths:
                 $ref: '#/components/schemas/ErrorFiserVResponse'
       x-proxy-name: Trip Log Status
       x-group-name: Account
+      x-child-product-name: Accounts
+  /accounts/v2/annualSummary:
+    post:
+      tags:
+        - Annual Summary
+      summary: Permite obtener de forma detallada y consolidada, los datos sobre intereses, comisiones y gastos que se han aplicado durante un año.
+      operationId: dataAnnualSummary
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataAnnualRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataAnnualResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Annual Summary
+      x-group-name: Annual Summary
+      x-child-product-name: Accounts
+  /accounts/v1/documentAnnualSummary:
+    post:
+      tags:
+        - Download Annual Summary
+      summary: Esta API permite descargar el Resumen anual en formato PDF.
+      operationId: downloadAnnualSummary
+      parameters:
+        - name: Authorization
+          in: header
+          description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+          required: false
+          schema:
+            maxLength: 35
+            minLength: 35
+            type: string
+            description: ' Autenticación del tipo Bearer Token utilizando el token entregado por el servicio /token'
+            example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+          example: Bearer PFUBkjGmVGzRb2URdVTNxvqXEfyQ
+        - name: apikey
+          in: header
+          description: Provisto por Fiserv ClientKey de ApiGee.
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            type: string
+            description: Provisto por Fiserv ClientKey de ApiGee.
+            example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+          example: NVRuz4cyQyrHpyGwHTiHRAzJg9itrjei
+        - name: Signature
+          in: header
+          description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+          required: false
+          schema:
+            maxLength: 44
+            minLength: 44
+            type: string
+            description: Valida la firma HMAC enviada por el cliente mediante un algoritmo incrustado en APIGEE.
+            example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+          example: TMH815p9C0q9iq53yodLIbkjylnstn1JUFBEAjpVQ2A=
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentAnnualRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentAnnualResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Reponse 1:
+                  description: Validation of required fields
+                  value:
+                    fieldName1: string
+                    fieldName2: string
+                Reponse 2:
+                  description: Mainframe message
+                  value:
+                    errorResponse:
+                      code: 0
+                      description: string
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetailsResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorFiserVResponse'
+      x-proxy-name: Download Annual Summary
+      x-group-name: Annual Summary
       x-child-product-name: Accounts
   /accounts/tripLog/delete:
     post:
@@ -704,28 +903,32 @@ components:
           type: string
         detail:
           type: string
-    Country:
+    CountryRequest:
+      required:
+        - countryCode
+        - dateFrom
+        - dateTo
       type: object
       properties:
         dateFrom:
           maxLength: 10
           minLength: 10
           type: string
-          description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
-          example: '2023-09-03'
+          description: Este campo de entrada, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
+          example: '2023-10-20'
         dateTo:
           maxLength: 10
           minLength: 10
           type: string
-          description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
-          example: '2023-09-05'
+          description: Este campo de entrada, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
+          example: '2023-11-02'
         countryCode:
           maxLength: 3
           minLength: 3
           type: string
-          description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
-          example: CUB
-      description: Este campo de salida, proporciona los datos de los registros de viajes
+          description: Este campo de entrada, proporciona el dato del país destino del Aviso de Viaje
+          example: MEX
+      description: Este campo de entrada proporciona los datos de los registros de viajes
     PutTripLogResponse:
       required:
         - countriesList
@@ -758,7 +961,7 @@ components:
           type: array
           description: Este campo de entrada proporciona los datos de los registros de viajes
           items:
-            $ref: '#/components/schemas/Country'
+            $ref: '#/components/schemas/CountryRequest'
       description: Estructura de campos que responde a la API TripLog
     ErrorFiserVDetailsResponse:
       type: object
@@ -788,6 +991,295 @@ components:
           description: Este campo de salida, proporciona los datos de los registros de viajes
           items:
             $ref: '#/components/schemas/Country'
+    Country:
+      type: object
+      properties:
+        dateFrom:
+          maxLength: 10
+          minLength: 10
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de inicio del Aviso de Viaje
+          example: '2023-09-03'
+        dateTo:
+          maxLength: 10
+          minLength: 10
+          type: string
+          description: Este campo de salida, proporciona la información correspondiente a la fecha de fin del Aviso de Viaje
+          example: '2023-09-05'
+        countryCode:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: Este campo de salida, proporciona el dato del país destino del Aviso de Viaje
+          example: CUB
+      description: Este campo de salida, proporciona los datos de los registros de viajes
+    AccountRequestOnlyTitular:
+      type: object
+      properties:
+        accountNumber:
+          maxLength: 32
+          minLength: 32
+          pattern: '[0-9A-F]{32}'
+          type: string
+          description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
+          example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0. No se debe enviar valores de 1 a 9'
+          format: int32
+          example: 0
+      description: Datos de la cuenta.
+    DataAnnualRequest:
+      type: object
+      properties:
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        account:
+          $ref: '#/components/schemas/AccountRequestOnlyTitular'
+        dateRange:
+          $ref: '#/components/schemas/DateRange'
+    DateRange:
+      required:
+        - from
+        - to
+      type: object
+      properties:
+        from:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Fecha desde. En formato ISO 8601.
+          example: 01-01-2021
+        to:
+          maxLength: 10
+          minLength: 10
+          pattern: dd-MM-YYYY
+          type: string
+          description: Fecha hasta. En formato ISO 8601.
+          example: 31-12-2021
+      description: Rango. Criterio de búsqueda.
+    Amount:
+      type: object
+      properties:
+        localCurrency:
+          maxLength: 16
+          minLength: 1
+          type: string
+          description: Monto en moneda local. Peso argentino. 13 posiciones enteras, 2 posiciones decimales y separador decimal. Entre 0 y 9999999999999.99
+          format: decimal
+          example: '185000.99'
+        foreingCurrency:
+          maxLength: 16
+          minLength: 1
+          type: string
+          description: Monto en USD Dolar. 13 posiciones enteras, 2 posiciones decimales y separador decimal. Entre 0 y 9999999999999.99
+          format: decimal
+          example: '185000.99'
+      description: Montos acumulados por moneda de impuestos.
+    Benefit:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: "Agrupa e identifica el total de beneficios obtenidos por el Titular y Tarjetas Adicionales de una cuenta durante el periodo seleccionado.\nValores\n•\t0: Tarjeta Titular;\n•\t1 a 9: Tarjetas Adicionales.\n"
+          example: '1'
+        categories:
+          type: array
+          description: Lista las categorías de beneficios.
+          items:
+            $ref: '#/components/schemas/BenefitList'
+        merchants:
+          type: array
+          description: Nombre del comercio.
+          items:
+            $ref: '#/components/schemas/MerchantsList'
+      description: Lista los diferentes beneficios a los cuales el cliente tuvo acceso acorde a sus consumos.
+    BenefitList:
+      type: object
+      properties:
+        name:
+          maxLength: 60
+          minLength: 1
+          type: string
+          description: Nombre bajo la cual se acumulan los beneficios.
+          example: Restaurantes
+        totals:
+          type: array
+          description: Agrupa beneficios en Mes/Monto. Ocurre hasta 12 veces.
+          items:
+            $ref: '#/components/schemas/Total'
+      description: Lista las categorías de beneficios.
+    CardConsumption:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: "Agrupa e identifica el total de consumos realizados por el Titular y Tarjetas Adicionales de una cuenta durante el periodo seleccionado.\nValores\n•\t0: Tarjeta Titular;\n•\t1 a 9: Tarjetas Adicionales.\n"
+          example: '1'
+        totals:
+          type: array
+          description: Agrupa consumos en Mes/Monto. Ocurre hasta 12 veces.
+          items:
+            $ref: '#/components/schemas/Total'
+      description: Contiene el total de consumos realizados por tarjeta (titular y adicionales). Ocurre hasta 10 veces.
+    CategoryConsumption:
+      type: object
+      properties:
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: string
+          description: "Agrupa e identifica el total de consumos realizados por categoría por el Titular y Tarjetas Adicionales de una cuenta durante el periodo seleccionado.\nValores\n•\t0: Tarjeta Titular;\n•\t1 a 9: Tarjetas Adicionales.\n"
+          example: '1'
+        categories:
+          type: array
+          description: Lista las categorías de consumos.
+          items:
+            $ref: '#/components/schemas/CategoryList'
+        merchants:
+          type: array
+          description: Lista de comercios con mayor consumo durante el periodo seleccionado. Ocurre hasta 5 veces.
+          items:
+            $ref: '#/components/schemas/MerchantsList'
+      description: Contiene el total de consumos realizados por categoría (titular y adicionales). Ocurre hasta 10 veces.
+    CategoryList:
+      type: object
+      properties:
+        name:
+          maxLength: 60
+          minLength: 1
+          type: string
+          description: Nombre de la categoría bajo la cual se acumulan los consumos.
+          example: Servicios
+        totals:
+          type: array
+          description: Agrupa consumos en Mes/Monto. Ocurre hasta 12 veces.
+          items:
+            $ref: '#/components/schemas/Total'
+      description: Lista las categorías de consumos.
+    DataAnnualResponse:
+      type: object
+      properties:
+        cardConsumptions:
+          type: array
+          description: Contiene el total de consumos realizados por tarjeta (titular y adicionales). Ocurre hasta 10 veces.
+          items:
+            $ref: '#/components/schemas/CardConsumption'
+        categoryConsumptions:
+          type: array
+          description: Contiene el total de consumos realizados por categoría (titular y adicionales). Ocurre hasta 10 veces.
+          items:
+            $ref: '#/components/schemas/CategoryConsumption'
+        benefits:
+          type: array
+          description: Lista los diferentes beneficios a los cuales el cliente tuvo acceso acorde a sus consumos.
+          items:
+            $ref: '#/components/schemas/Benefit'
+        retentions:
+          type: array
+          description: Lista las diferentes retenciones aplicadas a la Cuenta en el periodo seleccionado. Ocurre hasta 12 veces.
+          items:
+            $ref: '#/components/schemas/Retention'
+        taxes:
+          type: array
+          description: Lista los diferentes impuestos aplicados a la Cuenta en el periodo seleccionado. Ocurre hasta 12 veces.
+          items:
+            $ref: '#/components/schemas/Tax'
+    MerchantsList:
+      type: object
+      properties:
+        name:
+          maxLength: 120
+          minLength: 1
+          type: string
+          description: Nombre del comercio.
+          example: WWW.IBERIA.COM.AR
+        totals:
+          $ref: '#/components/schemas/Amount'
+      description: Nombre del comercio.
+    Retention:
+      type: object
+      properties:
+        date:
+          maxLength: 7
+          minLength: 7
+          pattern: MM-YYYY
+          type: string
+          description: Fecha del acumulado de las retenciones.
+          example: 01-2024
+        calculationBase:
+          maxLength: 16
+          minLength: 1
+          type: string
+          description: Refleja la base imponible igual al total de dólares de la cuenta expresado en moneda local al tipo de cambio del cierre de cuenta corriente correspondiente al mes. Entre 0 y 9999999999999.99.
+          example: '433470.68'
+        resolutionNumber:
+          maxLength: 15
+          minLength: 1
+          type: string
+          description: Número de resolución de retención. Entre 0 y 999999999999999.
+          example: '16070389973'
+        amount:
+          $ref: '#/components/schemas/Amount'
+      description: Lista las diferentes retenciones aplicadas a la Cuenta en el periodo seleccionado. Ocurre hasta 12 veces.
+    Tax:
+      type: object
+      properties:
+        name:
+          maxLength: 60
+          minLength: 1
+          type: string
+          description: Nombre del impuesto.
+          example: Impuesto País
+        amount:
+          $ref: '#/components/schemas/Amount'
+      description: Lista los diferentes impuestos aplicados a la Cuenta en el periodo seleccionado. Ocurre hasta 12 veces.
+    Total:
+      type: object
+      properties:
+        date:
+          maxLength: 7
+          minLength: 7
+          pattern: MM-YYYY
+          type: string
+          description: Fecha acumulado de consumos.
+          example: 01-2024
+        amount:
+          $ref: '#/components/schemas/Amount'
+      description: Agrupa beneficios en Mes/Monto. Ocurre hasta 12 veces.
+    DocumentAnnualRequest:
+      type: object
+      properties:
+        cardNumber:
+          maxLength: 64
+          minLength: 64
+          pattern: '[0-9A-F]{64}'
+          type: string
+          description: Este campo de entrada permite ingresar el número de tarjeta (PAN) encriptado
+          example: C3D4E5F6G7H8I9J10K11L12M13N14O15P16Q17R18S19T20U21V22W23X24Y25Z26
+        account:
+          $ref: '#/components/schemas/AccountRequestOnlyTitular'
+    DocumentAnnualResponse:
+      type: object
+      properties:
+        file:
+          maxLength: 2147483646
+          minLength: 1
+          type: string
+          description: Contiene el Resumen electrónico en formato PDF codificado en base64 que contiene toda la información de la cuenta y tarjetas.
+          example: 'JVBERi0xLjcNCiWhs8XXDQoxIDAgb2JqDQo8PC9QYWdlcyAyIDAgUiAvVHlwZS9DYXRhbG9nPj4NCmVuZG9iag0KMiAwIG9iag0KPDwvQ291bnQgMS9LaWRzWyA0IDAgUiBdL1R5cGUvUGFnZXM... '
     TripLogRequest:
       type: object
       properties:

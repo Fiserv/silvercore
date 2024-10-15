@@ -953,22 +953,23 @@ components:
           minLength: 1
           pattern: '[0-9]{1,8}'
           type: string
-          description: Indica el id de la compra/transacción.
+          description: 'Indica el id de la operación/transacción. </br>Este id regresa en el mensaje de salida como “idPago”. </br>Es un campo numérico incremental con control de repetición, el mismo mantiene historia de 7 días y depura diariamente. El ID no puede repetirse para una misma cuenta durante dicho periodo. '
           example: '74'
         operAmount:
-          maxLength: 13
+          maxLength: 16
           minLength: 1
           pattern: ^[0-9]{1,13}([.][0-9]{1,2})?$
           type: string
-          description: Valor de la operación pactada por el cliente. Importe del Pago/Ajuste.
+          description: 'Valor de la operación pactada por el cliente. Importe del Pago/Ajuste. </br></br>13 posiciones enteras, 2 posiciones decimales y separador decimal. </br></br>Topes máximos por transacción (Menores a): </br>- ARS 90.000.000  </br>- URU 900.000  </br>- USD 50.000'
           format: decimal
           example: '100.5'
         operCurrency:
           maxLength: 3
           minLength: 2
-          type: string
+          type: integer
           description: 'Moneda en que se realiza la operación. Ej: ARS=32, UYU=858, USD=840'
-          example: '840'
+          format: int32
+          example: 840
         operType:
           maxLength: 1
           minLength: 1
@@ -980,7 +981,7 @@ components:
           maxLength: 1
           minLength: 1
           type: string
-          description: 'El campo indica el tipo de pago en dolares, D: dólar billete (devuelve impuesto país), N: pago en dólares con pesos (no devuelve impuesto país)'
+          description: 'Indica el tipo de pago en dólares.  </br>Es requerido si el “operCurrency” = 840. </br></br>Valores posibles en ARGENTINA: </br>- D: dólar billete (devuelve impuesto país) </br>- N: pago en dólares con pesos (no devuelve impuesto país) </br></br>Valor único admitido en URUGUAY: Null '
           nullable: true
           example: D
     ErrorFiserVDetailsResponse:
@@ -1003,11 +1004,13 @@ components:
           maxLength: 8
           minLength: 1
           type: string
+          description: Código de autorización de la transacción.
           example: '637089'
         idPago:
           maxLength: 8
           minLength: 1
           type: string
+          description: Id de Pago de la transacción. Corresponde al “operId” del request.
           example: '00000074'
       description: Estructura de campos que responde la API Pago Resumen
     TransactionsRequest:
@@ -1020,6 +1023,13 @@ components:
           type: string
           description: 'Número de cuenta del tarjetahabiente. Encriptado. La cuenta que se encripta debe cumplir con Long 9 dígitos que se completan con ceros a la izquierda. EJ: 001234567 / 00#######'
           example: W23X24Y25Z26A1B2C3D4E5F6G7H8I9J1
+        additional:
+          maxLength: 1
+          minLength: 1
+          type: integer
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
+          format: int32
+          example: 0
         cardNumber:
           maxLength: 64
           minLength: 64
@@ -1123,7 +1133,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1184,7 +1194,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1318,7 +1328,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1371,7 +1381,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
@@ -1487,7 +1497,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         currencyPlan:
@@ -1522,10 +1532,10 @@ components:
           example: '10000.001'
         cardLast4:
           maxLength: 4
-          type: integer
+          pattern: '[0-9]{4}'
+          type: string
           description: Ultimos 4 digitos de la tarjeta.
-          format: int32
-          example: 1234
+          example: '1234'
         cardNumber:
           maxLength: 64
           minLength: 64
@@ -1634,7 +1644,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         installmentPlanId:
@@ -1685,7 +1695,7 @@ components:
           maxLength: 1
           minLength: 1
           type: integer
-          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valores posibles: 1 a 9. Titular: 0 Adicional: 1 a 9'
+          description: 'Identifica Titulares y Adicionales de la misma cuenta. Valor posible en esta API: 0 (titular). No se debe enviar valores de 1-9 (Adicional). </br>*Nota: En futuras versiones, la valición de este campo será acotada a 0.'
           format: int32
           example: 0
         cardNumber:
